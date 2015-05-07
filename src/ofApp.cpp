@@ -59,9 +59,9 @@ void ofApp::setup() {
 	shape.push_back(ofPoint(-25, 25));
 
 
-	nau1->setup(shape, 40, 100, 50,
+	nau1->setup(shape, 40, 500, 50,
 			ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
-	nau2->setup(shape, 40, 100, 50,
+	nau2->setup(shape, 40, 500, 50,
 			ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
 
 

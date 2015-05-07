@@ -57,7 +57,7 @@ void SpaceShip::update(float elapsedTime) {
 	if (thrust) {
 		addThrust(5);
 	} else {
-		if (speed > 35)
+		if (speed > 450)
 			addThrust(-2);
 	}
 
