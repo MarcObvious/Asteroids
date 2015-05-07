@@ -11,7 +11,7 @@ AsteroidManager* AsteroidManager::_instance = NULL;
 PlayerManager* PlayerManager::_instance = NULL;
 
 //Variables globals que defineixen les vides i la puntuacio maxima
-int MAX_SCORE = 1000;
+int MAX_SCORE = 300;
 int MAX_LIVES = 50;
 
 //--------------------------------------------------------------
@@ -120,8 +120,10 @@ void ofApp::draw() {
 	//Si algu ha guanyat nomes dibuixem la pantalla de restart
 	if ( guanyador ) {
 		ofPushStyle();
-		ofSetColor(guanyador->getColor());
-		ofDrawBitmapString("A guanyat aquest color, press 'r' to restart.", 390, 450);
+			ofSetColor(guanyador->getColor());
+			stringstream id;
+			id << guanyador->getId();
+			ofDrawBitmapString("Press 'r' to restart. WINER JUGADOR "+id.str(), 390, 450);
 		ofPopStyle();
 	}
 	else {
@@ -129,13 +131,15 @@ void ofApp::draw() {
 		//Dibuixem els scores i les instruccions
 		ofPushStyle();
 			ofSetColor(255,255,255);
-			ofDrawBitmapString(PlayerManager::getInstance()->getAllScores(), 5, 15);
+			//ofDrawBitmapString(PlayerManager::getInstance()->getAllScores(), 5, 15);
 			ofDrawBitmapString("Player 1 a w d s, Player 0 up, left, right, down .Press '1' to debug, '2' to mute", 5, 760);
 		ofPopStyle();
+
 
 		// TODO
 		// Draw all game entities (bullets? players? effects?)
 
+		PlayerManager::getInstance()->drawScores();
 		//Dibuixem totes les bales i asteroides
 		BulletManager::getInstance()->draw();
 		AsteroidManager::getInstance()->draw(debug);

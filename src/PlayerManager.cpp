@@ -48,6 +48,20 @@ string PlayerManager::getAllScores(){
 	return ss.str();
 }
 
+void PlayerManager::drawScores() {
+	int posicio_y = 20;
+	int posicio_x = 15;
+	for(unsigned int i = 0; i < _players.size(); i++) {
+		stringstream score_line;
+		score_line << "Player " << i << ": Score " << _players[i]->getScore() << " Lives " << _players[i]->getLives() << endl;
+		ofPushStyle();
+				ofSetColor(ofColor(_players[i]->getColor()));
+				ofDrawBitmapString(score_line.str(), posicio_x, posicio_y);
+		ofPopStyle();
+		posicio_y += 15;
+	}
+}
+
 //Retorna NO si no hi ha guanyador, el guanyador en cas contrari (o perdedor si algu simplement s'ha matat)
 Player* PlayerManager::hihaguanyador(int maxScore) {
 

@@ -36,6 +36,8 @@ public:
 
 	string getAllScores();
 
+	void drawScores();
+
 	Player* hihaguanyador(int maxScore);
 
 	bool comprova(Entity* ent);
