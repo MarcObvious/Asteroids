@@ -5,13 +5,14 @@
 
 #include "Player.h"
 
-Player::Player(SpaceShip* contr, int controlador,int score_inicial, int lives) {
+Player::Player(SpaceShip* contr, int controlador,int score_inicial, int lives, ofColor color) {
 	ofRegisterKeyEvents(this);
 	_controlat = contr;
 	_controlador = controlador;
 	_controlat->setControlador(controlador);
 	_score = score_inicial;
 	_lives = lives;
+	_color = color;
 }
 
 int Player::getScore() const {
@@ -28,6 +29,18 @@ int Player::getLives() const {
 
 void Player::setLives(int lives) {
 	_lives = lives;
+}
+
+ofColor Player::getColor() const {
+	return _color;
+}
+
+void Player::setControlat(SpaceShip* controlat) {
+	_controlat = controlat;
+}
+
+void Player::setColor(ofColor color) {
+	_color = color;
 }
 
 void Player::subLives(){

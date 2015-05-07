@@ -12,8 +12,9 @@ private:
 	int _controlador;
 	int _score;
 	int _lives;
+	ofColor _color;
 public:
-	Player(SpaceShip* contr, int controlador,int score_inicial, int lives);
+	Player(SpaceShip* contr, int controlador,int score_inicial, int lives, ofColor color);
 
 	~Player(){};
 	//void update(double elapsed_time, const Uint8* keystate);
@@ -28,5 +29,8 @@ public:
 	int getLives() const;
 	void setLives(int lives);
 	void subLives();
+	ofColor getColor() const;
+	void setColor(ofColor color);
+	void setControlat(SpaceShip* controlat);
 };
 

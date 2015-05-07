@@ -30,7 +30,7 @@ public:
 
 	static PlayerManager * getInstance();
 
-	void createPlayer(SpaceShip* contr ,int score_inicial, int lives); //crea player...
+	void createPlayer(SpaceShip* contr ,int score_inicial, int lives, ofColor color); //crea player...
 
 	Player* getPlayer(int i);
 

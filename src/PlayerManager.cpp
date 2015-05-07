@@ -28,8 +28,8 @@ PlayerManager * PlayerManager::getInstance() {
 	return _instance;
 }
 
-void PlayerManager::createPlayer(SpaceShip* contr ,int score_inicial, int lives) {
-	Player * p = new Player( contr, _pos, score_inicial, lives);
+void PlayerManager::createPlayer(SpaceShip* contr ,int score_inicial, int lives, ofColor color) {
+	Player * p = new Player( contr, _pos, score_inicial, lives, color);
 	_players.push_back(p);
 	++_pos;
 
