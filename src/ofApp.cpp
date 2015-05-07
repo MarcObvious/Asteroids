@@ -34,10 +34,10 @@ void ofApp::setup() {
 
 	//Demanem al PlayerManager que ens creei un Player, amb la Spaceship que vulgueem
 	nau1 = new SpaceShip();
-	PlayerManager::getInstance()->createPlayer(nau1, 0, MAX_LIVES);
+	PlayerManager::getInstance()->createPlayer(nau1, 0, MAX_LIVES, ofColor(255,0,0));
 
 	nau2 = new SpaceShip();
-	PlayerManager::getInstance()->createPlayer(nau2, 0, MAX_LIVES);
+	PlayerManager::getInstance()->createPlayer(nau2, 0, MAX_LIVES, ofColor(0,0,255));
 
 	//Carreguem els sons d'explosions d'asteroides i de dispars
 	explosion = new ofSoundPlayer();
