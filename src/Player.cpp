@@ -13,6 +13,7 @@ Player::Player(SpaceShip* contr, int controlador,int score_inicial, int lives, o
 	_score = score_inicial;
 	_lives = lives;
 	_color = color;
+	_controlat->setColor(color);
 }
 
 int Player::getScore() const {

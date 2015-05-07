@@ -16,6 +16,7 @@ SpaceShip::SpaceShip() {
 	isFiring = false;
 	gira_dreta=false;
 	gira_esquerra=false;
+	_color = ofColor(0,0,0);
 
 }
 
@@ -90,7 +91,9 @@ void SpaceShip::draw(bool debug) {
 	ofPolyline p;
 	p.addVertices(spaceShipShape);
 
+	ofPushStyle();
 	ofPushMatrix();
+		ofSetColor(_color);
 		glTranslatef(position.x, position.y, 0);
 		//S'ha de passar a radians!
 		glRotatef(rotation  / PI * 180, 0, 0, 1);
@@ -104,6 +107,7 @@ void SpaceShip::draw(bool debug) {
 
 		p.draw();
 	ofPopMatrix();
+	ofPopStyle();
 
 }
 
@@ -132,4 +136,10 @@ int SpaceShip::getControlador() {
 	return _controlador;
 }
 
+ofColor SpaceShip::getColor() const {
+	return _color;
+}
 
+void SpaceShip::setColor(ofColor color) {
+	_color = color;
+}

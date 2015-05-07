@@ -154,15 +154,15 @@ void ofApp::draw() {
 		AsteroidManager::getInstance()->draw(debug);
 
 		//Altre cop hauria sigut mes elegant dibuixar desde PlayerManager. Obviament. Mes endevant.
-		ofPushStyle();
-			ofSetColor(255,0,0);
+//		ofPushStyle();
+//			ofSetColor(255,0,0);
 			nau1->draw(debug);
-		ofPopStyle();
+//		ofPopStyle();
 
-		ofPushStyle();
-			ofSetColor(0,0,255);
+
+//			ofSetColor(0,0,255);
 			nau2->draw(debug);
-		ofPopStyle();
+//		ofPopStyle();
 
 		if (debug) {
 			ofPushStyle();

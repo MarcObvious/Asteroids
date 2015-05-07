@@ -14,6 +14,15 @@
 
 
 class SpaceShip: public Entity {
+
+private:
+	// SpaceShip's behaviour control variables
+	bool thrust, isFiring, gira_dreta, gira_esquerra;
+	int _controlador;
+	ofColor _color;
+
+	vector<ofPoint> spaceShipShape;
+
 public:
 	SpaceShip();
 	~SpaceShip();
@@ -36,12 +45,8 @@ public:
 	void setControlador(int contr);
 	int getControlador();
 
+	ofColor getColor() const;
+	void setColor(ofColor color);
 
 
-private:
-	// SpaceShip's behaviour control variables
-	bool thrust, isFiring, gira_dreta, gira_esquerra;
-	int _controlador;
-
-	vector<ofPoint> spaceShipShape;
 };
