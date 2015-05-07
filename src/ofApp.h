@@ -56,7 +56,7 @@ private:
 	ofSoundPlayer * explosion;
 
 	bool debug;
-	string guanyador;
+	Player* guanyador;
 
 
 };

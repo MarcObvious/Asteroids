@@ -99,8 +99,8 @@ void ofApp::update() {
 	//	cout << PlayerManager::getInstance()->getAllScores();
 
 	//Preguntem a PlayerManager si hi ha guanyador, si n'hi ha no updategem res.
-	guanyador = PlayerManager::getInstance()->hihaguanyador(MAX_SCORE);
-	if (guanyador.compare("NO") == 0){
+//	guanyador = PlayerManager::getInstance()->hihaguanyador(MAX_SCORE);
+//	if (guanyador.compare("NO") == 0){
 
 
 		// We get the time that last frame lasted, and use it to update asteroids logic
@@ -125,17 +125,17 @@ void ofApp::update() {
 		nau1->update(elapsedTime);
 		nau2->update(elapsedTime);
 
-	}
+//	}
 }
 
 //--------------------------------------------------------------
 void ofApp::draw() {
 	//Si algu ha guanyat nomes dibuixem la pantalla de restart
-	if (guanyador.compare("NO") != 0) {
-		ofPushStyle();
-		ofSetColor(255,0,0);
-		ofDrawBitmapString(guanyador+"press 'r' to restart.", 390, 450);
-		ofPopStyle();
+	if ( false /*guanyador.compare("NO") != 0*/) {
+//		ofPushStyle();
+//		ofSetColor(255,0,0);
+//		ofDrawBitmapString(guanyador+"press 'r' to restart.", 390, 450);
+//		ofPopStyle();
 	}
 	else {
 
@@ -215,6 +215,7 @@ void ofApp::reset() {
 	free(pium);
 	free(explosion);
 	setup();
+	guanyador = NULL;
 }
 
 //--------------------------------------------------------------

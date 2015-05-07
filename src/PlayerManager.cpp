@@ -49,20 +49,22 @@ string PlayerManager::getAllScores(){
 }
 
 //Retorna NO si no hi ha guanyador, el guanyador en cas contrari (o perdedor si algu simplement s'ha matat)
-string PlayerManager::hihaguanyador(int maxScore) {
-	stringstream ss;
+Player* PlayerManager::hihaguanyador(int maxScore) {
+//	stringstream ss;
 	for(unsigned int i = 0; i < _players.size(); i++) {
 		if (_players[i]->getScore() >= maxScore) {
-			ss << "GUANYADOR Player " << i << endl;
-			return ss.str();
+//			ss << "GUANYADOR Player " << i << endl;
+//			return ss.str();
+			return _players[i];
 		}
-		if (_players[i]->getLives() <= 0) {
-			ss << "PERDEDOR Player " << i << endl;
-			return ss.str();
-		}
+//		if (_players[i]->getLives() <= 0) {
+//			ss << "PERDEDOR Player " << i << endl;
+//			return ss.str();
+//		}
 	}
-	ss << "NO";
-	return ss.str();
+//	ss << "NO";
+//	return ss.str();
+	return NULL;
 }
 
 //Comprobacions Entity Entity (per als asteriodes), resta vida a player si hi ha colisio
