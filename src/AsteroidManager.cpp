@@ -74,7 +74,7 @@ void AsteroidManager::loadAsteroids() {
 			cout << "There are " << numAsteroids << " asteroids defined"
 					<< endl;
 
-			for (unsigned int i = 0; i < numAsteroids; i++) {
+			for (int i = 0; i < numAsteroids; i++) {
 				XML.pushTag("asteroid", i);
 				vector<ofPoint> tempDefinition;
 

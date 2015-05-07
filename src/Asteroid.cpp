@@ -35,7 +35,7 @@ bool Asteroid::setup() {
 bool Asteroid::setup(vector<ofPoint> & shape, float size, float speed,
 		float rotation, ofPoint position, ofPoint direction) {
 	// We add the loaded shaper vertices to our own shape vector
-	for (int i = 0; i < shape.size(); i++) {
+	for (unsigned int i = 0; i < shape.size(); i++) {
 		asteroidShape.push_back(shape.at(i));
 	}
 

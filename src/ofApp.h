@@ -49,8 +49,8 @@ private:
 
 	// TODO
 	// Add variables that manage players and maybe bullets
-	SpaceShip * nau1;
-	SpaceShip * nau2;
+
+	vector<SpaceShip* > naus;
 
 	ofSoundPlayer  * pium;
 	ofSoundPlayer * explosion;

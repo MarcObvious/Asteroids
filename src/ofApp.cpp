@@ -10,7 +10,7 @@ BulletManager* BulletManager::_instance = NULL;
 AsteroidManager* AsteroidManager::_instance = NULL;
 PlayerManager* PlayerManager::_instance = NULL;
 
-//Variables globals que defineixen les vides i la puntuaci maxima
+//Variables globals que defineixen les vides i la puntuacio maxima
 int MAX_SCORE = 1000;
 int MAX_LIVES = 50;
 
@@ -27,17 +27,34 @@ void ofApp::setup() {
 	// Create Asteroids
 	AsteroidManager::getInstance()->generateAsteroids(4);
 
-	// TODO
-	// Setup the following elements:
-	// - players
-	// - listeners? (depends on how you handle messages between entities)
+
+	//Manera cutre d'afegir la forma (vertex) de les nostres naus (tenen la mateixa forma
+	vector<ofPoint> shape = vector<ofPoint>();
+	shape.push_back(ofPoint(-25, 25));
+	shape.push_back(ofPoint(35,0));
+	shape.push_back(ofPoint(-25,-25));
+	shape.push_back(ofPoint(-25, 25));
 
 	//Demanem al PlayerManager que ens creei un Player, amb la Spaceship que vulgueem
-	nau1 = new SpaceShip();
-	PlayerManager::getInstance()->createPlayer(nau1, 0, MAX_LIVES, ofColor(255,0,0));
+	//Setup Players amb les seves Naus
 
-	nau2 = new SpaceShip();
-	PlayerManager::getInstance()->createPlayer(nau2, 0, MAX_LIVES, ofColor(0,0,255));
+	SpaceShip* nau = new SpaceShip();
+
+	nau->setup(shape, 40, 500, 50,
+			ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
+
+	PlayerManager::getInstance()->createPlayer(nau, 0, MAX_LIVES, ofColor(255,0,0));
+
+	naus.push_back(nau);
+
+	nau = new SpaceShip();
+
+	nau->setup(shape, 40, 500, 50,
+					ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
+
+	PlayerManager::getInstance()->createPlayer(nau, 0, MAX_LIVES, ofColor(0,0,255));
+
+	naus.push_back(nau);
 
 	//Carreguem els sons d'explosions d'asteroides i de dispars
 	explosion = new ofSoundPlayer();
@@ -48,37 +65,18 @@ void ofApp::setup() {
 	pium->loadSound("sounds/lasergun.mp3", false);
 	BulletManager::getInstance()->setBulletSound(pium);
 
-
-
-
-	//Manera cutre d'afegir la forma (vertex) de les nostres naus (tenen la mateixa forma
-	vector<ofPoint> shape = vector<ofPoint>();
-	shape.push_back(ofPoint(-25, 25));
-	shape.push_back(ofPoint(35,0));
-	shape.push_back(ofPoint(-25,-25));
-	shape.push_back(ofPoint(-25, 25));
-
-
-	nau1->setup(shape, 40, 500, 50,
-			ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
-	nau2->setup(shape, 40, 500, 50,
-			ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
-
-
-
 	// General logic
 	ofBackground(0); // Set background to black
 
 	// Debug
 	debug = false;
 
-
 }
 //Destructor (teniem problemes amb eliminar l'audio)
 ofApp::~ofApp(){
 
-	free (nau1);
-	free (nau2);
+	for(unsigned int i = 0; i < naus.size(); i++)
+			free(naus[i]);
 
 	if (pium->isLoaded()){
 		pium->stop();
@@ -95,25 +93,13 @@ ofApp::~ofApp(){
 //--------------------------------------------------------------
 void ofApp::update() {
 
-	//Escriu per terminal la data dels scores
-	//	cout << PlayerManager::getInstance()->getAllScores();
-
 	//Preguntem a PlayerManager si hi ha guanyador, si n'hi ha no updategem res.
 	guanyador = PlayerManager::getInstance()->hihaguanyador(MAX_SCORE);
 	if (guanyador == NULL){
 
-
 		// We get the time that last frame lasted, and use it to update asteroids logic
 		// so their behaviour is independent to the framerate
 		float elapsedTime = ofGetLastFrameTime();
-
-		// TODO
-		// Implement calls for logic:
-		// - players
-		// - bullets
-		// - collisions
-		// - game conditions
-		// [...]
 
 		//Comprova colisions d'Asteroides (amb bullets i amb Players)
 		AsteroidManager::getInstance()->comprova();
@@ -121,9 +107,9 @@ void ofApp::update() {
 		//Fa els updates de tot
 		BulletManager::getInstance()->update(elapsedTime);
 		AsteroidManager::getInstance()->update(elapsedTime);
-		//Hagues sigut mes elegant utilitzar Playermanager (que tambè te un punter a nau) per fer l'update. Mes endevant.
-		nau1->update(elapsedTime);
-		nau2->update(elapsedTime);
+
+		for(unsigned int i = 0; i < naus.size(); i++)
+				naus[i]->update( elapsedTime );
 
 	}
 }
@@ -153,11 +139,9 @@ void ofApp::draw() {
 		BulletManager::getInstance()->draw();
 		AsteroidManager::getInstance()->draw(debug);
 
-		//Altre cop hauria sigut mes elegant dibuixar desde PlayerManager. Obviament. Mes endevant.
 
-			nau1->draw(debug);
-
-			nau2->draw(debug);
+		for(unsigned int i = 0; i < naus.size(); i++)
+						naus[i]->draw( debug );
 
 		if (debug) {
 			ofPushStyle();
@@ -207,8 +191,14 @@ void ofApp::reset() {
 	BulletManager::getInstance()->reset();
 	AsteroidManager::getInstance()->reset();
 	PlayerManager::getInstance()->reset();
+
 	free(pium);
 	free(explosion);
+
+	for(unsigned int i = 0; i < naus.size(); i++)
+		free(naus[i]);
+
+	naus.clear();
 	setup();
 	guanyador = NULL;
 }
