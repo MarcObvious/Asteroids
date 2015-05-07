@@ -9,12 +9,12 @@
 class Player {
 private:
 	SpaceShip* _controlat;
-	int _controlador;
+	int _id;
 	int _score;
 	int _lives;
 	ofColor _color;
 public:
-	Player(SpaceShip* contr, int controlador,int score_inicial, int lives, ofColor color);
+	Player(SpaceShip* contr, int id,int score_inicial, int lives, ofColor color);
 
 	~Player(){};
 	//void update(double elapsed_time, const Uint8* keystate);
@@ -32,5 +32,7 @@ public:
 	ofColor getColor() const;
 	void setColor(ofColor color);
 	void setControlat(SpaceShip* controlat);
+	int getId() const;
+	void setId(int id);
 };
 

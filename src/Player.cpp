@@ -5,11 +5,11 @@
 
 #include "Player.h"
 
-Player::Player(SpaceShip* contr, int controlador,int score_inicial, int lives, ofColor color) {
+Player::Player(SpaceShip* contr, int id,int score_inicial, int lives, ofColor color) {
 	ofRegisterKeyEvents(this);
 	_controlat = contr;
-	_controlador = controlador;
-	_controlat->setControlador(controlador);
+	_id = id;
+	_controlat->setControlador(id);
 	_score = score_inicial;
 	_lives = lives;
 	_color = color;
@@ -36,6 +36,14 @@ ofColor Player::getColor() const {
 	return _color;
 }
 
+int Player::getId() const {
+	return _id;
+}
+
+void Player::setId(int id) {
+	_id = id;
+}
+
 void Player::setControlat(SpaceShip* controlat) {
 	_controlat = controlat;
 }
@@ -57,7 +65,7 @@ SpaceShip* Player::getControlat() {
 
 void Player::keyPressed(ofKeyEventArgs & args) {
 
-	if (_controlador == 0) {
+	if (_id == 0) {
 		switch (args.key) {
 		case OF_KEY_UP:
 			_controlat->setThrust(true);
@@ -96,7 +104,7 @@ void Player::keyPressed(ofKeyEventArgs & args) {
 
 
 void Player::keyReleased(ofKeyEventArgs & args) {
-	if (_controlador == 0) {
+	if (_id == 0) {
 		switch (args.key) {
 		case OF_KEY_UP:
 			_controlat->setThrust(false);

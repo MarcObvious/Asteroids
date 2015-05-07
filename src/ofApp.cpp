@@ -77,6 +77,7 @@ ofApp::~ofApp(){
 
 	for(unsigned int i = 0; i < naus.size(); i++)
 			free(naus[i]);
+	naus.clear();
 
 	if (pium->isLoaded()){
 		pium->stop();
