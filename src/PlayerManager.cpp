@@ -14,6 +14,8 @@ PlayerManager::PlayerManager() {
 }
 
 void PlayerManager::reset() {
+//	for(unsigned int i = 0; i < _players.size(); i++)
+//		free(_players[i]);
 	_players.clear();
 	_pos = 0;
 }
@@ -29,10 +31,9 @@ PlayerManager * PlayerManager::getInstance() {
 }
 
 void PlayerManager::createPlayer(SpaceShip* contr ,int score_inicial, int lives, ofColor color) {
-	Player * p = new Player( contr, _pos, score_inicial, lives, color);
+	Player* p = new Player( contr, _pos, score_inicial, lives, color);
 	_players.push_back(p);
 	++_pos;
-
 }
 
 Player* PlayerManager::getPlayer(int i){

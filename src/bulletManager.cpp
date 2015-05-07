@@ -10,7 +10,7 @@ BulletManager::BulletManager() {
 	assert(_instance == NULL); //Si no es cumpleix PETA
 	_instance = this;
 	_bullets = new vector<Bullet*>();
-	_bullets->reserve(1000); //Nomes 1000!
+	_bullets->reserve(5000); //Nomes 5000!
 	_pos = 0;
 	_init = true;
 
@@ -21,7 +21,7 @@ void BulletManager::reset() {
 		free ( _bullets->at(i));
 
 	_bullets = new vector<Bullet*>();
-	_bullets->reserve(1000);
+	_bullets->reserve(5000);
 	_pos = 0;
 	_init = true;
 }

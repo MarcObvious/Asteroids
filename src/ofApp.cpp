@@ -13,6 +13,7 @@ PlayerManager* PlayerManager::_instance = NULL;
 //Variables globals que defineixen les vides i la puntuacio maxima
 int MAX_SCORE = 300;
 int MAX_LIVES = 50;
+int INITIAL_SCORE = 0;
 
 //--------------------------------------------------------------
 
@@ -43,33 +44,36 @@ void ofApp::setup() {
 	nau->setup(shape, 40, 500, 50,
 			ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
 
-	PlayerManager::getInstance()->createPlayer(nau, 0, MAX_LIVES, ofColor(255,0,0));
+	PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(255,0,0));
 
 	naus.push_back(nau);
 
-	nau = new SpaceShip();
+	SpaceShip* nau2 = new SpaceShip();
 
-	nau->setup(shape, 40, 500, 50,
+	nau2->setup(shape, 40, 500, 50,
 					ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
 
-	PlayerManager::getInstance()->createPlayer(nau, 0, MAX_LIVES, ofColor(0,0,255));
+	PlayerManager::getInstance()->createPlayer(nau2, INITIAL_SCORE, MAX_LIVES, ofColor(0,0,255));
 
-	naus.push_back(nau);
+	naus.push_back(nau2);
 
 	//Carreguem els sons d'explosions d'asteroides i de dispars
+	//ESTA SILENCIAT ARA MATEIX
 	explosion = new ofSoundPlayer();
 	explosion->loadSound("sounds/explosion.mp3", false);
-	AsteroidManager::getInstance()->setExplosionSound(explosion);
+	AsteroidManager::getInstance()->setExplosionSound(NULL);
 
 	pium = new ofSoundPlayer();
 	pium->loadSound("sounds/lasergun.mp3", false);
-	BulletManager::getInstance()->setBulletSound(pium);
+	BulletManager::getInstance()->setBulletSound(NULL);
 
 	// General logic
 	ofBackground(0); // Set background to black
 
 	// Debug
 	debug = false;
+
+	cout << PlayerManager::getInstance()->getAllScores();
 
 }
 //Destructor (teniem problemes amb eliminar l'audio)
@@ -128,30 +132,28 @@ void ofApp::draw() {
 	}
 	else {
 
-		//Dibuixem els scores i les instruccions
+		//Dibuixem instruccions
 		ofPushStyle();
 			ofSetColor(255,255,255);
-			//ofDrawBitmapString(PlayerManager::getInstance()->getAllScores(), 5, 15);
 			ofDrawBitmapString("Player 1 a w d s, Player 0 up, left, right, down .Press '1' to debug, '2' to mute", 5, 760);
 		ofPopStyle();
 
 
-		// TODO
-		// Draw all game entities (bullets? players? effects?)
-
+		//Draw Scores
 		PlayerManager::getInstance()->drawScores();
+
 		//Dibuixem totes les bales i asteroides
 		BulletManager::getInstance()->draw();
 		AsteroidManager::getInstance()->draw(debug);
 
-
+		//Dibuixem totes les naus
 		for(unsigned int i = 0; i < naus.size(); i++)
 						naus[i]->draw( debug );
 
 		if (debug) {
 			ofPushStyle();
 			ofSetColor(255);
-			ofDrawBitmapString(ofToString(ofGetFrameRate()), 20, 20);
+			ofDrawBitmapString(ofToString(ofGetFrameRate()), 900, 20);
 			ofPopStyle();
 		}
 	}

@@ -31,16 +31,6 @@ bool SpaceShip::setup() {
 
 bool SpaceShip::setup(vector<ofPoint> & shape, float size, float speed,
 		float rotation, ofPoint position) {
-	// TODO
-	// Initialize spaceships:
-	// - initial positions
-	// - initial directions
-	// - maybe subscribe to keyboard or mouse events
-	// [...]
-
-	// ADVISE
-	// Default setup return could be true, you should control that if smth
-	// does not setup properly, then setup could return false and control it
 
 	this->spaceShipShape = shape;
 	this->size = size;
