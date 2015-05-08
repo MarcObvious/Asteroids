@@ -51,3 +51,5 @@ SpaceShip.cpp .h
 /data/asteroids.xml
 /data/sounds/explosion.mp3
 /data/sounds/lasergun.mp3
+
+Editat per l'Ignasi
