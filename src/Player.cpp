@@ -87,20 +87,20 @@ void Player::keyPressed(ofKeyEventArgs & args) {
 		if (_controlat != NULL) {
 			cout << _controlat << endl;
 			cout << _controlat->getControlador() << "i hauria de ser"<< _id<< endl;
-//			switch (args.key) {
-//			case 'w':
-//				_controlat->setThrust(true);
-//				break;
-//			case 's':
-//				_controlat->shot(true);
-//				break;
-//			case 'a':
-//				_controlat->gira_e(true);
-//				break;
-//			case 'd':
-//				_controlat->gira_d(true);
-//				break;
-//			}
+			switch (args.key) {
+			case 'w':
+				_controlat->setThrust(true);
+				break;
+			case 's':
+				_controlat->shot(true);
+				break;
+			case 'a':
+				_controlat->gira_e(true);
+				break;
+			case 'd':
+				_controlat->gira_d(true);
+				break;
+			}
 		}
 		else cout << _id << "COLLONS QUE NO EXISTEIX" << endl;
 	}
@@ -128,20 +128,20 @@ void Player::keyReleased(ofKeyEventArgs & args) {
 	}
 	else if(_id == 1) {
 		if (_controlat != NULL) {
-//			switch (args.key) {
-//			case 'w':
-//				_controlat->setThrust(false);
-//				break;
-//			case 'a':
-//				_controlat->gira_e(false);
-//				break;
-//			case 's':
-//				_controlat->shot(false);
-//				break;
-//			case 'd':
-//				_controlat->gira_d(false);
-//				break;
-//			}
+			switch (args.key) {
+			case 'w':
+				_controlat->setThrust(false);
+				break;
+			case 'a':
+				_controlat->gira_e(false);
+				break;
+			case 's':
+				_controlat->shot(false);
+				break;
+			case 'd':
+				_controlat->gira_d(false);
+				break;
+			}
 			cout << "HAAAAAAAAAAAAAAAAAAAAAAAa" << endl;
 		}
 		else cout << _id << "COLLONS QUE NO EXISTEIX" << endl;
