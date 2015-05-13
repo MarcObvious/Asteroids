@@ -5,7 +5,8 @@
 
 #include "Player.h"
 
-Player::Player(SpaceShip* contr, int id, int score_inicial, int lives, ofColor color) {
+Player::Player(SpaceShip* contr, int id, int score_inicial, int lives, ofColor color)
+	: Controlador(contr,  id,  score_inicial,  lives,  color) {
 	ofRegisterKeyEvents(this);
 	_controlat = contr;
 	_id = id;
@@ -16,52 +17,6 @@ Player::Player(SpaceShip* contr, int id, int score_inicial, int lives, ofColor c
 	_controlat->setColor(color);
 }
 
-int Player::getScore() const {
-	return _score;
-}
-
-void Player::setScore(int score) {
-	_score = score;
-}
-
-int Player::getLives() const {
-	return _lives;
-}
-
-void Player::setLives(int lives) {
-	_lives = lives;
-}
-
-ofColor Player::getColor() const {
-	return _color;
-}
-
-int Player::getId() const {
-	return _id;
-}
-
-void Player::setId(int id) {
-	_id = id;
-}
-
-void Player::setControlat(SpaceShip* controlat) {
-	_controlat = controlat;
-}
-
-void Player::setColor(ofColor color) {
-	_color = color;
-}
-
-void Player::subLives(){
-	--_lives;
-}
-void Player::addScore(int score) {
-	_score += score;
-}
-
-SpaceShip* Player::getControlat() {
-	return _controlat;
-}
 
 void Player::keyPressed(ofKeyEventArgs & args) {
 
