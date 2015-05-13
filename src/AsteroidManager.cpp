@@ -47,10 +47,13 @@ void AsteroidManager::comprova() {
 			splitAsteroid(i);
 			//Actualitzem scores
 			PlayerManager::getInstance()->getPlayer(autor)->addScore(10);
+			i = _asteroids.size(); //Evitar seg faults en windows. Pk a linux no passa? I dunno.
 		}
 		//Comprova si algun player ha xocat amb algun asteroide
-		else if (PlayerManager::getInstance()->comprova(_asteroids[i]))
+		else if (PlayerManager::getInstance()->comprova(_asteroids[i])) {
 			splitAsteroid(i);
+			i = _asteroids.size();
+		}
 	}
 }
 //-------------------------------------------------------------
