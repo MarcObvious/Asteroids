@@ -18,7 +18,7 @@ Asteroid::~Asteroid() {
 }
 
 bool Asteroid::setup() {
-	rotation = PI / 2;
+	rotation = PI /2;
 
 	// Check if it is an Asteroid that can be splitted or not
 	// as we know, there are 4 possible sizes 120, 80, 40, and 20
