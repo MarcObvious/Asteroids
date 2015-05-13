@@ -140,14 +140,15 @@ void ofApp::draw() {
 	//Si algu ha guanyat nomes dibuixem la pantalla de restart
 	if ( guanyador ) {
 		ofPushStyle();
-		ofSetColor(guanyador->getColor());
-		stringstream id;
-		id << "Press 'r' to restart. WINER JUGADOR ";
-		id << guanyador->getId();
-		id << " -> SCORE = ";
-		id << guanyador->getScore();
-		ofDrawBitmapString(id.str(), 390, 450);
+			ofSetColor(guanyador->getColor());
+			stringstream id;
+			id << "WINER JUGADOR ";
+			id << guanyador->getId();
+			id << " -> SCORE = ";
+			id << guanyador->getScore();
+			ofDrawBitmapString(id.str(), 390, 450);
 		ofPopStyle();
+		ofDrawBitmapString("Press 'r' to restart.", 390, 470);
 	}
 	else {
 
