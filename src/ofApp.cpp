@@ -51,9 +51,18 @@ void ofApp::setup() {
 	SpaceShip* nau2 = new SpaceShip();
 
 	nau2->setup(shape, 40, 500, 50,
-					ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
+			ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
 
 	PlayerManager::getInstance()->createPlayer(nau2, INITIAL_SCORE, MAX_LIVES, ofColor(0,0,255));
+
+	naus.push_back(nau2);
+
+	nau2 = new SpaceShip();
+
+	nau2->setup(shape, 40, 500, 50,
+			ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
+
+	PlayerManager::getInstance()->createPlayer(nau2, INITIAL_SCORE, MAX_LIVES, ofColor(0,255,0));
 
 	naus.push_back(nau2);
 
@@ -80,7 +89,7 @@ void ofApp::setup() {
 ofApp::~ofApp(){
 
 	for(unsigned int i = 0; i < naus.size(); i++)
-			free(naus[i]);
+		free(naus[i]);
 	naus.clear();
 
 	if (pium->isLoaded()){
@@ -114,7 +123,7 @@ void ofApp::update() {
 		AsteroidManager::getInstance()->update(elapsedTime);
 
 		for(unsigned int i = 0; i < naus.size(); i++)
-				naus[i]->update( elapsedTime );
+			naus[i]->update( elapsedTime );
 
 	}
 }
@@ -124,18 +133,18 @@ void ofApp::draw() {
 	//Si algu ha guanyat nomes dibuixem la pantalla de restart
 	if ( guanyador ) {
 		ofPushStyle();
-			ofSetColor(guanyador->getColor());
-			stringstream id;
-			id << guanyador->getId();
-			ofDrawBitmapString("Press 'r' to restart. WINER JUGADOR "+id.str(), 390, 450);
+		ofSetColor(guanyador->getColor());
+		stringstream id;
+		id << guanyador->getId();
+		ofDrawBitmapString("Press 'r' to restart. WINER JUGADOR "+id.str(), 390, 450);
 		ofPopStyle();
 	}
 	else {
 
 		//Dibuixem instruccions
 		ofPushStyle();
-			ofSetColor(255,255,255);
-			ofDrawBitmapString("Player 1 a w d s, Player 0 up, left, right, down .Press '1' to debug, '2' to mute", 5, 760);
+		ofSetColor(255,255,255);
+		ofDrawBitmapString("Player 1 a w d s, Player 0 up, left, right, down .Press '1' to debug, '2' to mute", 5, 760);
 		ofPopStyle();
 
 
@@ -148,7 +157,7 @@ void ofApp::draw() {
 
 		//Dibuixem totes les naus
 		for(unsigned int i = 0; i < naus.size(); i++)
-						naus[i]->draw( debug );
+			naus[i]->draw( debug );
 
 		if (debug) {
 			ofPushStyle();
@@ -166,7 +175,7 @@ void ofApp::keyPressed(int key) {
 	case '1':
 		debug = !debug;
 		break;
-	// Apretem 2 silenciem, no silenciem
+		// Apretem 2 silenciem, no silenciem
 	case '2':
 		if (explosion->isLoaded()) {
 			explosion->unloadSound();
@@ -185,7 +194,7 @@ void ofApp::keyPressed(int key) {
 			BulletManager::getInstance()->setBulletSound(pium);
 		}
 		break;
-	//r, ressetegem el joc
+		//r, ressetegem el joc
 	case 'r':
 		reset();
 		break;
