@@ -63,6 +63,8 @@ void Controlador::setColor(ofColor color) {
 
 void Controlador::subLives(){
 	--_lives;
+	if (_lives <= 0)
+		_viu = false;
 }
 void Controlador::addScore(int score) {
 	_score += score;

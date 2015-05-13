@@ -12,7 +12,7 @@ PlayerManager* PlayerManager::_instance = NULL;
 
 //Variables globals que defineixen les vides i la puntuacio maxima
 int MAX_SCORE = 300;
-int MAX_LIVES = 50;
+int MAX_LIVES = 10;
 int INITIAL_SCORE = 0;
 
 //--------------------------------------------------------------

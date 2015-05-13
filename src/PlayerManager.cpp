@@ -52,10 +52,15 @@ void PlayerManager::drawScores() {
 	int posicio_x = 15;
 	for(unsigned int i = 0; i < _players.size(); i++) {
 		stringstream score_line;
-		score_line << "Player " << i << ": Score " << _players[i]->getScore() << " Lives " << _players[i]->getLives() << endl;
+		score_line << "Player " << i;
+		if (_players[i]->isViu())
+			score_line << ": Score " << _players[i]->getScore() << " Lives " << _players[i]->getLives() << endl;
+		else
+			score_line << " -> DEAAAAAAAAAAAAAAAD!!!!!" << endl;
+
 		ofPushStyle();
-		ofSetColor(ofColor(_players[i]->getColor()));
-		ofDrawBitmapString(score_line.str(), posicio_x, posicio_y);
+			ofSetColor(ofColor(_players[i]->getColor()));
+			ofDrawBitmapString(score_line.str(), posicio_x, posicio_y);
 		ofPopStyle();
 		posicio_y += 15;
 	}
@@ -63,10 +68,20 @@ void PlayerManager::drawScores() {
 
 //Retorna NO si no hi ha guanyador, el guanyador en cas contrari (o perdedor si algu simplement s'ha matat)
 Player* PlayerManager::hihaguanyador(int maxScore) {
-
-	for(unsigned int i = 0; i < _players.size(); i++)
+	int jugadors_vius = _players.size();
+	for(unsigned int i = 0; i < _players.size(); i++){
 		if (_players[i]->getScore() >= maxScore)
 			return _players[i];
+
+		if(!_players[i]->isViu())
+			--jugadors_vius;
+	}
+	if (jugadors_vius == 1) {
+		for(unsigned int i = 0; i < _players.size(); i++){
+			if(_players[i]->isViu())
+				return _players[i];
+		}
+	}
 
 	return NULL;
 }
