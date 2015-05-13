@@ -32,7 +32,6 @@ private:
 
 public:
 
-
 	static BulletManager * getInstance(); 		//Retorna el Bulletmanager
 
 	void createBullet(ofPoint position, ofPoint direction, float speed ,float lifeTime, int author_id);
