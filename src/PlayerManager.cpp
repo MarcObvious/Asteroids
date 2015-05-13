@@ -14,8 +14,6 @@ PlayerManager::PlayerManager() {
 }
 
 void PlayerManager::reset() {
-//	for(unsigned int i = 0; i < _players.size(); i++)
-//		free(_players[i]);
 	_players.clear();
 	_pos = 0;
 }

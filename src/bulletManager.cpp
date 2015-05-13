@@ -17,8 +17,8 @@ BulletManager::BulletManager() {
 }
 
 void BulletManager::reset() {
-	for(unsigned int i = 0; i < _bullets->size(); i++)
-		free ( _bullets->at(i));
+//	for(unsigned int i = 0; i < _bullets->size(); i++)
+//		free ( _bullets->at(i));
 
 	_bullets = new vector<Bullet*>();
 	_bullets->reserve(5000);

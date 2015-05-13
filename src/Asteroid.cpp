@@ -11,6 +11,8 @@ Asteroid::Asteroid() {
 	direction = ofPoint(0, 0);
 
 	rotation = 0;
+	size=0;
+	canSplit = false;
 }
 
 Asteroid::~Asteroid() {
