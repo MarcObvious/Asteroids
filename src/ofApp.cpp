@@ -48,23 +48,23 @@ void ofApp::setup() {
 
 	naus.push_back(nau);
 
-	SpaceShip* nau2 = new SpaceShip();
+	nau = new SpaceShip();
 
-	nau2->setup(shape, 40, 500, 50,
+	nau->setup(shape, 40, 500, 50,
 			ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
 
-	PlayerManager::getInstance()->createPlayer(nau2, INITIAL_SCORE, MAX_LIVES, ofColor(0,0,255));
+	PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,0,255));
 
-	naus.push_back(nau2);
+	naus.push_back(nau);
 
-	nau2 = new SpaceShip();
+	nau = new SpaceShip();
 
-	nau2->setup(shape, 40, 500, 50,
+	nau->setup(shape, 40, 500, 50,
 			ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
 
-	PlayerManager::getInstance()->createPlayer(nau2, INITIAL_SCORE, MAX_LIVES, ofColor(0,255,0));
+	PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,255,0));
 
-	naus.push_back(nau2);
+	naus.push_back(nau);
 
 	//Carreguem els sons d'explosions d'asteroides i de dispars
 	//ESTA SILENCIAT ARA MATEIX
@@ -135,8 +135,11 @@ void ofApp::draw() {
 		ofPushStyle();
 		ofSetColor(guanyador->getColor());
 		stringstream id;
+		id << "Press 'r' to restart. WINER JUGADOR ";
 		id << guanyador->getId();
-		ofDrawBitmapString("Press 'r' to restart. WINER JUGADOR "+id.str(), 390, 450);
+		id << " -> SCORE = ";
+		id << guanyador->getScore();
+		ofDrawBitmapString(id.str(), 390, 450);
 		ofPopStyle();
 	}
 	else {
