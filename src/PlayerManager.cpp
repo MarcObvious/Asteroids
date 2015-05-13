@@ -98,6 +98,7 @@ bool PlayerManager::comprova(Entity* ent){
 }
 
 void PlayerManager::draw(bool debug){
+	drawScores();
 	for(unsigned int i = 0; i < _players.size(); i++) {
 		if (_players[i]->isViu())
 			_players[i]->getControlat()->draw(debug);

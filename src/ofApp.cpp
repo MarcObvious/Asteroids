@@ -92,7 +92,6 @@ void ofApp::setup() {
 	// Debug
 	debug = false;
 
-	cout << PlayerManager::getInstance()->getAllScores();
 
 }
 //Destructor (teniem problemes amb eliminar l'audio)
@@ -160,7 +159,7 @@ void ofApp::draw() {
 
 
 		//Draw Scores
-		PlayerManager::getInstance()->drawScores();
+		//PlayerManager::getInstance()->drawScores();
 
 		//Dibuixem totes les bales i asteroides
 		BulletManager::getInstance()->draw();
@@ -205,6 +204,8 @@ void ofApp::keyPressed(int key) {
 		break;
 		//r, ressetegem el joc
 	case 'r':
+		cout << "Reset at:" << endl;
+		cout << PlayerManager::getInstance()->getAllScores();
 		reset();
 		break;
 		//----------------------------------------------------------------------
