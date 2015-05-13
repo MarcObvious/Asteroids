@@ -53,7 +53,6 @@ void SpaceShip::update(float elapsedTime) {
 			addThrust(-2);
 	}
 
-
 	// TODO
 	// - add spaceship state update
 	// - control spacehsip and window boundaries (i.e. marginSwap)

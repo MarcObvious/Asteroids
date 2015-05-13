@@ -66,6 +66,8 @@ void ofApp::setup() {
 
 	naus.push_back(nau);
 
+	cout << "TAMANY VECTOR NAUS AL SETUP"<< naus.size() << endl;
+
 	//Carreguem els sons d'explosions d'asteroides i de dispars
 	//ESTA SILENCIAT ARA MATEIX
 	explosion = new ofSoundPlayer();
@@ -133,21 +135,21 @@ void ofApp::draw() {
 	//Si algu ha guanyat nomes dibuixem la pantalla de restart
 	if ( guanyador ) {
 		ofPushStyle();
-		ofSetColor(guanyador->getColor());
-		stringstream id;
-		id << "Press 'r' to restart. WINER JUGADOR ";
-		id << guanyador->getId();
-		id << " -> SCORE = ";
-		id << guanyador->getScore();
-		ofDrawBitmapString(id.str(), 390, 450);
+			ofSetColor(guanyador->getColor());
+			stringstream id;
+			id << "Press 'r' to restart. WINER JUGADOR ";
+			id << guanyador->getId();
+			id << " -> SCORE = ";
+			id << guanyador->getScore();
+			ofDrawBitmapString(id.str(), 390, 450);
 		ofPopStyle();
 	}
 	else {
 
 		//Dibuixem instruccions
 		ofPushStyle();
-		ofSetColor(255,255,255);
-		ofDrawBitmapString("Player 1 a w d s, Player 0 up, left, right, down .Press '1' to debug, '2' to mute", 5, 760);
+			ofSetColor(255,255,255);
+			ofDrawBitmapString("Player 1 a w d s, Player 0 up, left, right, down .Press '1' to debug, '2' to mute", 5, 760);
 		ofPopStyle();
 
 
@@ -209,17 +211,21 @@ void ofApp::reset() {
 
 	BulletManager::getInstance()->reset();
 	AsteroidManager::getInstance()->reset();
-	PlayerManager::getInstance()->reset();
+
 
 	free(pium);
 	free(explosion);
 
-	for(unsigned int i = 0; i < naus.size(); i++)
-		free(naus[i]);
-
+//	for(unsigned int i = 0; i < naus.size(); i++)
+//		free(naus[i]);
 	naus.clear();
-	setup();
+	cout << "TAMANY VECTOR NAUS AL FER RESET"<< naus.size() << endl;
 	guanyador = NULL;
+
+	PlayerManager::getInstance()->reset();
+
+	setup();
+
 }
 
 //--------------------------------------------------------------
