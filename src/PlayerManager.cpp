@@ -54,8 +54,8 @@ void PlayerManager::drawScores() {
 		stringstream score_line;
 		score_line << "Player " << i << ": Score " << _players[i]->getScore() << " Lives " << _players[i]->getLives() << endl;
 		ofPushStyle();
-				ofSetColor(ofColor(_players[i]->getColor()));
-				ofDrawBitmapString(score_line.str(), posicio_x, posicio_y);
+		ofSetColor(ofColor(_players[i]->getColor()));
+		ofDrawBitmapString(score_line.str(), posicio_x, posicio_y);
 		ofPopStyle();
 		posicio_y += 15;
 	}
@@ -84,11 +84,13 @@ bool PlayerManager::comprova(Entity* ent){
 
 void PlayerManager::draw(bool debug){
 	for(unsigned int i = 0; i < _players.size(); i++) {
-		_players[i]->getControlat()->draw(debug);
+		if (_players[i]->isViu())
+			_players[i]->getControlat()->draw(debug);
 	}
 }
 void PlayerManager::update(float elapsed_time) {
 	for(unsigned int i = 0; i < _players.size(); i++) {
+		if (_players[i]->isViu())
 			_players[i]->getControlat()->update(elapsed_time);
-		}
+	}
 }
