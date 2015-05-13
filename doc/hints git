@@ -1,0 +1,33 @@
+#Git hints & usefull orders 
+
+#No haver de Posar mil i un cops les credencials, almenys espera una hora
+git config --global credential.helper cache
+git config --global credential.helper 'cache --timeout=3600'
+
+#Recupera del servidor //cada cop que canvi de lloc de treball//
+git pull
+
+#Afegeix
+git add elquesigui
+
+#Commit de fitxer o de tot canvi
+git commit -m "comentariquesigui" -a
+
+#pujaho a la branca que sigui
+git push origin master
+
+#Crear branca
+git branch elquesigui
+
+#canviar de branca
+git checkout elquesigui
+
+#Si algú la caga i es vol tirar enrere
+# Reset the index to the desired commit
+git reset --hard <commit>
+
+# Move the branch pointer back to the previous HEAD
+git reset --soft HEAD@{1}
+
+# Commit the changes
+git commit -m "Revert to <commit>"
