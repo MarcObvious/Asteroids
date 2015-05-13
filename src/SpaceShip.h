@@ -22,6 +22,7 @@ private:
 	ofColor _color;
 
 	vector<ofPoint> spaceShipShape;
+	ofPolyline p;
 
 public:
 	SpaceShip();

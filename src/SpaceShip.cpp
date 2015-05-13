@@ -38,7 +38,9 @@ bool SpaceShip::setup(vector<ofPoint> & shape, float size, float speed,
 	this->rotation = rotation;
 	this->position = position;
 	this->setDirection(ofPoint(cos(rotation),sin(rotation)));
+	p.addVertices(shape);
 	return this->setup();
+
 }
 
 //Update,
@@ -73,13 +75,8 @@ void SpaceShip::update(float elapsedTime) {
 //Draw quasi igual que Asteroides, no gaire coasa a dir Rotacio->Traslacio
 void SpaceShip::draw(bool debug) {
 
-	// TODO
-	// Draw correctly the SpaceShip, in the Hands On PDF you can find an explanation
-	// on how to manage translations & rotations and how you should send data to OpenGL
-
 	//Shape que hem carregat prevament
-	ofPolyline p;
-	p.addVertices(spaceShipShape);
+
 
 	ofPushStyle();
 	ofPushMatrix();
