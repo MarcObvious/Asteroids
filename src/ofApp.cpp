@@ -39,6 +39,7 @@ void ofApp::setup() {
 	//Demanem al PlayerManager que ens creei un Player, amb la Spaceship que vulgueem
 	//Setup Players amb les seves Naus
 
+	///tot això ho hauria de fer un parser.
 	SpaceShip* nau = new SpaceShip();
 
 	nau->setup(shape, 40, 500, 50,
@@ -66,7 +67,24 @@ void ofApp::setup() {
 
 	naus.push_back(nau);
 
-	cout << "TAMANY VECTOR NAUS AL SETUP"<< naus.size() << endl;
+
+	nau = new SpaceShip();
+
+	nau->setup(shape, 40, 500, 50,
+				ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
+
+	PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,255,255));
+
+	naus.push_back(nau);
+
+	nau = new SpaceShip();
+
+		nau->setup(shape, 40, 500, 50,
+				ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
+
+		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(255,255,0));
+
+		naus.push_back(nau);
 
 	//Carreguem els sons d'explosions d'asteroides i de dispars
 	//ESTA SILENCIAT ARA MATEIX
