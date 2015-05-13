@@ -42,17 +42,6 @@ private:
 
 	void normalizeOfPoint(ofPoint& point);
 
-	// TODO
-	// Add methods that are responsible of:
-	// - check collisions (e.g. between bullets&asteroids, and between players&asteroids)
-	// - method that creates bullets (if you want ofApp to manage them)
-	// [...]
-
-	// TODO
-	// Add variables that manage players and maybe bullets
-
-	vector<SpaceShip* > naus;
-
 	ofSoundPlayer  * pium;
 	ofSoundPlayer * explosion;
 

@@ -6,6 +6,7 @@
 #include "Controlador.h"
 
 Controlador::Controlador(SpaceShip* contr, int id, int score_inicial, int lives, ofColor color) {
+	_viu = true;
 	_controlat = contr;
 	_id = id;
 	_controlat->setControlador(id);
@@ -13,6 +14,7 @@ Controlador::Controlador(SpaceShip* contr, int id, int score_inicial, int lives,
 	_lives = lives;
 	_color = color;
 	_controlat->setColor(color);
+
 }
 
 int Controlador::getScore() const {
@@ -37,6 +39,14 @@ ofColor Controlador::getColor() const {
 
 int Controlador::getId() const {
 	return _id;
+}
+
+bool Controlador::isViu() const {
+	return _viu;
+}
+
+void Controlador::setViu(bool viu) {
+	_viu = viu;
 }
 
 void Controlador::setId(int id) {

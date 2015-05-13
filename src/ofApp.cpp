@@ -47,8 +47,6 @@ void ofApp::setup() {
 
 	PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(255,0,0));
 
-	naus.push_back(nau);
-
 	nau = new SpaceShip();
 
 	nau->setup(shape, 40, 500, 50,
@@ -56,16 +54,12 @@ void ofApp::setup() {
 
 	PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,0,255));
 
-	naus.push_back(nau);
-
 	nau = new SpaceShip();
 
 	nau->setup(shape, 40, 500, 50,
 			ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
 
 	PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,255,0));
-
-	naus.push_back(nau);
 
 
 	nau = new SpaceShip();
@@ -75,16 +69,12 @@ void ofApp::setup() {
 
 	PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,255,255));
 
-	naus.push_back(nau);
-
 	nau = new SpaceShip();
 
 	nau->setup(shape, 40, 500, 50,
 			ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
 
 	PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(255,255,0));
-
-	naus.push_back(nau);
 
 	//Carreguem els sons d'explosions d'asteroides i de dispars
 	//ESTA SILENCIAT ARA MATEIX
@@ -108,9 +98,6 @@ void ofApp::setup() {
 //Destructor (teniem problemes amb eliminar l'audio)
 ofApp::~ofApp(){
 
-//	for(unsigned int i = 0; i < naus.size(); i++)
-//		free(naus[i]);
-	naus.clear();
 }
 void ofApp::killSound() {
 	if (pium->isLoaded()){
@@ -144,8 +131,6 @@ void ofApp::update() {
 		AsteroidManager::getInstance()->update(elapsedTime);
 		PlayerManager::getInstance()->update(elapsedTime);
 
-//		for(unsigned int i = 0; i < naus.size(); i++)
-//			naus[i]->update( elapsedTime );
 
 	}
 }
@@ -181,9 +166,6 @@ void ofApp::draw() {
 		AsteroidManager::getInstance()->draw(debug);
 		PlayerManager::getInstance()->draw(debug);
 
-		//Dibuixem totes les naus
-//		for(unsigned int i = 0; i < naus.size(); i++)
-//			naus[i]->draw( debug );
 
 		if (debug) {
 			ofPushStyle();
@@ -233,14 +215,7 @@ void ofApp::reset() {
 	BulletManager::getInstance()->reset();
 	AsteroidManager::getInstance()->reset();
 
-
-//	free(pium);
-//	free(explosion);
 	killSound();
-
-	//	for(unsigned int i = 0; i < naus.size(); i++)
-	//		free(naus[i]);
-	naus.clear();
 
 	guanyador = NULL;
 

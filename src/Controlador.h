@@ -13,6 +13,7 @@ protected:
 	int _score;
 	int _lives;
 	ofColor _color;
+	bool _viu;
 public:
 	Controlador(SpaceShip* contr, int id, int score_inicial, int lives, ofColor color);
 
@@ -31,5 +32,7 @@ public:
 	void setControlat(SpaceShip* controlat);
 	int getId() const;
 	void setId(int id);
+	bool isViu() const;
+	void setViu(bool viu);
 };
 
