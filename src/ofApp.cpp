@@ -219,7 +219,7 @@ void ofApp::reset() {
 //	for(unsigned int i = 0; i < naus.size(); i++)
 //		free(naus[i]);
 	naus.clear();
-	cout << "TAMANY VECTOR NAUS AL FER RESET"<< naus.size() << endl;
+
 	guanyador = NULL;
 
 	PlayerManager::getInstance()->reset();

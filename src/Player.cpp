@@ -6,7 +6,7 @@
 #include "Player.h"
 
 Player::Player(SpaceShip* contr, int id, int score_inicial, int lives, ofColor color)
-	: Controlador(contr,  id,  score_inicial,  lives,  color) {
+: Controlador(contr,  id,  score_inicial,  lives,  color) {
 	ofRegisterKeyEvents(this);
 	_controlat = contr;
 	_id = id;
