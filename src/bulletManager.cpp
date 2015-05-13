@@ -69,15 +69,15 @@ void BulletManager::createBullet(ofPoint position, ofPoint direction, float spee
 		_bullets->at(_pos)->setup(position,  direction, 10, speed , lifeTime, author_id);
 		++_pos;
 	}
-	//Creem nova bullet fins a 1000
-	if (_pos < 1000 && _init) {
+	//Creem nova bullet fins a 5000
+	if (_pos < 5000 && _init) {
 		Bullet* b = new Bullet();
 		b->setup(position,  direction, 10 , speed , lifeTime, author_id);
 		_bullets->push_back(b);
 		++_pos;
 	}
-	//Si arribem a 1000 tornem a començar el compte
-	if (_pos == 1000) {
+	//Si arribem a 5000 tornem a començar el compte
+	if (_pos == 5000) {
 		_pos = 0;
 		_init = false;
 	}

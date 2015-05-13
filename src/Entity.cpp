@@ -8,7 +8,7 @@
 Entity::Entity() {
 	position.x = 0;
 	position.y = 0;
-
+	speed = 0;
 	direction = ofPoint(0, 0);
 
 	rotation = 0;
