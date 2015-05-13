@@ -44,5 +44,8 @@ public:
 
 	void reset();
 
+	void draw(bool debug);
+
+	void update( float elapsed_time);
 };
 

@@ -111,8 +111,6 @@ ofApp::~ofApp(){
 //	for(unsigned int i = 0; i < naus.size(); i++)
 //		free(naus[i]);
 	naus.clear();
-
-
 }
 void ofApp::killSound() {
 	if (pium->isLoaded()){
@@ -144,9 +142,10 @@ void ofApp::update() {
 		//Fa els updates de tot
 		BulletManager::getInstance()->update(elapsedTime);
 		AsteroidManager::getInstance()->update(elapsedTime);
+		PlayerManager::getInstance()->update(elapsedTime);
 
-		for(unsigned int i = 0; i < naus.size(); i++)
-			naus[i]->update( elapsedTime );
+//		for(unsigned int i = 0; i < naus.size(); i++)
+//			naus[i]->update( elapsedTime );
 
 	}
 }
@@ -180,10 +179,11 @@ void ofApp::draw() {
 		//Dibuixem totes les bales i asteroides
 		BulletManager::getInstance()->draw();
 		AsteroidManager::getInstance()->draw(debug);
+		PlayerManager::getInstance()->draw(debug);
 
 		//Dibuixem totes les naus
-		for(unsigned int i = 0; i < naus.size(); i++)
-			naus[i]->draw( debug );
+//		for(unsigned int i = 0; i < naus.size(); i++)
+//			naus[i]->draw( debug );
 
 		if (debug) {
 			ofPushStyle();

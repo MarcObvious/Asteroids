@@ -81,3 +81,14 @@ bool PlayerManager::comprova(Entity* ent){
 	}
 	return false;
 }
+
+void PlayerManager::draw(bool debug){
+	for(unsigned int i = 0; i < _players.size(); i++) {
+		_players[i]->getControlat()->draw(debug);
+	}
+}
+void PlayerManager::update(float elapsed_time) {
+	for(unsigned int i = 0; i < _players.size(); i++) {
+			_players[i]->getControlat()->update(elapsed_time);
+		}
+}
