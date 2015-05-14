@@ -25,6 +25,7 @@ private:
 	vector<ofPoint> spaceShipThrust;
 	ofPolyline p;
 	bool destroyed;
+	bool out;
 
 public:
 	SpaceShip();

@@ -99,14 +99,12 @@ bool PlayerManager::comprova(Entity* ent){
 
 void PlayerManager::draw(bool debug){
 	drawScores();
-	for(unsigned int i = 0; i < _players.size(); i++) {
-	//	if (_players[i]->isViu())
+	for(unsigned int i = 0; i < _players.size(); i++)
 			_players[i]->getControlat()->draw(debug);
-	}
+
 }
 void PlayerManager::update(float elapsed_time) {
-	for(unsigned int i = 0; i < _players.size(); i++) {
-		//if (_players[i]->isViu())
+	for(unsigned int i = 0; i < _players.size(); i++)
 			_players[i]->getControlat()->update(elapsed_time);
-	}
+
 }

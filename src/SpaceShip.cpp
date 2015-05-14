@@ -73,7 +73,7 @@ void SpaceShip::update(float elapsedTime) {
 		if (isFiring) {
 			BulletManager::getInstance()->createBullet(position,direction,speed*2, 4, _controlador);
 		}
-		marginsWrap();
+
 	}
 	else {
 		this->addRotation(1.5*elapsedTime);
@@ -81,6 +81,7 @@ void SpaceShip::update(float elapsedTime) {
 
 	//Actualtizem posició respecte direcció speed i elapsedTime (diferents maquines! s'ha de tenir en compte)
 	position += direction * speed * elapsedTime;
+	marginsWrap();
 
 }
 //Draw quasi igual que Asteroides, no gaire coasa a dir Rotacio->Traslacio
