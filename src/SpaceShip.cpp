@@ -39,6 +39,10 @@ bool SpaceShip::setup(vector<ofPoint> & shape, float size, float speed,
 	this->position = position;
 	this->setDirection(ofPoint(cos(rotation),sin(rotation)));
 	p.addVertices(shape);
+	spaceShipThrust = vector<ofPoint>();
+	spaceShipThrust.push_back(ofPoint(-25, 10));
+	spaceShipThrust.push_back(ofPoint(-50,0));
+	spaceShipThrust.push_back(ofPoint(-25,-10));
 	return this->setup();
 
 }
@@ -48,9 +52,15 @@ void SpaceShip::update(float elapsedTime) {
 	// Example on how to accelerate SpaceShip
 	if (thrust) {
 		addThrust(5);
+		p.addVertices(spaceShipThrust);
 	} else {
 		if (speed > 450)
 			addThrust(-2);
+		if (p.size() != 4) {
+			p.clear();
+			p.addVertices(spaceShipShape);
+		}
+
 	}
 
 	// TODO
