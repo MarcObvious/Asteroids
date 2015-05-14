@@ -38,6 +38,7 @@ bool SpaceShip::setup(vector<ofPoint> & shape, float size, float speed,
 	this->rotation = rotation;
 	this->position = position;
 	this->setDirection(ofPoint(cos(rotation),sin(rotation)));
+	destroyed = false;
 	p.addVertices(shape);
 	spaceShipThrust = vector<ofPoint>();
 	spaceShipThrust.push_back(ofPoint(-25, 10));
@@ -49,37 +50,38 @@ bool SpaceShip::setup(vector<ofPoint> & shape, float size, float speed,
 
 //Update,
 void SpaceShip::update(float elapsedTime) {
-	// Example on how to accelerate SpaceShip
-	if (thrust) {
-		addThrust(5);
-		p.addVertices(spaceShipThrust);
-	} else {
-		if (speed > 450)
-			addThrust(-2);
-		if (p.size() != 4) {
-			p.clear();
-			p.addVertices(spaceShipShape);
+	if (!destroyed) {
+		if (thrust) {
+			addThrust(5);
+			p.addVertices(spaceShipThrust);
+		} else {
+			if (speed > 450)
+				addThrust(-2);
+			if (p.size() != 4) {
+				p.clear();
+				p.addVertices(spaceShipShape);
+			}
+
 		}
 
+		//Rotem per girar i actualitzem la direcció, sempre tenint en compte elapsedTime
+		if (gira_dreta) this->addRotation(0.7*elapsedTime);
+		if (gira_esquerra) this->addRotation(-0.7*elapsedTime);
+		this->setDirection(ofPoint(cos(rotation),sin(rotation)));
+
+		//Demanem a bulletmanager una bala!
+		if (isFiring) {
+			BulletManager::getInstance()->createBullet(position,direction,speed*2, 4, _controlador);
+		}
+		marginsWrap();
 	}
-
-	// TODO
-	// - add spaceship state update
-	// - control spacehsip and window boundaries (i.e. marginSwap)
-
-	//Rotem per girar i actualitzem la direcció, sempre tenint en compte elapsedTime
-	if (gira_dreta) this->addRotation(0.7*elapsedTime);
-	if (gira_esquerra) this->addRotation(-0.7*elapsedTime);
-	this->setDirection(ofPoint(cos(rotation),sin(rotation)));
+	else {
+		this->addRotation(1.5*elapsedTime);
+	}
 
 	//Actualtizem posició respecte direcció speed i elapsedTime (diferents maquines! s'ha de tenir en compte)
 	position += direction * speed * elapsedTime;
 
-	//Demanem a bulletmanager una bala!
-	if (isFiring) {
-		BulletManager::getInstance()->createBullet(position,direction,speed*2, 4, _controlador);
-	}
-	marginsWrap();
 }
 //Draw quasi igual que Asteroides, no gaire coasa a dir Rotacio->Traslacio
 void SpaceShip::draw(bool debug) {
@@ -128,6 +130,15 @@ void SpaceShip::shot(bool disp) {
 void SpaceShip::setControlador(int contr){
 	_controlador = contr;
 }
+
+bool SpaceShip::isDestroyed() const {
+	return destroyed;
+}
+
+void SpaceShip::setDestroyed(bool destroyed) {
+	this->destroyed = destroyed;
+}
+
 int SpaceShip::getControlador() {
 	return _controlador;
 }

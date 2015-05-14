@@ -63,8 +63,10 @@ void Controlador::setColor(ofColor color) {
 
 void Controlador::subLives(){
 	--_lives;
-	if (_lives <= 0)
+	if (_lives <= 0) {
 		_viu = false;
+		_controlat->setDestroyed(true);
+	}
 }
 void Controlador::addScore(int score) {
 	_score += score;

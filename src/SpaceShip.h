@@ -24,6 +24,7 @@ private:
 	vector<ofPoint> spaceShipShape;
 	vector<ofPoint> spaceShipThrust;
 	ofPolyline p;
+	bool destroyed;
 
 public:
 	SpaceShip();
@@ -49,6 +50,6 @@ public:
 
 	ofColor getColor() const;
 	void setColor(ofColor color);
-
-
+	bool isDestroyed() const;
+	void setDestroyed(bool destroyed);
 };
