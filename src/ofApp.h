@@ -22,6 +22,7 @@ class ofApp: public ofBaseApp {
 public:
 	~ofApp();
 	void setup();
+	void setupArduino();
 	void update();
 	void draw();
 
@@ -44,6 +45,8 @@ private:
 
 	ofSoundPlayer  * pium;
 	ofSoundPlayer * explosion;
+
+	ofSerial	serial;
 
 	bool debug;
 	Player* guanyador;

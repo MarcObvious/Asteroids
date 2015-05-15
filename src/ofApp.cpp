@@ -17,10 +17,26 @@ int INITIAL_SCORE = 0;
 
 //--------------------------------------------------------------
 
+void ofApp::setupArduino() {
+	serial.listDevices();
+	vector <ofSerialDeviceInfo> deviceList = serial.getDeviceList();
+
+	// this should be set to whatever com port your serial device is connected to.
+	// (ie, COM4 on a pc, /dev/tty.... on linux, /dev/tty... on a mac)
+	// arduino users check in arduino app....
+	int baud = 9600;
+	//serial.setup(0, baud); //open the first device
+	//serial.setup("COM4", baud); // windows example
+	//serial.setup("/dev/tty.usbserial-A4001JEC", baud); // mac osx example
+	serial.setup("/dev/ttyACM0", baud); //linux example
+}
+
 
 void ofApp::setup() {
 	// Set framerate to 60 FPS
 	ofSetFrameRate(60);
+
+	setupArduino();
 
 	// Load Asteroids from XML
 	AsteroidManager::getInstance()->loadAsteroids();
