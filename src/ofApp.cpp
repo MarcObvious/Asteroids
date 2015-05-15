@@ -139,11 +139,13 @@ void ofApp::update() {
 
 	if(readAndSendMessage) {
 		serial.writeByte(receivedBytes[0]);
+		//serial.writeByte();
 		memset(receivedBytes, 0, NUM_BYTES);
 
 		serial.readBytes(receivedBytes, NUM_BYTES);
-		//cout << "Byte received: " << byteReturned << endl;
+		cout << "Byte received: " << receivedBytes << endl;
 		readAndSendMessage = false;
+
 	}
 
 	cyclesCounter++;
