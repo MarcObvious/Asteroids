@@ -14,6 +14,7 @@ protected:
 	int _lives;
 	ofColor _color;
 	bool _viu;
+	int _tipus;
 public:
 	Controlador(SpaceShip* contr, int id, int score_inicial, int lives, ofColor color);
 
@@ -34,5 +35,8 @@ public:
 	void setId(int id);
 	bool isViu() const;
 	void setViu(bool viu);
+	int getTipus() const;
+	void setTipus(int tipus);
+	virtual void update(float elipsed_time){};
 };
 

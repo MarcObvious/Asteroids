@@ -11,9 +11,10 @@ AsteroidManager* AsteroidManager::_instance = NULL;
 PlayerManager* PlayerManager::_instance = NULL;
 
 //Variables globals que defineixen les vides i la puntuacio maxima
-int MAX_SCORE = 300;
-int MAX_LIVES = 10;
+int MAX_SCORE = 1000;
+int MAX_LIVES = 50;
 int INITIAL_SCORE = 0;
+ofEvent<ofPoint> ofApp::ArdEvent = ofEvent<ofPoint>();
 
 //--------------------------------------------------------------
 
@@ -21,14 +22,11 @@ void ofApp::setupArduino() {
 	serial.listDevices();
 	vector <ofSerialDeviceInfo> deviceList = serial.getDeviceList();
 
-	// this should be set to whatever com port your serial device is connected to.
-	// (ie, COM4 on a pc, /dev/tty.... on linux, /dev/tty... on a mac)
-	// arduino users check in arduino app....
+	// Diferents configuracions segons Mac Linux o Windows
 	int baud = 9600;
-	//serial.setup(0, baud); //open the first device
-	//serial.setup("COM4", baud); // windows example
-	//serial.setup("/dev/tty.usbserial-A4001JEC", baud); // mac osx example
-	serial.setup("/dev/ttyACM0", baud);
+	//serial.setup("COM4", baud); // Windows
+	//serial.setup("/dev/tty.usbserial-A4001JEC", baud);  //Mac
+	serial.setup("/dev/ttyACM0", baud); //Linux powa!
 
 	cyclesCounter = 0;
 	cyclesJumped = 5;
@@ -36,6 +34,8 @@ void ofApp::setupArduino() {
 	readAndSendMessage = false;
 
 	memset(receivedBytes, 0, NUM_BYTES);
+
+
 }
 
 
@@ -43,6 +43,7 @@ void ofApp::setup() {
 	// Set framerate to 60 FPS
 	ofSetFrameRate(60);
 
+	//Posem Arduino a punt
 	setupArduino();
 
 	// Load Asteroids from XML
@@ -82,7 +83,7 @@ void ofApp::setup() {
 	nau->setup(shape, 40, 500, 50,
 			ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
 
-	PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,255,0));
+	PlayerManager::getInstance()->createPlayerArd(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,255,0));
 
 
 	nau = new SpaceShip();
@@ -98,6 +99,7 @@ void ofApp::setup() {
 			ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
 
 	PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(255,255,0));
+
 
 	//Carreguem els sons d'explosions d'asteroides i de dispars
 	//ESTA SILENCIAT ARA MATEIX
@@ -117,35 +119,68 @@ void ofApp::setup() {
 
 
 }
-//Destructor (teniem problemes amb eliminar l'audio)
+
 ofApp::~ofApp(){
 
 }
+//FUCK AUDIO!
 void ofApp::killSound() {
 	if (pium->isLoaded()){
 		pium->stop();
 		pium->unloadSound();
 	}
-	//free (pium);
 	if (explosion->isLoaded()){
 		explosion->stop();
 		explosion->unloadSound();
 	}
-	//free( explosion);
 }
 
 //--------------------------------------------------------------
 void ofApp::update() {
 
+	// We get the time that last frame lasted, and use it to update asteroids logic
+	// so their behaviour is independent to the framerate
+	float elapsedTime = ofGetLastFrameTime();
+
+	//AQUI ES REP I S'ENVIA A ARDUINO
 	if(readAndSendMessage) {
-		serial.writeByte(receivedBytes[0]);
-		//serial.writeByte();
+		//serial.writeByte(receivedBytes[0]);
+		unsigned char enviar[8];
+		enviar[0] = 'h';
+		enviar[1] = 'o';
+		enviar[2] = 'l';
+		enviar[3] = 'a';
+		serial.writeBytes(enviar, NUM_BYTES);
+		//serial.writeByte("PUTA");
 		memset(receivedBytes, 0, NUM_BYTES);
 
 		serial.readBytes(receivedBytes, NUM_BYTES);
-		cout << "Byte received: " << receivedBytes << endl;
-		readAndSendMessage = false;
+		//PlayerManager::getInstance()->update(elapsedTime, receivedBytes);
+		//char point = receivedBytes;
+		char aux[3];
+		aux[0]= receivedBytes[0];
+		aux[1] = receivedBytes[1];
+		aux[2]= receivedBytes[2];
+		stringstream aux1;
+		aux1 << aux;
+		int pos_x = 0;
+		aux1 >> pos_x;
+		if (pos_x > 0 and pos_x < 770) {
+			aux[0]= receivedBytes[3];
+			aux[1] = receivedBytes[4];
+			aux[2]= receivedBytes[5];
+			aux1.clear();
+			int pos_y = 0;
+			aux1 << aux;
+			aux1 >> pos_y;
+			if (pos_y > 0 and pos_y < 770) {
+				//cout << "X " << pos_x << " Y " << pos_y << endl;
+				ofPoint pos = ofPoint(pos_x,pos_y);
+				ofNotifyEvent(ArdEvent, pos, this);
 
+			}
+		}
+		readAndSendMessage = false;
 	}
 
 	cyclesCounter++;
@@ -157,10 +192,6 @@ void ofApp::update() {
 	//Preguntem a PlayerManager si hi ha guanyador, si n'hi ha no updategem res.
 	guanyador = PlayerManager::getInstance()->hihaguanyador(MAX_SCORE);
 	if (guanyador == NULL){
-
-		// We get the time that last frame lasted, and use it to update asteroids logic
-		// so their behaviour is independent to the framerate
-		float elapsedTime = ofGetLastFrameTime();
 
 		//Comprova colisions d'Asteroides (amb bullets i amb Players)
 		AsteroidManager::getInstance()->comprova();

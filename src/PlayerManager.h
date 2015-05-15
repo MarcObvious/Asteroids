@@ -7,7 +7,9 @@
 #include <string>
 #include <cassert>
 
+#include "Controlador.h"
 #include "Player.h"
+#include "PlayerArd.h"
 
 //Altre patro per gestionar els jugadors.
 //Esta fet així pk sigui facil posar mes modes de joc (ratoli,mando teclat etc)
@@ -17,10 +19,12 @@ class PlayerManager {
 private:
 
 	int _pos;
+	int _posArd;
 
 	static PlayerManager* _instance; //1 instancia! only
 
-	vector<Player*> _players; //vector de players
+	vector<Controlador*> _players; //vector de players
+
 
 	PlayerManager();
 
@@ -32,13 +36,15 @@ public:
 
 	void createPlayer(SpaceShip* contr ,int score_inicial, int lives, ofColor color); //crea player...
 
-	Player* getPlayer(int i);
+	void createPlayerArd(SpaceShip* contr ,int score_inicial, int lives, ofColor color); //crea player controlat per Ard...
+
+	Controlador* getPlayer(int i);
 
 	string getAllScores();
 
 	void drawScores();
 
-	Player* hihaguanyador(int maxScore);
+	Controlador* hihaguanyador(int maxScore);
 
 	bool comprova(Entity* ent);
 
@@ -46,6 +52,8 @@ public:
 
 	void draw(bool debug);
 
-	void update( float elapsed_time);
+	void update(float elapsed_time);
+
+//	void update(float elapsed_time, unsigned char receivedBytes[8]);
 };
 

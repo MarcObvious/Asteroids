@@ -21,6 +21,8 @@
 class ofApp: public ofBaseApp {
 
 public:
+	static ofEvent<ofPoint> ArdEvent;
+
 	~ofApp();
 	void setup();
 	void setupArduino();
@@ -55,7 +57,7 @@ private:
 	unsigned char receivedBytes[NUM_BYTES];
 
 	bool debug;
-	Player* guanyador;
+	Controlador* guanyador;
 
 
 };

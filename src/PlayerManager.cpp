@@ -29,12 +29,17 @@ PlayerManager * PlayerManager::getInstance() {
 }
 
 void PlayerManager::createPlayer(SpaceShip* contr ,int score_inicial, int lives, ofColor color) {
-	Player* p = new Player( contr, _pos, score_inicial, lives, color);
+	Player* p = new Player(contr, _pos, score_inicial, lives, color);
+	_players.push_back(p);
+	++_pos;
+}
+void PlayerManager::createPlayerArd(SpaceShip* contr ,int score_inicial, int lives, ofColor color) {
+	PlayerArd* p = new PlayerArd(contr, _pos, score_inicial, lives, color);
 	_players.push_back(p);
 	++_pos;
 }
 
-Player* PlayerManager::getPlayer(int i){
+Controlador* PlayerManager::getPlayer(int i){
 	return _players[i];
 }
 
@@ -59,15 +64,15 @@ void PlayerManager::drawScores() {
 			score_line << " -> DEAAAAAAAAAAAAAAAD!!!!!" << endl;
 
 		ofPushStyle();
-			ofSetColor(ofColor(_players[i]->getColor()));
-			ofDrawBitmapString(score_line.str(), posicio_x, posicio_y);
+		ofSetColor(ofColor(_players[i]->getColor()));
+		ofDrawBitmapString(score_line.str(), posicio_x, posicio_y);
 		ofPopStyle();
 		posicio_y += 15;
 	}
 }
 
 //Retorna NO si no hi ha guanyador, el guanyador en cas contrari (o perdedor si algu simplement s'ha matat)
-Player* PlayerManager::hihaguanyador(int maxScore) {
+Controlador* PlayerManager::hihaguanyador(int maxScore) {
 	int jugadors_vius = _players.size();
 	for(unsigned int i = 0; i < _players.size(); i++){
 		if (_players[i]->getScore() >= maxScore)
@@ -100,11 +105,22 @@ bool PlayerManager::comprova(Entity* ent){
 void PlayerManager::draw(bool debug){
 	drawScores();
 	for(unsigned int i = 0; i < _players.size(); i++)
-			_players[i]->getControlat()->draw(debug);
+		_players[i]->getControlat()->draw(debug);
 
 }
 void PlayerManager::update(float elapsed_time) {
-	for(unsigned int i = 0; i < _players.size(); i++)
-			_players[i]->getControlat()->update(elapsed_time);
-
+	for(unsigned int i = 0; i < _players.size(); i++) {
+		//if (_players[i]->getTipus() == 1)
+		_players[i]->getControlat()->update(elapsed_time);
+	}
 }
+//void PlayerManager::update(float elapsed_time, unsigned char receivedBytes){
+//	for(unsigned int i = 0; i < _players.size(); i++) {
+//			if (_players[i]->getTipus() == 2) {
+////				_players[i]->setOrders
+//				_players[i]->getControlat()->update(elapsed_time);
+//			}
+//		}
+//
+//}
+

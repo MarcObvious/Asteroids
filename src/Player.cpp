@@ -15,6 +15,7 @@ Player::Player(SpaceShip* contr, int id, int score_inicial, int lives, ofColor c
 	_lives = lives;
 	_color = color;
 	_controlat->setColor(color);
+	_tipus = 1;
 }
 
 

@@ -14,6 +14,7 @@ Controlador::Controlador(SpaceShip* contr, int id, int score_inicial, int lives,
 	_lives = lives;
 	_color = color;
 	_controlat->setColor(color);
+	_tipus = 0;
 
 }
 
@@ -43,6 +44,14 @@ int Controlador::getId() const {
 
 bool Controlador::isViu() const {
 	return _viu;
+}
+
+int Controlador::getTipus() const {
+	return _tipus;
+}
+
+void Controlador::setTipus(int tipus) {
+	_tipus = tipus;
 }
 
 void Controlador::setViu(bool viu) {

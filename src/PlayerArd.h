@@ -6,6 +6,7 @@
 #pragma once
 #include "SpaceShip.h"
 #include "Controlador.h"
+#include "ofApp.h"
 
 class PlayerArd : public Controlador {
 private:
@@ -22,6 +23,7 @@ public:
 
 //	void keyPressed(ofKeyEventArgs & args);
 //	void keyReleased(ofKeyEventArgs & args);
+	void moviment(ofPoint& pos);
 
 };
 

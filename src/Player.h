@@ -9,11 +9,7 @@
 
 class Player : public Controlador {
 private:
-//	SpaceShip* _controlat;
-//	int _id;
-//	int _score;
-//	int _lives;
-//	ofColor _color;
+
 public:
 	Player(SpaceShip* contr, int id, int score_inicial, int lives, ofColor color) ;
 
