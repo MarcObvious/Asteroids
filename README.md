@@ -2,7 +2,7 @@
 Marc Mateu Sagues        Nia:146756
 Ignasi Larroca Barcelo   Nia:158633
 
-Projecte d'un joc interactiu d'Asteroids per a la classe Sistemes interactius. UPF-2015
+Projecte d'un joc interactiu d'Asteroids amb Arduino UNO per a la classe Sistemes interactius. UPF-2015
 
 S'està programant, compilant i provant en un Linux de 64 bits però hauria de funcionar 
 tot correcte en Windows. L'unic addon es el de Xml.
@@ -14,8 +14,8 @@ S'ha intentat seguir la nostra propi patró d'estil, però a vegades es xoca amb
 
 Per a compilar i executar:
 
-make clean
-make
+(j4 = #cores)
+make clean | make -sj4 
 make run
 
 Per jugar:
