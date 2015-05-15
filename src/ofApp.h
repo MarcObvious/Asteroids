@@ -16,6 +16,7 @@
 #include "AsteroidManager.h"
 #include "PlayerManager.h"
 
+#define NUM_BYTES 8
 
 class ofApp: public ofBaseApp {
 
@@ -46,7 +47,12 @@ private:
 	ofSoundPlayer  * pium;
 	ofSoundPlayer * explosion;
 
+	//ARDUINO
 	ofSerial	serial;
+	int cyclesCounter;
+	int cyclesJumped;
+	bool readAndSendMessage;
+	unsigned char receivedBytes[NUM_BYTES];
 
 	bool debug;
 	Player* guanyador;

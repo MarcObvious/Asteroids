@@ -29,6 +29,13 @@ void ofApp::setupArduino() {
 	//serial.setup("COM4", baud); // windows example
 	//serial.setup("/dev/tty.usbserial-A4001JEC", baud); // mac osx example
 	serial.setup("/dev/ttyACM0", baud);
+
+	cyclesCounter = 0;
+	cyclesJumped = 5;
+
+	readAndSendMessage = false;
+
+	memset(receivedBytes, 0, NUM_BYTES);
 }
 
 
@@ -116,8 +123,8 @@ ofApp::~ofApp(){
 }
 void ofApp::killSound() {
 	if (pium->isLoaded()){
-			pium->stop();
-			pium->unloadSound();
+		pium->stop();
+		pium->unloadSound();
 	}
 	//free (pium);
 	if (explosion->isLoaded()){
@@ -129,6 +136,21 @@ void ofApp::killSound() {
 
 //--------------------------------------------------------------
 void ofApp::update() {
+
+	if(readAndSendMessage) {
+		serial.writeByte(receivedBytes[0]);
+		memset(receivedBytes, 0, NUM_BYTES);
+
+		serial.readBytes(receivedBytes, NUM_BYTES);
+		//cout << "Byte received: " << byteReturned << endl;
+		readAndSendMessage = false;
+	}
+
+	cyclesCounter++;
+	if(cyclesCounter >= cyclesJumped){
+		readAndSendMessage = true;
+		cyclesCounter = 0;
+	}
 
 	//Preguntem a PlayerManager si hi ha guanyador, si n'hi ha no updategem res.
 	guanyador = PlayerManager::getInstance()->hihaguanyador(MAX_SCORE);
@@ -155,13 +177,13 @@ void ofApp::draw() {
 	//Si algu ha guanyat nomes dibuixem la pantalla de restart
 	if ( guanyador ) {
 		ofPushStyle();
-			ofSetColor(guanyador->getColor());
-			stringstream id;
-			id << "WINER JUGADOR ";
-			id << guanyador->getId();
-			id << " -> SCORE = ";
-			id << guanyador->getScore();
-			ofDrawBitmapString(id.str(), 390, 450);
+		ofSetColor(guanyador->getColor());
+		stringstream id;
+		id << "WINER JUGADOR ";
+		id << guanyador->getId();
+		id << " -> SCORE = ";
+		id << guanyador->getScore();
+		ofDrawBitmapString(id.str(), 390, 450);
 		ofPopStyle();
 		ofDrawBitmapString("Press 'r' to restart.", 390, 470);
 	}
