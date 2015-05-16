@@ -37,6 +37,8 @@ int yPosition = 0;
 int buttonState = 0;
 int Position =0;
 
+char sortida ='N';
+
 char inData[8]; // Allocate some space for the string
 char inChar; // Where to store the character read
 byte index = 0; // Index into array; where to store the character
@@ -74,7 +76,7 @@ void Joystic() {
     Serial.print(xPosition,DEC);
     Serial.print(yPosition,DEC);
     Serial.print('\n');
-    delay(70);
+    
 }
             
 
@@ -82,21 +84,41 @@ void loop() {
 
    
     
-    while (Serial.available() > 0) {
+    if (Serial.available() > 0) {
            //char inByte = Serial.read();
-        
+        Joystic();
             
 
              //if(index < 7)  {// One less than the size of the array
          
-                  inChar = Serial.read(); // Read a character
+        inChar = Serial.read(); // Read a character
                   /*inData[index] = inChar; // Store it
                   index++; // Increment where to write next
                   inData[index] = '\0'; // Null terminate the string
               }*/
-              
-                 
-              if ( inChar != 'N' ){
+        //sortida = 'N';
+        switch (inChar) {
+        case 'Z':    // your hand is on the sensor
+          sortida = '0';
+          break;
+        case 'U':    // your hand is close to the sensor
+          sortida = '1';
+          break;
+        case 'D':    // your hand is a few inches from the sensor
+          sortida = '2';
+          break;
+        case 'T':    // your hand is nowhere near the sensor
+          sortida = '3';
+          break;
+        case 'Q':    // your hand is nowhere near the sensor
+          sortida = '4';
+          break;
+        case 'N':
+          sortida = 'N';
+          break;
+      
+        } 
+              /*if ( inChar == 'Z' || inChar  || 'U' inChar || 'D' orinChar || 'T' or inChar || 'Q' ){
                   char sortida ='N';
                   if (inChar == 'Z')
                      sortida = '0';
@@ -108,6 +130,7 @@ void loop() {
                      sortida = '3';
                    if (inChar == 'Q')
                      sortida = '4';
+                     */
                    if (sortida != 'N') {
                       slcd.backlight();
                       slcd.scrollDisplayLeft();
@@ -121,21 +144,21 @@ void loop() {
                       slcd.print("Press r to restart! Keep KILLING    ");
                       //march();
                    }
-                }
-                else {
+                
+                else if (sortida == 'N'){
                     slcd.scrollDisplayLeft();
                     slcd.noBacklight();
                     slcd.setCursor(0, 0);
                     slcd.print("Pium Pium Pium! Just SHOT!          ");
                     slcd.setCursor(0,1);
-                    slcd.print("Player 0 dir_key ,1 asdw, 0 Joystic.");
+                    slcd.print("Player 0 dir_key ,1 asdw, 2 Joystic.");
 
                 }
                /* if (index==7) 
                   index = 0;*/
-                  Joystic();
+                  
                 
-
+                delay(70);
     }
 }
 

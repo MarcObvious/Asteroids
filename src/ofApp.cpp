@@ -86,19 +86,19 @@ void ofApp::setup() {
 	PlayerManager::getInstance()->createPlayerArd(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,255,0));
 
 
-	nau = new SpaceShip();
-
-	nau->setup(shape, 40, 500, 50,
-			ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
-
-	PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,255,255));
-
-	nau = new SpaceShip();
-
-	nau->setup(shape, 40, 500, 50,
-			ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
-
-	PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(255,255,0));
+//	nau = new SpaceShip();
+//
+//	nau->setup(shape, 40, 500, 50,
+//			ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
+//
+//	PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,255,255));
+//
+//	nau = new SpaceShip();
+//
+//	nau->setup(shape, 40, 500, 50,
+//			ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
+//
+//	PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(255,255,0));
 
 
 	//Carreguem els sons d'explosions d'asteroides i de dispars
@@ -140,22 +140,23 @@ void ofApp::killSound() {
 void ofApp::arduinoUpdate() {
 	if(readAndSendMessage) {
 		//serial.writeByte(receivedBytes[0]);
-		unsigned char enviar[8];
+		unsigned char enviar[NUM_BYTES];
+		memset(enviar, 0, NUM_BYTES);
 		enviar[7] = '\0';
 		char send = 'N';
-			if (guanyador != NULL){
-				int g = guanyador->getId();
-				if (g == 0)
-					send = 'Z';
-				if (g == 1)
-					send = 'U';
-				if (g == 2)
-					send = 'D';
-				if (g == 3)
-					send = 'T';
-				if (g == 4)
-					send = 'Q';
-			}
+		if (guanyador != NULL){
+			int g = guanyador->getId();
+			if (g == 0)
+				send = 'Z';
+			if (g == 1)
+				send = 'U';
+			if (g == 2)
+				send = 'D';
+			if (g == 3)
+				send = 'T';
+			if (g == 4)
+				send = 'Q';
+		}
 
 		enviar[0] = send;
 		enviar[1] = send;
@@ -170,11 +171,6 @@ void ofApp::arduinoUpdate() {
 		//cout << enviar << endl;
 		serial.writeBytes(enviar, NUM_BYTES);
 		memset(receivedBytes, 0, NUM_BYTES);
-
-		//serial.writeByte("PUTA");
-
-
-
 		serial.readBytes(receivedBytes, NUM_BYTES);
 		//PlayerManager::getInstance()->update(elapsedTime, receivedBytes);
 		//char point = receivedBytes;
@@ -195,7 +191,7 @@ void ofApp::arduinoUpdate() {
 			aux1 << aux;
 			aux1 >> pos_y;
 			if (pos_y > 0 and pos_y < 770) {
-				cout << "X " << pos_x << " Y " << pos_y << endl;
+				//cout << "X " << pos_x << " Y " << pos_y << endl;
 				ofPoint pos = ofPoint(pos_x,pos_y);
 				ofNotifyEvent(ArdEvent, pos, this);
 

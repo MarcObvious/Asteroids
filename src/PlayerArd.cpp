@@ -46,10 +46,7 @@ void PlayerArd::moviment(ofPoint& pos) {
 		_controlat->shot(true);
 	else
 		_controlat->shot(false);
-//	if (pos.x > pos.y)
-//		_controlat->gira_d(true);
-//	else  _controlat->gira_e(true);
-  //_controlat->gira_e(true);
+
 	//cout << pos.x << " "<< pos.y << endl;
 
 }
