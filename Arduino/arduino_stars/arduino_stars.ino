@@ -41,7 +41,7 @@ int Position =0;
 
 char sortida ='N';
 
-char inData[8]; // Allocate some space for the string
+char inData[4]; // Allocate some space for the string
 char inChar; // Where to store the character read
 byte index = 0; // Index into array; where to store the character
 
@@ -70,12 +70,12 @@ void setup() {
   // sets the ledPin to be an output
   pinMode(speakerPin, OUTPUT);
   //sets the speakerPin to be an output
-
+  slcd.backlight();
 }
 void Joystic() {
     printVal(analogRead(xPin));
     printVal(analogRead(yPin));
-    delay(70);
+    //delay(70);
     
 }
 
@@ -84,23 +84,85 @@ void printVal(int val) {
     byte lowByte = ((val) & 0xFF);
     Serial.write(highByte);
     Serial.write(lowByte);
+    //delay(40);
 }
 
             
 
 void loop() {
 
-   
-    
+             Joystic();
+slcd.scrollDisplayLeft();
+    if (buttonState == HIGH) {
+           Serial.write(111);
+           Serial.write(111);
+          }
+     if(Serial.readBytes(inData,4) > 0){ 
+         slcd.setCursor(0, 0);
+         slcd.print("Winner Player ");
+         if (inData[0] == 'U') 
+               slcd.print(" 1");
+         else if (inData[0] == 'Z') 
+               slcd.print(" 0");
+         else if (inData[0] == 'D') 
+               slcd.print(" 2");
+         else if (inData[0] == 'T') 
+               slcd.print(" 3");
+         else if (inData[0] == 'Q') 
+               slcd.print(" 4");
+         slcd.print(",  Your're The BOSS");
+         slcd.setCursor(0,1); 
+         slcd.print("Press r to restart! Keep KILLING    ");
+         
+       }
+       else {
+       slcd.setCursor(0,0);
+      slcd.print("Pium Pium Pium! Just SHOT!          ");
+      slcd.setCursor(0,1);
+      slcd.print("Player 0 dir_key ,1 asdw, 2 Joystic.");
+      
+       
+       }
+  
+     
+          
     //while (Serial.available() > 0) {
            //char inByte = Serial.read();
-        Joystic();
-        buttonState = digitalRead(buttonPin);
-        if (buttonState == HIGH) {
-           printVal(111);
-           printVal(111);
+        
+        /* while(Serial.available() > 0) {
+       /* buttonState = digitalRead(buttonPin);
+        
+          
+        
+         if (Serial.find("A")) {
+            slcd.print("RES");
           }
-            
+           else if (Serial.find("Z")) {
+            slcd.print("ZERO");
+          }
+           else if (Serial.find("U")) {
+            slcd.print("UUUU");
+          }
+           else if (Serial.find("T")) {
+            slcd.print("TRES");
+          }
+           else if (Serial.find("Q")) {
+            slcd.print("QUATRE");
+          }*/
+          
+             
+
+        } 
+          // inChar = Serial.read();
+         /*   slcd.print(inChar);
+            if(Serial.readBytes(inData, 4) > 0){ }
+		//X-Axis 
+		inChar = inData[0];
+		inChar <<= 8;
+		inChar += inData[1];
+              slcd.print(inData);*/
+
+           
 
              //if(index < 7)  {// One less than the size of the array
          
@@ -161,8 +223,7 @@ void loop() {
                 
                 
     //}
-   //delay(100);
-}
+//}
 
 void beep (unsigned char speakerPin, int frequencyInHertz, long timeInMilliseconds)
 {
