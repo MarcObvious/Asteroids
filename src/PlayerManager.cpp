@@ -114,13 +114,4 @@ void PlayerManager::update(float elapsed_time) {
 		_players[i]->getControlat()->update(elapsed_time);
 	}
 }
-//void PlayerManager::update(float elapsed_time, unsigned char receivedBytes){
-//	for(unsigned int i = 0; i < _players.size(); i++) {
-//			if (_players[i]->getTipus() == 2) {
-////				_players[i]->setOrders
-//				_players[i]->getControlat()->update(elapsed_time);
-//			}
-//		}
-//
-//}
 

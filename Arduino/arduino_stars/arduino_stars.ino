@@ -78,8 +78,7 @@ void winner (char w) {
     slcd.print(",  Your're The BOSS");
     slcd.setCursor(0,1); 
     slcd.print("Press r to restart! Keep KILLING    ");
-    guanyador = true;
-    march();     
+    guanyador = true;     
 } 
 
 void finish() {
@@ -110,7 +109,7 @@ void loop() {
           winner('4');  
         else if (inData[0]== 'A')
           guanyador = false;
-        else if (inData[0]== 'F')
+        else if (inData[0] == 'F')
           finish();
     }
     if (!guanyador) {
