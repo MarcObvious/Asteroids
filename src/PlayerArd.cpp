@@ -42,7 +42,7 @@ void PlayerArd::moviment(ofPoint& pos) {
 		_controlat->setThrust(true);
 	else
 		_controlat->setThrust(false);
-	if(pos.y < 300)
+	if(pos.y < 270)
 		_controlat->shot(true);
 	else
 		_controlat->shot(false);

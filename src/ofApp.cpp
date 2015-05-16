@@ -11,8 +11,8 @@ AsteroidManager* AsteroidManager::_instance = NULL;
 PlayerManager* PlayerManager::_instance = NULL;
 
 //Variables globals que defineixen les vides i la puntuacio maxima
-int MAX_SCORE = 1000;
-int MAX_LIVES = 50;
+int MAX_SCORE = 500;
+int MAX_LIVES = 10;
 int INITIAL_SCORE = 0;
 ofEvent<ofPoint> ofApp::ArdEvent = ofEvent<ofPoint>();
 
@@ -135,24 +135,45 @@ void ofApp::killSound() {
 	}
 }
 
-//--------------------------------------------------------------
-void ofApp::update() {
 
-	// We get the time that last frame lasted, and use it to update asteroids logic
-	// so their behaviour is independent to the framerate
-	float elapsedTime = ofGetLastFrameTime();
 
-	//AQUI ES REP I S'ENVIA A ARDUINO
+void ofApp::arduinoUpdate() {
 	if(readAndSendMessage) {
 		//serial.writeByte(receivedBytes[0]);
 		unsigned char enviar[8];
-		enviar[0] = 'h';
-		enviar[1] = 'o';
-		enviar[2] = 'l';
-		enviar[3] = 'a';
+		enviar[7] = '\0';
+		char send = 'N';
+			if (guanyador != NULL){
+				int g = guanyador->getId();
+				if (g == 0)
+					send = 'Z';
+				if (g == 1)
+					send = 'U';
+				if (g == 2)
+					send = 'D';
+				if (g == 3)
+					send = 'T';
+				if (g == 4)
+					send = 'Q';
+			}
+
+		enviar[0] = send;
+		enviar[1] = send;
+		enviar[2] = send;
+		enviar[3] = send;
+		enviar[4] = send;
+		enviar[5] = send;
+		enviar[6] = send;
+
+
+
+		//cout << enviar << endl;
 		serial.writeBytes(enviar, NUM_BYTES);
-		//serial.writeByte("PUTA");
 		memset(receivedBytes, 0, NUM_BYTES);
+
+		//serial.writeByte("PUTA");
+
+
 
 		serial.readBytes(receivedBytes, NUM_BYTES);
 		//PlayerManager::getInstance()->update(elapsedTime, receivedBytes);
@@ -188,6 +209,14 @@ void ofApp::update() {
 		readAndSendMessage = true;
 		cyclesCounter = 0;
 	}
+}
+
+//--------------------------------------------------------------
+void ofApp::update() {
+
+	// We get the time that last frame lasted, and use it to update asteroids logic
+	// so their behaviour is independent to the framerate
+	float elapsedTime = ofGetLastFrameTime();
 
 	//Preguntem a PlayerManager si hi ha guanyador, si n'hi ha no updategem res.
 	guanyador = PlayerManager::getInstance()->hihaguanyador(MAX_SCORE);
@@ -203,6 +232,8 @@ void ofApp::update() {
 
 
 	}
+	//AQUI ES REP I S'ENVIA A ARDUINO
+	arduinoUpdate();
 }
 
 //--------------------------------------------------------------

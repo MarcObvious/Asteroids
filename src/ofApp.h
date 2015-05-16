@@ -45,6 +45,7 @@ public:
 private:
 
 	void normalizeOfPoint(ofPoint& point);
+	void arduinoUpdate();
 
 	ofSoundPlayer  * pium;
 	ofSoundPlayer * explosion;
