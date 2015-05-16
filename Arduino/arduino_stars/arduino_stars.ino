@@ -73,7 +73,7 @@ void Joystic() {
     yPosition = analogRead(yPin);
     Serial.print(xPosition,DEC);
     Serial.print(yPosition,DEC);
-    Serial.print(00,DEC);
+    Serial.print('\n');
     delay(70);
 }
             
