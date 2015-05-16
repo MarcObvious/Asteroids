@@ -1,15 +1,5 @@
 #include <SerialLCD.h>
 #include <SoftwareSerial.h>
-
-SerialLCD slcd(11,12);
-int ledPin = 13;
-//led for visualization (use 13 for built-in led)
- 
-const int buttonPin = 1; 
-
-int speakerPin = 9;
-//speaker connected to one of the PWM ports
- 
 #define c 261
 #define d 294
 #define e 329
@@ -30,22 +20,24 @@ int speakerPin = 9;
 #define gSH 830
 #define aH 880
 
+
+SerialLCD slcd(11,12);
+
+int ledPin = 13;
+int buttonPin = 2; 
+
+int speakerPin = 9;
+//speaker connected to one of the PWM ports
+ 
 int xPin = A1;
 int yPin = A0;
-//int buttonPin = 1;
 
 int xPosition = 0;
 int yPosition = 0;
 int buttonState = 0;
-int Position =0;
-
 bool guanyador = false;
 
-char sortida ='N';
-
-char inData[4]; // Allocate some space for the string
-char inChar; // Where to store the character read
-byte index = 0; // Index into array; where to store the character
+char inData[1]; // Allocate some space for the string
 
 void setup() {
     // initialize serial communications at 9600 bps:
@@ -54,32 +46,13 @@ void setup() {
     pinMode(xPin, INPUT);
     pinMode(yPin, INPUT);
     
-    //activate pull-up resistor on the push-button pin
-   // pinMode(buttonPin, INPUT_PULLUP); 
-    
-    // For versions prior to Arduino 1.0.1
     pinMode(buttonPin, INPUT);
-    digitalWrite(buttonPin, HIGH);
      
     slcd.begin();
-    // Print a message to the LCD.
-   // slcd.print("Pium Pium Pium! Just SHOT!");
-   // slcd.scrollDisplayLeft();
-   // slcd.setCursor(0,1);
-   // slcd.print("Player 0 dir_key ,1 asdw, 0 Joystic.");
-    slcd.noBacklight();
     pinMode(ledPin, OUTPUT);
-  // sets the ledPin to be an output
-  pinMode(speakerPin, OUTPUT);
-  //sets the speakerPin to be an output
-  slcd.backlight();
-
-}
-void Joystic() {
-    printVal(analogRead(xPin));
-    printVal(analogRead(yPin));
-    //delay(70);
-    
+    // sets the ledPin to be an output
+    pinMode(speakerPin, OUTPUT);
+    //sets the speakerPin to be an output
 }
 
 void printVal(int val) {
@@ -90,155 +63,72 @@ void printVal(int val) {
     //delay(40);
 }
 
-void winner (char w) {
-  
-      slcd.setCursor(0, 0);
-      slcd.print("Winner Player ");
-      slcd.print(w);
-      slcd.print(",  Your're The BOSS");
-      slcd.setCursor(0,1); 
-      slcd.print("Press r to restart! Keep KILLING    ");
-      guanyador = true;
-  
+void Joystic() {
+    xPosition = analogRead(xPin);
+    printVal(xPosition);
+    yPosition = analogRead(yPin);
+    printVal(yPosition);
+    //delay(70);
+}
 
-}  
+void winner (char w) {
+    slcd.setCursor(0, 0);
+    slcd.print("Winner Player ");
+    slcd.print(w);
+    slcd.print(",  Your're The BOSS");
+    slcd.setCursor(0,1); 
+    slcd.print("Press r to restart! Keep KILLING    ");
+    guanyador = true;
+    march();     
+} 
+
+void finish() {
+    slcd.setCursor(0, 0);
+    slcd.print(" Thx For Playing!");
+    slcd.setCursor(0,1); 
+    slcd.print(" Yeah, it's a Loop");
+    march();
+}
 
 void loop() {
-
-         Joystic();
-        slcd.scrollDisplayLeft();
+    buttonState = digitalRead(buttonPin);
     if (buttonState == HIGH) {
-          printVal(000);
-           printVal(000);
-          }
-     if(Serial.readBytes(inData,4) > 0){ 
-         
-         if (inData[0] == 'Z') 
-               winner('0');
-         else if (inData[0] == 'U') 
-               winner('1');
-         else if (inData[0] == 'D') 
-               winner('2');
-         else if (inData[0] == 'T') 
-               winner('3');
-         else if (inData[0] == 'Q') 
-               winner('4');  
-         else if (inData[0]== 'A')
-               guanyador = false;    
-       }
-       if (!guanyador) {
-                slcd.setCursor(0,0);
-                slcd.print("Pium Pium Pium! Just SHOT!          ");
-                slcd.setCursor(0,1);
-                slcd.print("Player 0 dir_key ,1 asdw, 2 Joystic.");
-        }
-    
-     
-          
-    //while (Serial.available() > 0) {
-           //char inByte = Serial.read();
-        
-        /* while(Serial.available() > 0) {
-       /* buttonState = digitalRead(buttonPin);
-        
-          
-        
-         if (Serial.find("A")) {
-            slcd.print("RES");
-          }
-           else if (Serial.find("Z")) {
-            slcd.print("ZERO");
-          }
-           else if (Serial.find("U")) {
-            slcd.print("UUUU");
-          }
-           else if (Serial.find("T")) {
-            slcd.print("TRES");
-          }
-           else if (Serial.find("Q")) {
-            slcd.print("QUATRE");
-          }*/
-          
-             
-
-        } 
-          // inChar = Serial.read();
-         /*   slcd.print(inChar);
-            if(Serial.readBytes(inData, 4) > 0){ }
-		//X-Axis 
-		inChar = inData[0];
-		inChar <<= 8;
-		inChar += inData[1];
-              slcd.print(inData);*/
-
-           
-
-             //if(index < 7)  {// One less than the size of the array
-         
-  //      inChar = Serial.read(); // Read a character
-                  /*inData[index] = inChar; // Store it
-                  index++; // Increment where to write next
-                  inData[index] = '\0'; // Null terminate the string
-              }*//*
-        //sortida = 'N';
-        switch (inChar) {
-        case 'Z':    // your hand is on the sensor
-          sortida = '0';
-          break;
-        case 'U':    // your hand is close to the sensor
-          sortida = '1';
-          break;
-        case 'D':    // your hand is a few inches from the sensor
-          sortida = '2';
-          break;
-        case 'T':    // your hand is nowhere near the sensor
-          sortida = '3';
-          break;
-        case 'Q':    // your hand is nowhere near the sensor
-          sortida = '4';
-          break;
-        case 'N':
-          sortida = 'N';
-          break;
-      
-        } 
-           
-       if (sortida != 'N') {
-          slcd.backlight();
-          slcd.scrollDisplayLeft();
-          slcd.setCursor(0, 0);
-           // slcd.print(inByte);
-          slcd.print("Winner Player ");
-          slcd.print(sortida);
-          slcd.print(",  Your're The BOSS");
-          slcd.setCursor(0,1);
-          
-          slcd.print("Press r to restart! Keep KILLING    ");
-          //march();
-       }
-    
-    else if (sortida == 'N'){
-        slcd.scrollDisplayLeft();
-        slcd.noBacklight();
-        slcd.setCursor(0, 0);
+        printVal(000);
+        printVal(000);
+    }
+    slcd.scrollDisplayLeft();
+    if(Serial.readBytes(inData,1) > 0) { 
+        if (inData[0] == 'Z') 
+          winner('0');
+        else if (inData[0] == 'U') 
+          winner('1');
+        else if (inData[0] == 'D') 
+          winner('2');
+        else if (inData[0] == 'T') 
+          winner('3');
+        else if (inData[0] == 'Q') 
+          winner('4');  
+        else if (inData[0]== 'A')
+          guanyador = false;
+        else if (inData[0]== 'F')
+          finish();
+    }
+    if (!guanyador) {
+        slcd.setCursor(0,0);
         slcd.print("Pium Pium Pium! Just SHOT!          ");
         slcd.setCursor(0,1);
         slcd.print("Player 0 dir_key ,1 asdw, 2 Joystic.");
-
     }
-   /* if (index==7) 
-      index = 0;*/
-                  
-                
-                
-    //}
-//}
+    Joystic();
+    
+}
 
 void beep (unsigned char speakerPin, int frequencyInHertz, long timeInMilliseconds)
 {
+    if (guanyador == true) {
     digitalWrite(ledPin, HIGH);
     //use led to visualize the notes being played
- 
+   
     int x;
     long delayAmount = (long)(1000000/frequencyInHertz);
     long loopTime = (long)((timeInMilliseconds*1000)/(delayAmount*2));
@@ -255,6 +145,7 @@ void beep (unsigned char speakerPin, int frequencyInHertz, long timeInMillisecon
  
     delay(20);
     //a little delay to make all notes sound separate
+    }
 }
  
 void march()
@@ -263,7 +154,7 @@ void march()
     //http://www.musicnotes.com/sheetmusic/mtd.asp?ppn=MN0016254
     //this is just a translation of said sheet music to frequencies / time in ms
     //used 500 ms for a quart note
- 
+  
     beep(speakerPin, a, 500);
     beep(speakerPin, a, 500);
     beep(speakerPin, a, 500);
@@ -288,7 +179,7 @@ void march()
     beep(speakerPin, a, 1000);
     //second bit...
  
-   /* beep(speakerPin, aH, 500);
+    beep(speakerPin, aH, 500);
     beep(speakerPin, a, 350);
     beep(speakerPin, a, 150);
     beep(speakerPin, aH, 500);
@@ -349,6 +240,6 @@ void march()
     beep(speakerPin, a, 500);
     beep(speakerPin, f, 375);
     beep(speakerPin, c, 125);
-    beep(speakerPin, a, 1000);*/
-    //and we're done \ó/
+    beep(speakerPin, a, 1000);
+    //and we're done \ó/*
 }
