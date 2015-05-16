@@ -5,7 +5,7 @@ SerialLCD slcd(11,12);
 int ledPin = 13;
 //led for visualization (use 13 for built-in led)
  
-const int buttonPin = 2; 
+const int buttonPin = 1; 
 
 int speakerPin = 9;
 //speaker connected to one of the PWM ports
@@ -32,12 +32,14 @@ int speakerPin = 9;
 
 int xPin = A1;
 int yPin = A0;
-//int buttonPin = 2;
+//int buttonPin = 1;
 
 int xPosition = 0;
 int yPosition = 0;
 int buttonState = 0;
 int Position =0;
+
+bool guanyador = false;
 
 char sortida ='N';
 
@@ -53,7 +55,7 @@ void setup() {
     pinMode(yPin, INPUT);
     
     //activate pull-up resistor on the push-button pin
-    pinMode(buttonPin, INPUT_PULLUP); 
+   // pinMode(buttonPin, INPUT_PULLUP); 
     
     // For versions prior to Arduino 1.0.1
     pinMode(buttonPin, INPUT);
@@ -71,6 +73,7 @@ void setup() {
   pinMode(speakerPin, OUTPUT);
   //sets the speakerPin to be an output
   slcd.backlight();
+
 }
 void Joystic() {
     printVal(analogRead(xPin));
@@ -87,43 +90,49 @@ void printVal(int val) {
     //delay(40);
 }
 
-            
+void winner (char w) {
+  
+      slcd.setCursor(0, 0);
+      slcd.print("Winner Player ");
+      slcd.print(w);
+      slcd.print(",  Your're The BOSS");
+      slcd.setCursor(0,1); 
+      slcd.print("Press r to restart! Keep KILLING    ");
+      guanyador = true;
+  
+
+}  
 
 void loop() {
 
-             Joystic();
-slcd.scrollDisplayLeft();
+         Joystic();
+        slcd.scrollDisplayLeft();
     if (buttonState == HIGH) {
-           Serial.write(111);
-           Serial.write(111);
+          printVal(000);
+           printVal(000);
           }
      if(Serial.readBytes(inData,4) > 0){ 
-         slcd.setCursor(0, 0);
-         slcd.print("Winner Player ");
-         if (inData[0] == 'U') 
-               slcd.print(" 1");
-         else if (inData[0] == 'Z') 
-               slcd.print(" 0");
-         else if (inData[0] == 'D') 
-               slcd.print(" 2");
-         else if (inData[0] == 'T') 
-               slcd.print(" 3");
-         else if (inData[0] == 'Q') 
-               slcd.print(" 4");
-         slcd.print(",  Your're The BOSS");
-         slcd.setCursor(0,1); 
-         slcd.print("Press r to restart! Keep KILLING    ");
          
+         if (inData[0] == 'Z') 
+               winner('0');
+         else if (inData[0] == 'U') 
+               winner('1');
+         else if (inData[0] == 'D') 
+               winner('2');
+         else if (inData[0] == 'T') 
+               winner('3');
+         else if (inData[0] == 'Q') 
+               winner('4');  
+         else if (inData[0]== 'A')
+               guanyador = false;    
        }
-       else {
-       slcd.setCursor(0,0);
-      slcd.print("Pium Pium Pium! Just SHOT!          ");
-      slcd.setCursor(0,1);
-      slcd.print("Player 0 dir_key ,1 asdw, 2 Joystic.");
-      
-       
-       }
-  
+       if (!guanyador) {
+                slcd.setCursor(0,0);
+                slcd.print("Pium Pium Pium! Just SHOT!          ");
+                slcd.setCursor(0,1);
+                slcd.print("Player 0 dir_key ,1 asdw, 2 Joystic.");
+        }
+    
      
           
     //while (Serial.available() > 0) {

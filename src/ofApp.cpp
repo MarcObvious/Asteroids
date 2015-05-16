@@ -242,8 +242,9 @@ void ofApp::arduinoUpdate() {
 			
 		
 		}
-		serial.writeBytes(enviar,4);
+		
 		}
+		serial.writeBytes(enviar,4);
 		
 		//char send = 'N';
 		
@@ -266,7 +267,7 @@ void ofApp::arduinoUpdate() {
 		y += bytesReturned[3];
 		cout << "X " << x << " Y " << y <<endl;
 		if (x == 0 && y == 0){
-			//reset();
+			reset();
 		}
 		else {
 			if (x > 0 && x < 770) {
