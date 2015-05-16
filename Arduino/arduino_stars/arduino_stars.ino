@@ -43,7 +43,7 @@ bool guanyador = false;
 
 char sortida ='N';
 
-char inData[4]; // Allocate some space for the string
+char inData[1]; // Allocate some space for the string
 char inChar; // Where to store the character read
 byte index = 0; // Index into array; where to store the character
 
@@ -76,8 +76,12 @@ void setup() {
 
 }
 void Joystic() {
-    printVal(analogRead(xPin));
-    printVal(analogRead(yPin));
+    int x = 0;
+    x = analogRead(xPin);
+    printVal(x);
+    int y = 0;
+    y = analogRead(yPin);
+    printVal(y);
     //delay(70);
     
 }
@@ -93,11 +97,11 @@ void printVal(int val) {
 void winner (char w) {
   
       slcd.setCursor(0, 0);
-      slcd.print("Winner Player ");
+      slcd.print(" Winner Player ");
       slcd.print(w);
       slcd.print(",  Your're The BOSS");
       slcd.setCursor(0,1); 
-      slcd.print("Press r to restart! Keep KILLING    ");
+      slcd.print(" Press r to restart! Keep KILLING    ");
       guanyador = true;
   
 
@@ -105,14 +109,14 @@ void winner (char w) {
 
 void loop() {
 
-         Joystic();
+        
         slcd.scrollDisplayLeft();
-    if (buttonState == HIGH) {
+   /* if (buttonState == HIGH) {
           printVal(000);
            printVal(000);
-          }
-     if(Serial.readBytes(inData,4) > 0){ 
-         
+          }*/
+     while(Serial.readBytes(inData,1) > 0){ 
+          Joystic();
          if (inData[0] == 'Z') 
                winner('0');
          else if (inData[0] == 'U') 
@@ -132,7 +136,7 @@ void loop() {
                 slcd.setCursor(0,1);
                 slcd.print("Player 0 dir_key ,1 asdw, 2 Joystic.");
         }
-    
+} 
      
           
     //while (Serial.available() > 0) {
@@ -161,7 +165,7 @@ void loop() {
           
              
 
-        } 
+        
           // inChar = Serial.read();
          /*   slcd.print(inChar);
             if(Serial.readBytes(inData, 4) > 0){ }

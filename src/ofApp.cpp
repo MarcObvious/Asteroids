@@ -19,19 +19,19 @@ ofEvent<ofPoint> ofApp::ArdEvent = ofEvent<ofPoint>();
 //--------------------------------------------------------------
 
 void ofApp::setupArduino() {
-	if (!serial.isInitialized()) {
+	//if (!serial.isInitialized()) {
 		serial.listDevices();
 		vector <ofSerialDeviceInfo> deviceList = serial.getDeviceList();
 
 		// Diferents configuracions segons Mac Linux o Windows
 		int baud = 9600;
-		serial.setup("COM4", baud); // Windows
+		//serial.setup("COM4", baud); // Windows
 		//serial.setup("/dev/tty.usbserial-A4001JEC", baud);  //Mac
-		//serial.setup("/dev/ttyACM0", baud); //Linux powa!
-	}
+		serial.setup("/dev/ttyACM0", baud); //Linux powa!
+	//}
 
 	cyclesCounter = 0;
-	cyclesJumped = 5;
+	cyclesJumped = 3;
 
 	readAndSendMessage = false;
 
@@ -196,61 +196,62 @@ void ofApp::arduinoUpdate() {
 		int pos_x = 0;
 		aux1 >> pos_x;
 		*/
-		unsigned char enviar[4];
-		//memset(enviar, 0, 4);
+		unsigned char enviar[1];
+		memset(enviar, 0, 1);
 		enviar[0] = 'A';
-		enviar[1] = 'A';
-		enviar[2] = 'A';
-		enviar[3] = '\n';
+//		enviar[1] = 'A';
+//		enviar[2] = 'A';
+//		enviar[3] = '\n';
 		if (guanyador != NULL){
 			switch (guanyador->getId()) {
 			case 0:
 				enviar[0] = 'Z';
-				enviar[1] = 'Z';
-				enviar[2] = 'Z';
-				enviar[3] = '\0';
+//				enviar[1] = 'Z';
+//				enviar[2] = 'Z';
+//				enviar[3] = '\0';
 				//cout << "GUANYADOR z" <<endl;
 			break;
 			case 1:
 				enviar[0] = 'U';
-				enviar[1] = 'U';
-				enviar[2] = 'U';
-				enviar[3] = '\0';
+//				enviar[1] = 'U';
+//				enviar[2] = 'U';
+//				enviar[3] = '\0';
 			//	cout << "GUANYADOR U" <<endl;
 			break;
 			case 2:
 				enviar[0] = 'D';
-				enviar[1] = 'D';
-				enviar[2] = 'D';
-				enviar[3] = '\0';
+//				enviar[1] = 'D';
+//				enviar[2] = 'D';
+//				enviar[3] = '\0';
 			//	cout << "GUANYADOR T" <<endl;
 			break;
 			case 3:
 				enviar[0] = 'T';
-				enviar[1] = 'T';
-				enviar[2] = 'T';
-				enviar[3] = '\0';
+//				enviar[1] = 'T';
+//				enviar[2] = 'T';
+//				enviar[3] = '\0';
 			//	cout << "GUANYADOR D" <<endl;
 			break;
 			case 4:
 				enviar[0] = 'Q';
-				enviar[1] = 'Q';
-				enviar[2] = 'Q';
-				enviar[3] = '\0';
+//				enviar[1] = 'Q';
+//				enviar[2] = 'Q';
+//				enviar[3] = '\0';
 				//cout << "GUANYADOR Q" <<endl;
 			break;
 			
 		
 		}
-		
+
 		}
-		serial.writeBytes(enviar,4);
+		serial.writeBytes(enviar,1);
 		
 		//char send = 'N';
 		
 		//enviar[4] =  '\n';
 		//cout << enviar << endl;
 		if(serial.available()) {
+
 		int x;
 		int y;
 		//const int NUM_BYTES = 4;
@@ -265,7 +266,7 @@ void ofApp::arduinoUpdate() {
 		y = bytesReturned[2];
 		y <<= 8;
 		y += bytesReturned[3];
-		cout << "X " << x << " Y " << y <<endl;
+		//cout << "X " << x << " Y " << y <<endl;
 		if (x == 0 && y == 0){
 			reset();
 		}
@@ -280,6 +281,7 @@ void ofApp::arduinoUpdate() {
 			}
 		}
 		}
+
 		readAndSendMessage = false;
 	}
 
