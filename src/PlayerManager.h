@@ -20,7 +20,6 @@ class PlayerManager {
 private:
 
 	int _pos;
-	int _posArd;
 
 	static PlayerManager* _instance; //1 instancia! only
 
@@ -35,10 +34,6 @@ public:
 	static PlayerManager * getInstance();
 
 	bool createPlayer(SpaceShip* contr ,int score_inicial, int lives, ofColor color, string tipus); //crea player...
-
-	void createPlayerArd(SpaceShip* contr ,int score_inicial, int lives, ofColor color); //crea player controlat per Ard...
-
-	void createPlayerRat(SpaceShip* contr ,int score_inicial, int lives, ofColor color); 
 
 	Controlador* getPlayer(int i);
 
@@ -55,7 +50,5 @@ public:
 	void draw(bool debug);
 
 	void update(float elapsed_time);
-
-//	void update(float elapsed_time, unsigned char receivedBytes[8]);
 };
 

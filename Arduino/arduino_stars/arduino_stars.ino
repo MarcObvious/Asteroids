@@ -76,7 +76,7 @@ void winner (char w) {
     slcd.setCursor(0, 0);
     slcd.print("Winner Player ");
     slcd.print(w);
-    slcd.print(",  Your're The BOSS");
+    slcd.print(",  Your're The BOSS  ");
     slcd.setCursor(0,1); 
     slcd.print("Press r to restart! Keep KILLING    ");
     guanyador = true;     
@@ -84,9 +84,11 @@ void winner (char w) {
 
 void finish() {
     slcd.setCursor(0, 0);
-    slcd.print(" Thx For Playing!");
+    slcd.print(" Thx For Playing!                    ");
+              
     slcd.setCursor(0,1); 
-    slcd.print(" Yeah, it's a Loop");
+    slcd.print(" Yeah, it's a Loop                 ");
+             
     march();
 }
 
@@ -116,9 +118,9 @@ void loop() {
     if (!guanyador) {
         slcd.noBacklight();
         slcd.setCursor(0,0);
-        slcd.print("Pium Pium Pium! Just SHOT!          ");
+        slcd.print("Pium Pium Pium! Just SHOT!            ");
         slcd.setCursor(0,1);
-        slcd.print("Player 0 dir_key ,1 asdw, 2 Joystic.");
+        slcd.print("0 dir_key ,1 asdw, 2 Mous, 3 Joystic");
     }
     Joystic();
     
@@ -126,7 +128,7 @@ void loop() {
 
 void beep (unsigned char speakerPin, int frequencyInHertz, long timeInMilliseconds)
 {
-    if (guanyador == true) {
+
     digitalWrite(ledPin, HIGH);
     //use led to visualize the notes being played
    
@@ -146,7 +148,7 @@ void beep (unsigned char speakerPin, int frequencyInHertz, long timeInMillisecon
  
     delay(20);
     //a little delay to make all notes sound separate
-    }
+    
 }
  
 void march()

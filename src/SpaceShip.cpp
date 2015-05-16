@@ -76,7 +76,8 @@ void SpaceShip::update(float elapsedTime) {
 
 	}
 	else {
-		this->addRotation(1.5*elapsedTime);
+		
+		this->addRotation( 1.5*elapsedTime);
 	}
 
 	//Actualtizem posició respecte direcció speed i elapsedTime (diferents maquines! s'ha de tenir en compte)
@@ -88,8 +89,6 @@ void SpaceShip::update(float elapsedTime) {
 void SpaceShip::draw(bool debug) {
 
 	//Shape que hem carregat prevament
-
-
 	ofPushStyle();
 	ofPushMatrix();
 		ofSetColor(_color);
@@ -103,7 +102,6 @@ void SpaceShip::draw(bool debug) {
 			ofCircle(0, 0, size);
 			ofPopStyle();
 		}
-
 		p.draw();
 	ofPopMatrix();
 	ofPopStyle();

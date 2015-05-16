@@ -238,14 +238,14 @@ void ofApp::draw() {
 				id << " -> SCORE = " << guanyador->getScore();
 				ofDrawBitmapString(id.str(), 390, 450);
 			ofPopStyle();
-			ofDrawBitmapString("Press 'r' to restart, 'f' to fhinish", 390, 470);
+			ofDrawBitmapString("Press 'r' to restart, 'f' to finish", 390, 470);
 		}
 		else {
 			//Dibuixem instruccions
 			ofPushStyle();
 			ofSetColor(255,255,255);
-				ofDrawBitmapString("Player 1 a w d s, Player 0 up, left, right, down, Player 3 Joystic, Player 4 i 5 nomès estan per Vacilar.", 5, 745);
-				ofDrawBitmapString("Press '1' to debug, '2' to mute, 'r' to restart, 'f' to finish, ESC to get out", 5, 760);
+				ofDrawBitmapString("Player 1 a w d s, Player 0 up, left, right, down, Player 2 mouse, Player 3 joystic i 4 sols per Vacilar.", 5, 745);
+				ofDrawBitmapString("Press '1' to debug, '2' to unmute/mute, 'r' to restart, 'f' to finish, 'ESC' to get out", 5, 760);
 			ofPopStyle();
 
 			//Dibuixem totes les bales i asteroides
@@ -277,7 +277,7 @@ void ofApp::draw() {
 		ofPopStyle();
 		ofPushStyle();
 			
-			ofDrawBitmapString("ESC per sortir, 'r' per reiniciar la partida amb la musiqueta dels ****", 240, 464);
+			ofDrawBitmapString("'ESC' per sortir, 'r' per reiniciar la partida amb la musiqueta dels ******", 240, 464);
 		ofPopStyle();
 	}
 }
@@ -354,13 +354,7 @@ void ofApp::mouseDragged(int x, int y, int button) {
 
 //--------------------------------------------------------------
 void ofApp::mousePressed(int x, int y, int button) {
-	//	for (int i = 0; i < asteroids.size(); i++) {
-	//		if (asteroids[i]->getCollision(ofPoint(x, y))) {
-	//			cout << "Mouse hit Asteroid " << i << endl;
-	//			splitAsteroid(i);
-	//
-	//		}
-	//	}
+
 }
 
 
