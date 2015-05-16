@@ -195,7 +195,7 @@ void ofApp::arduinoUpdate() {
 			aux1 << aux;
 			aux1 >> pos_y;
 			if (pos_y > 0 and pos_y < 770) {
-				//cout << "X " << pos_x << " Y " << pos_y << endl;
+				cout << "X " << pos_x << " Y " << pos_y << endl;
 				ofPoint pos = ofPoint(pos_x,pos_y);
 				ofNotifyEvent(ArdEvent, pos, this);
 
