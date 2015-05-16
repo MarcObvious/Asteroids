@@ -68,37 +68,37 @@ void ofApp::setup() {
 	nau->setup(shape, 40, 500, 50,
 			ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
 
-	PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(255,0,0));
+	PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(255,0,0), "Player");
 
 	nau = new SpaceShip();
 
 	nau->setup(shape, 40, 500, 50,
 			ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
 
-	PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,0,255));
+	PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,0,255),"Player");
 
 	nau = new SpaceShip();
 
 	nau->setup(shape, 40, 500, 50,
 			ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
 
-	PlayerManager::getInstance()->createPlayerArd(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,255,0));
+	PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,255,0), "PlayerRat");
 
 
-//	nau = new SpaceShip();
-//
-//	nau->setup(shape, 40, 500, 50,
-//			ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
-//
-//	PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,255,255));
-//
-//	nau = new SpaceShip();
-//
-//	nau->setup(shape, 40, 500, 50,
-//			ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
-//
-//	PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(255,255,0));
+	nau = new SpaceShip();
 
+	nau->setup(shape, 40, 500, 50,
+			ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
+
+	PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(255,255,0),"PlayerArd");
+//
+	nau = new SpaceShip();
+
+	nau->setup(shape, 40, 500, 50,
+			ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
+
+	PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,255,255), "Player");
+	
 
 	//Carreguem els sons d'explosions d'asteroides i de dispars
 	//Comença SILENCIAT pel be de tota la humanitat!!
@@ -221,8 +221,6 @@ void ofApp::update() {
 			AsteroidManager::getInstance()->update(elapsedTime);
 			PlayerManager::getInstance()->update(elapsedTime);
 		}
-		
-		
 	}
 	//Update dels controladors arduino
 	arduinoUpdate();
@@ -250,9 +248,6 @@ void ofApp::draw() {
 				ofDrawBitmapString("Press '1' to debug, '2' to mute, 'r' to restart, 'f' to finish, ESC to get out", 5, 760);
 			ofPopStyle();
 
-			//Draw Scores
-			//PlayerManager::getInstance()->drawScores();
-
 			//Dibuixem totes les bales i asteroides
 			BulletManager::getInstance()->draw();
 			AsteroidManager::getInstance()->draw(debug);
@@ -267,9 +262,14 @@ void ofApp::draw() {
 		}
 	}
 	else {
+		//Pantalla de finalització del joc.
 		ofPushStyle();
 			ofSetColor(0,255,0);
-			ofDrawBitmapString("MOLTES GRACIES PER JUGAR!", 240, 384);
+			ofDrawBitmapString("MOLTES GRACIES PER JUGAR!", 240, 364);
+		ofPopStyle();
+		ofPushStyle();
+			ofSetColor(0,255,0);
+			ofDrawBitmapString("Joc creat per Marc Mateu i Ignasi Larroca", 240, 384);
 		ofPopStyle();
 		ofPushStyle();
 			ofSetColor(255,0,0);

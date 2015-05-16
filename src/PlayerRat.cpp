@@ -2,12 +2,12 @@
 //                   Marc Mateu Sagues,       Nia:146756                      //
 //                   Ignasi Larroca Barcelo   Nia:158633                      //
 //****************************************************************************//
+//PLayer es un controlador (d'una nau) que utilitza el MOUSE!
+#include "PlayerRat.h"
 
-#include "Player.h"
-
-Player::Player(SpaceShip* contr, int id, int score_inicial, int lives, ofColor color)
+PlayerRat::PlayerRat(SpaceShip* contr, int id, int score_inicial, int lives, ofColor color)
 : Controlador(contr,  id,  score_inicial,  lives,  color) {
-	ofRegisterKeyEvents(this);
+	 ofRegisterMouseEvents(this);
 	_controlat = contr;
 	_id = id;
 	_controlat->setControlador(id);
@@ -18,7 +18,47 @@ Player::Player(SpaceShip* contr, int id, int score_inicial, int lives, ofColor c
 	_tipus = 1;
 }
 
+void PlayerRat::mouseMoved(ofMouseEventArgs & args){
 
+}
+void PlayerRat::mouseDragged(ofMouseEventArgs & args){
+	switch (args.button) {
+	case 1:
+		_controlat->setThrust(true);
+		_controlat->shot(false);
+		break;
+	}
+}
+void PlayerRat::mousePressed(ofMouseEventArgs & args){
+	switch (args.button) {
+	case 0:
+		_controlat->gira_e(true);	
+		break;
+	case 1:
+		_controlat->shot(true);
+		break;
+	case 2:
+		_controlat->gira_d(true);	
+		break;
+	}
+	
+}
+void PlayerRat::mouseReleased(ofMouseEventArgs & args){
+	switch (args.button) {
+	case 0:
+		_controlat->gira_e(false);	
+		break;
+	case 1:
+		_controlat->shot(false);
+		_controlat->setThrust(false);
+		break;
+	case 2:
+		_controlat->gira_d(false);	
+		break;
+	}
+}
+
+/*
 void Player::keyPressed(ofKeyEventArgs & args) {
 
 	if (_id == 0) {
@@ -96,5 +136,5 @@ void Player::keyReleased(ofKeyEventArgs & args) {
 
 	}
 
-}
+}*/
 

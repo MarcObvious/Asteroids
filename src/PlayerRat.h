@@ -7,17 +7,22 @@
 #include "SpaceShip.h"
 #include "Controlador.h"
 
-class Player : public Controlador {
+class PlayerRat : public Controlador {
 private:
 
 public:
-	Player(SpaceShip* contr, int id, int score_inicial, int lives, ofColor color) ;
+	PlayerRat(SpaceShip* contr, int id, int score_inicial, int lives, ofColor color) ;
 
-	~Player(){};
+	~PlayerRat(){};
 	//void update(double elapsed_time, const Uint8* keystate);
 
-	void keyPressed(ofKeyEventArgs & args);
-	void keyReleased(ofKeyEventArgs & args);
+	/*void keyPressed(ofKeyEventArgs & args);
+	void keyReleased(ofKeyEventArgs & args);*/
+	
+	void mouseMoved(ofMouseEventArgs & args);
+		void mouseDragged(ofMouseEventArgs & args);
+		void mousePressed(ofMouseEventArgs & args);
+		void mouseReleased(ofMouseEventArgs & args);
 
 };
 

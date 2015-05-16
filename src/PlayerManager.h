@@ -10,6 +10,7 @@
 #include "Controlador.h"
 #include "Player.h"
 #include "PlayerArd.h"
+#include "PlayerRat.h"
 
 //Altre patro per gestionar els jugadors.
 //Esta fet així pk sigui facil posar mes modes de joc (ratoli,mando teclat etc)
@@ -25,7 +26,6 @@ private:
 
 	vector<Controlador*> _players; //vector de players
 
-
 	PlayerManager();
 
 	~PlayerManager();
@@ -34,9 +34,11 @@ public:
 
 	static PlayerManager * getInstance();
 
-	void createPlayer(SpaceShip* contr ,int score_inicial, int lives, ofColor color); //crea player...
+	bool createPlayer(SpaceShip* contr ,int score_inicial, int lives, ofColor color, string tipus); //crea player...
 
 	void createPlayerArd(SpaceShip* contr ,int score_inicial, int lives, ofColor color); //crea player controlat per Ard...
+
+	void createPlayerRat(SpaceShip* contr ,int score_inicial, int lives, ofColor color); 
 
 	Controlador* getPlayer(int i);
 

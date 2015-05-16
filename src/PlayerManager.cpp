@@ -28,10 +28,26 @@ PlayerManager * PlayerManager::getInstance() {
 	return _instance;
 }
 
-void PlayerManager::createPlayer(SpaceShip* contr ,int score_inicial, int lives, ofColor color) {
-	Player* p = new Player(contr, _pos, score_inicial, lives, color);
-	_players.push_back(p);
-	++_pos;
+bool PlayerManager::createPlayer(SpaceShip* contr ,int score_inicial, int lives, ofColor color, string tipus) {
+	if (tipus == "Player") {
+		Player* p = new Player(contr, _pos, score_inicial, lives, color);
+		_players.push_back(p);
+		++_pos;
+		return true;
+	}
+	else if (tipus == "PlayerArd") {
+		PlayerArd* p = new PlayerArd(contr, _pos, score_inicial, lives, color);
+		_players.push_back(p);
+		++_pos;
+		return true;
+	}
+	else if (tipus == "PlayerRat") {
+		PlayerRat* p = new PlayerRat(contr, _pos, score_inicial, lives, color);
+		_players.push_back(p);
+		++_pos;
+		return true;
+	}
+	return false;
 }
 void PlayerManager::createPlayerArd(SpaceShip* contr ,int score_inicial, int lives, ofColor color) {
 	PlayerArd* p = new PlayerArd(contr, _pos, score_inicial, lives, color);
@@ -43,12 +59,11 @@ Controlador* PlayerManager::getPlayer(int i){
 	return _players[i];
 }
 
-//Retorna tots els scores de tots els players
+//Retorna tots els scores de tots els players en un string
 string PlayerManager::getAllScores(){
 	stringstream ss;
 	for(unsigned int i = 0; i < _players.size(); i++)
 		ss << "Player " << i << ": Score " << _players[i]->getScore() << " Lives " << _players[i]->getLives() << endl;
-
 	return ss.str();
 }
 
@@ -64,8 +79,8 @@ void PlayerManager::drawScores() {
 			score_line << " -> DEAAAAAAAAAAAAAAAD!!!!!" << endl;
 
 		ofPushStyle();
-		ofSetColor(ofColor(_players[i]->getColor()));
-		ofDrawBitmapString(score_line.str(), posicio_x, posicio_y);
+			ofSetColor(ofColor(_players[i]->getColor()));
+			ofDrawBitmapString(score_line.str(), posicio_x, posicio_y);
 		ofPopStyle();
 		posicio_y += 15;
 	}
@@ -110,7 +125,6 @@ void PlayerManager::draw(bool debug){
 }
 void PlayerManager::update(float elapsed_time) {
 	for(unsigned int i = 0; i < _players.size(); i++) {
-		//if (_players[i]->getTipus() == 1)
 		_players[i]->getControlat()->update(elapsed_time);
 	}
 }

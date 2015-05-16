@@ -2,6 +2,8 @@
 //                   Marc Mateu Sagues,       Nia:146756                      //
 //                   Ignasi Larroca Barcelo   Nia:158633                      //
 //****************************************************************************//
+//Enemic es un controlador (d'una nau) que es mou SOL!
+//Faltaria fer el tema IA i tal xD
 
 #pragma once
 #include "SpaceShip.h"

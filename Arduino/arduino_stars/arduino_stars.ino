@@ -72,6 +72,7 @@ void Joystic() {
 }
 
 void winner (char w) {
+    slcd.backlight();
     slcd.setCursor(0, 0);
     slcd.print("Winner Player ");
     slcd.print(w);
@@ -113,6 +114,7 @@ void loop() {
           finish();
     }
     if (!guanyador) {
+        slcd.noBacklight();
         slcd.setCursor(0,0);
         slcd.print("Pium Pium Pium! Just SHOT!          ");
         slcd.setCursor(0,1);
