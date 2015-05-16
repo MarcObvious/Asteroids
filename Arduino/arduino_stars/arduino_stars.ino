@@ -5,6 +5,8 @@ SerialLCD slcd(11,12);
 int ledPin = 13;
 //led for visualization (use 13 for built-in led)
  
+const int buttonPin = 2; 
+
 int speakerPin = 9;
 //speaker connected to one of the PWM ports
  
@@ -30,7 +32,7 @@ int speakerPin = 9;
 
 int xPin = A1;
 int yPin = A0;
-int buttonPin = 2;
+//int buttonPin = 2;
 
 int xPosition = 0;
 int yPosition = 0;
@@ -71,31 +73,42 @@ void setup() {
 
 }
 void Joystic() {
-    xPosition = analogRead(xPin);
-    yPosition = analogRead(yPin);
-    Serial.print(xPosition,DEC);
-    Serial.print(yPosition,DEC);
-    Serial.print('\n');
+    printVal(analogRead(xPin));
+    printVal(analogRead(yPin));
+    delay(70);
     
 }
+
+void printVal(int val) {
+    byte highByte = ((val >> 8) & 0xFF);
+    byte lowByte = ((val) & 0xFF);
+    Serial.write(highByte);
+    Serial.write(lowByte);
+}
+
             
 
 void loop() {
 
    
     
-    if (Serial.available() > 0) {
+    //while (Serial.available() > 0) {
            //char inByte = Serial.read();
         Joystic();
+        buttonState = digitalRead(buttonPin);
+        if (buttonState == HIGH) {
+           printVal(111);
+           printVal(111);
+          }
             
 
              //if(index < 7)  {// One less than the size of the array
          
-        inChar = Serial.read(); // Read a character
+  //      inChar = Serial.read(); // Read a character
                   /*inData[index] = inChar; // Store it
                   index++; // Increment where to write next
                   inData[index] = '\0'; // Null terminate the string
-              }*/
+              }*//*
         //sortida = 'N';
         switch (inChar) {
         case 'Z':    // your hand is on the sensor
@@ -118,48 +131,37 @@ void loop() {
           break;
       
         } 
-              /*if ( inChar == 'Z' || inChar  || 'U' inChar || 'D' orinChar || 'T' or inChar || 'Q' ){
-                  char sortida ='N';
-                  if (inChar == 'Z')
-                     sortida = '0';
-                  if (inChar == 'U')
-                     sortida = '1';
-                   if (inChar == 'D')
-                     sortida = '2';
-                   if (inChar == 'T')
-                     sortida = '3';
-                   if (inChar == 'Q')
-                     sortida = '4';
-                     */
-                   if (sortida != 'N') {
-                      slcd.backlight();
-                      slcd.scrollDisplayLeft();
-                      slcd.setCursor(0, 0);
-                       // slcd.print(inByte);
-                      slcd.print("Winner Player ");
-                      slcd.print(sortida);
-                      slcd.print(",  Your're The BOSS");
-                      slcd.setCursor(0,1);
-                      
-                      slcd.print("Press r to restart! Keep KILLING    ");
-                      //march();
-                   }
-                
-                else if (sortida == 'N'){
-                    slcd.scrollDisplayLeft();
-                    slcd.noBacklight();
-                    slcd.setCursor(0, 0);
-                    slcd.print("Pium Pium Pium! Just SHOT!          ");
-                    slcd.setCursor(0,1);
-                    slcd.print("Player 0 dir_key ,1 asdw, 2 Joystic.");
+           
+       if (sortida != 'N') {
+          slcd.backlight();
+          slcd.scrollDisplayLeft();
+          slcd.setCursor(0, 0);
+           // slcd.print(inByte);
+          slcd.print("Winner Player ");
+          slcd.print(sortida);
+          slcd.print(",  Your're The BOSS");
+          slcd.setCursor(0,1);
+          
+          slcd.print("Press r to restart! Keep KILLING    ");
+          //march();
+       }
+    
+    else if (sortida == 'N'){
+        slcd.scrollDisplayLeft();
+        slcd.noBacklight();
+        slcd.setCursor(0, 0);
+        slcd.print("Pium Pium Pium! Just SHOT!          ");
+        slcd.setCursor(0,1);
+        slcd.print("Player 0 dir_key ,1 asdw, 2 Joystic.");
 
-                }
-               /* if (index==7) 
-                  index = 0;*/
+    }
+   /* if (index==7) 
+      index = 0;*/
                   
                 
-                delay(70);
-    }
+                
+    //}
+   //delay(100);
 }
 
 void beep (unsigned char speakerPin, int frequencyInHertz, long timeInMilliseconds)

@@ -19,14 +19,16 @@ ofEvent<ofPoint> ofApp::ArdEvent = ofEvent<ofPoint>();
 //--------------------------------------------------------------
 
 void ofApp::setupArduino() {
-	serial.listDevices();
-	vector <ofSerialDeviceInfo> deviceList = serial.getDeviceList();
+	if (!serial.isInitialized()) {
+		serial.listDevices();
+		vector <ofSerialDeviceInfo> deviceList = serial.getDeviceList();
 
-	// Diferents configuracions segons Mac Linux o Windows
-	int baud = 9600;
-	//serial.setup("COM4", baud); // Windows
-	//serial.setup("/dev/tty.usbserial-A4001JEC", baud);  //Mac
-	serial.setup("/dev/ttyACM0", baud); //Linux powa!
+		// Diferents configuracions segons Mac Linux o Windows
+		int baud = 9600;
+		serial.setup("COM4", baud); // Windows
+		//serial.setup("/dev/tty.usbserial-A4001JEC", baud);  //Mac
+		//serial.setup("/dev/ttyACM0", baud); //Linux powa!
+	}
 
 	cyclesCounter = 0;
 	cyclesJumped = 5;
@@ -140,9 +142,9 @@ void ofApp::killSound() {
 void ofApp::arduinoUpdate() {
 	if(readAndSendMessage) {
 		//serial.writeByte(receivedBytes[0]);
-		unsigned char enviar[NUM_BYTES];
-		memset(enviar, 0, NUM_BYTES);
-		enviar[7] = '\0';
+		//unsigned char enviar[NUM_BYTES];
+		//memset(enviar, 0, NUM_BYTES);
+/*		enviar[7] = '\0';
 		char send = 'N';
 		if (guanyador != NULL){
 			int g = guanyador->getId();
@@ -164,14 +166,15 @@ void ofApp::arduinoUpdate() {
 		enviar[3] = send;
 		enviar[4] = send;
 		enviar[5] = send;
-		enviar[6] = send;
+		enviar[6] = send;*/
 
 
 
 		//cout << enviar << endl;
-		serial.writeBytes(enviar, NUM_BYTES);
-		memset(receivedBytes, 0, NUM_BYTES);
+		//serial.writeBytes(enviar, enviar[0]);
+		/*memset(receivedBytes, 0, NUM_BYTES);
 		serial.readBytes(receivedBytes, NUM_BYTES);
+		cout << "PUTAAAAAAAAAAAAAAAAA" << receivedBytes << endl;
 		//PlayerManager::getInstance()->update(elapsedTime, receivedBytes);
 		//char point = receivedBytes;
 		char aux[3];
@@ -182,19 +185,33 @@ void ofApp::arduinoUpdate() {
 		aux1 << aux;
 		int pos_x = 0;
 		aux1 >> pos_x;
-		if (pos_x > 0 and pos_x < 770) {
-			aux[0]= receivedBytes[3];
-			aux[1] = receivedBytes[4];
-			aux[2]= receivedBytes[5];
-			aux1.clear();
-			int pos_y = 0;
-			aux1 << aux;
-			aux1 >> pos_y;
-			if (pos_y > 0 and pos_y < 770) {
-				//cout << "X " << pos_x << " Y " << pos_y << endl;
-				ofPoint pos = ofPoint(pos_x,pos_y);
-				ofNotifyEvent(ArdEvent, pos, this);
+		*/
+		int x;
+		int y;
+		//const int NUM_BYTES = 4;
+		unsigned char bytesReturned[4];
+		memset(bytesReturned, 0, 4); //Set 0 for NUM_BYTES in bytesReturned
+		while(serial.readBytes(bytesReturned, 4) > 0){ }
+		//Read info from the potentiometer
+		x = bytesReturned[0];
+		x <<= 8;
+		x += bytesReturned[1];
+		//Read info from the button
+		y = bytesReturned[2];
+		y <<= 8;
+		y += bytesReturned[3];
+		cout << "X " << x << " Y " << y <<endl;
+		if (x == 0 && y == 0){
+			reset();
+		}
+		else {
+			if (x > 0 && x < 770) {
+				if (y > 0 && y < 770) {
+					//cout << "X " << pos_x << " Y " << pos_y << endl;
+					ofPoint pos = ofPoint(x,y);
+					ofNotifyEvent(ArdEvent, pos, this);
 
+				}
 			}
 		}
 		readAndSendMessage = false;
@@ -230,7 +247,7 @@ void ofApp::update() {
 	}
 	//AQUI ES REP I S'ENVIA A ARDUINO
 	arduinoUpdate();
-}
+}	
 
 //--------------------------------------------------------------
 void ofApp::draw() {

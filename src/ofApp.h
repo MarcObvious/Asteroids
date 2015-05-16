@@ -56,6 +56,7 @@ private:
 	int cyclesJumped;
 	bool readAndSendMessage;
 	unsigned char receivedBytes[NUM_BYTES];
+	int primer_cop;
 
 	bool debug;
 	Controlador* guanyador;

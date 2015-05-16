@@ -30,7 +30,7 @@ void PlayerArd::moviment(ofPoint& pos) {
 		_controlat->gira_e(true);
 		_controlat->gira_d(false);
 	}
-	else if (pos.x == 0 and pos.y == 0) {
+	else if (pos.x == 0 && pos.y == 0) {
 		_controlat->gira_e(false);
 		_controlat->gira_d(false);
 	}
