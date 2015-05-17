@@ -84,7 +84,7 @@ void winner (char w) {
 
 void finish() {
     slcd.setCursor(0, 0);
-    slcd.print(" Thx For Playing!                    ");
+    slcd.print(" Thx For Playing!                  ");
               
     slcd.setCursor(0,1); 
     slcd.print(" Yeah, it's a Loop                 ");

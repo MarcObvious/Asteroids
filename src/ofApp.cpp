@@ -138,7 +138,7 @@ void ofApp::arduinoUpdate() {
 		unsigned char enviar[1];
 		//memset(enviar, 0, 4);
 		enviar[0] = 'A';
-	
+
 		if (guanyador != NULL){
 			switch (guanyador->getId()) {
 			case 0:
@@ -161,7 +161,7 @@ void ofApp::arduinoUpdate() {
 			break;
 			}
 		}
-			
+
 		if(acaba_partida)
 			enviar[0] = 'F';
 		//Enviem el byte.
@@ -173,7 +173,7 @@ void ofApp::arduinoUpdate() {
 			unsigned char bytesRead[NUM_BYTES];
 			memset(bytesRead, 0, NUM_BYTES);
 			while(serial.readBytes(bytesRead, NUM_BYTES) > 0){ }
-			//X-Axis 
+			//X-Axis
 			x = bytesRead[0];
 			x <<= 8;
 			x += bytesRead[1];
@@ -223,7 +223,8 @@ void ofApp::update() {
 		}
 	}
 	//Update dels controladors arduino
-	arduinoUpdate();
+	if ( serial.isInitialized())
+			arduinoUpdate();
 }	
 
 //--------------------------------------------------------------
