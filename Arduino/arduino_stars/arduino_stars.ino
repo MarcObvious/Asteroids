@@ -1,5 +1,7 @@
 #include <SerialLCD.h>
 #include <SoftwareSerial.h>
+
+//Notes per a tu ja saps que
 #define c 261
 #define d 294
 #define e 329
@@ -27,7 +29,6 @@ int ledPin = 13;
 int buttonPin = 2; 
 
 int speakerPin = 9;
-//speaker connected to one of the PWM ports
  
 int xPin = A1;
 int yPin = A0;
@@ -37,24 +38,25 @@ int yPosition = 0;
 int buttonState = 0;
 bool guanyador = false;
 
-char inData[1]; // Allocate some space for the string
+char inData[1]; //Rebrem 1 caracter
 
 void setup() {
-    // initialize serial communications at 9600 bps:
+    //Inicialitzem tots els components que necessitem
     Serial.begin(9600); 
     
+    //X-axis, Y-axis
     pinMode(xPin, INPUT);
     pinMode(yPin, INPUT);
     
     pinMode(buttonPin, INPUT);
      
     slcd.begin();
+    
     pinMode(ledPin, OUTPUT);
-    // sets the ledPin to be an output
     pinMode(speakerPin, OUTPUT);
-    //sets the speakerPin to be an output
 }
 
+//Enviem qualsevol valor en grups de 2 bytes a traves del serial
 void printVal(int val) {
     byte highByte = ((val >> 8) & 0xFF);
     byte lowByte = ((val) & 0xFF);
@@ -63,6 +65,7 @@ void printVal(int val) {
     //delay(40);
 }
 
+//Llegim els Valors analogics del Joystic, i els enviem a printVal
 void Joystic() {
     xPosition = analogRead(xPin);
     printVal(xPosition);
@@ -71,6 +74,7 @@ void Joystic() {
     //delay(70);
 }
 
+//Hi ha guanyador, Enviem el text apropiat a la LCD
 void winner (char w) {
     slcd.backlight();
     slcd.setCursor(0, 0);
@@ -82,10 +86,10 @@ void winner (char w) {
     guanyador = true;     
 } 
 
+//Final del Joc. Bloquejara l'arduino amb la cançoneta infernal
 void finish() {
     slcd.setCursor(0, 0);
-    slcd.print(" Thx For Playing!                  ");
-              
+    slcd.print(" Thx For Playing!                  "); 
     slcd.setCursor(0,1); 
     slcd.print(" Yeah, it's a Loop                 ");
              
@@ -94,11 +98,13 @@ void finish() {
 
 void loop() {
     buttonState = digitalRead(buttonPin);
+    //Si s'apreta button/touch, enviem la senyal de reiniciar
     if (buttonState == HIGH) {
         printVal(000);
         printVal(000);
     }
     slcd.scrollDisplayLeft();
+    //Si hi ha data per llegir, la llegim i hi ha guanyador i qui es
     if(Serial.readBytes(inData,1) > 0) { 
         if (inData[0] == 'Z') 
           winner('0');
@@ -113,8 +119,9 @@ void loop() {
         else if (inData[0]== 'A')
           guanyador = false;
         else if (inData[0] == 'F')
-          finish();
+          finish(); //Si rebem F finalitzem
     }
+    //Si no hi ha guanyador Printem el missatge normal per pantalla
     if (!guanyador) {
         slcd.noBacklight();
         slcd.setCursor(0,0);
@@ -122,16 +129,17 @@ void loop() {
         slcd.setCursor(0,1);
         slcd.print("0 dir_key ,1 asdw, 2 Mous, 3 Joystic");
     }
-    Joystic();
-    
+    //Actualitzem el Joystic
+    Joystic();   
 }
 
+
+//Codi que NO hem fet nosaltres (nomes petites modificacions). Tots
+//els credits van pel seu autor.
 void beep (unsigned char speakerPin, int frequencyInHertz, long timeInMilliseconds)
 {
-
     digitalWrite(ledPin, HIGH);
     //use led to visualize the notes being played
-   
     int x;
     long delayAmount = (long)(1000000/frequencyInHertz);
     long loopTime = (long)((timeInMilliseconds*1000)/(delayAmount*2));
@@ -150,7 +158,7 @@ void beep (unsigned char speakerPin, int frequencyInHertz, long timeInMillisecon
     //a little delay to make all notes sound separate
     
 }
- 
+
 void march()
 {
     //for the sheet music see:
