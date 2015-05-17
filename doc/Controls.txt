@@ -19,7 +19,7 @@ Left_button left, Right_button right, Middle_button shot, Middle_button drag thr
 
 Arduino:
 Player 3:
-Joystyic. Figure it yourself. It's easy.
+Joystyic. Move left -> left, Move right -> right, Move forward -> shot, Move backward -> thrust.
 
 Player 4:
 IA -> It's not working now. Just bothers.
