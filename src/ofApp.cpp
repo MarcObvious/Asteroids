@@ -10,11 +10,13 @@ BulletManager* BulletManager::_instance = NULL;
 AsteroidManager* AsteroidManager::_instance = NULL;
 PlayerManager* PlayerManager::_instance = NULL;
 
+//Event que registra el canvi al joystic arduino
+ofEvent<ofPoint> ofApp::ArdEvent = ofEvent<ofPoint>();
+
 //Variables globals que defineixen les vides i la puntuacio maxima
 int MAX_SCORE = 500;
 int MAX_LIVES = 10;
 int INITIAL_SCORE = 0;
-ofEvent<ofPoint> ofApp::ArdEvent = ofEvent<ofPoint>();
 
 //--------------------------------------------------------------
 
@@ -34,10 +36,6 @@ void ofApp::setupArduino() {
 	cyclesJumped = 3;
 
 	readAndSendMessage = false;
-
-	memset(receivedBytes, 0, NUM_BYTES);
-
-
 }
 
 
@@ -48,6 +46,7 @@ void ofApp::setup() {
 	//Posem Arduino a punt
 	setupArduino();
 
+	acaba_partida = false;
 	// Load Asteroids from XML
 	AsteroidManager::getInstance()->loadAsteroids();
 
@@ -62,49 +61,47 @@ void ofApp::setup() {
 	shape.push_back(ofPoint(-25,-25));
 	shape.push_back(ofPoint(-25, 25));
 
-	//Demanem al PlayerManager que ens creei un Player, amb la Spaceship que vulgueem
-	//Setup Players amb les seves Naus
-
+	//Demanem al PlayerManager que ens creei un Player o PlayerArd, amb la Spaceship que vulgueem
 	///tot això ho hauria de fer un parser.
 	SpaceShip* nau = new SpaceShip();
 
 	nau->setup(shape, 40, 500, 50,
 			ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
 
-	PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(255,0,0));
+	PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(255,0,0), "Player");
 
 	nau = new SpaceShip();
 
 	nau->setup(shape, 40, 500, 50,
 			ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
 
-	PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,0,255));
+	PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,0,255),"Player");
 
 	nau = new SpaceShip();
 
 	nau->setup(shape, 40, 500, 50,
 			ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
 
-	PlayerManager::getInstance()->createPlayerArd(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,255,0));
+	PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,255,0), "PlayerRat");
 
 
-//	nau = new SpaceShip();
-//
-//	nau->setup(shape, 40, 500, 50,
-//			ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
-//
-//	PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,255,255));
-//
-//	nau = new SpaceShip();
-//
-//	nau->setup(shape, 40, 500, 50,
-//			ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
-//
-//	PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(255,255,0));
+	nau = new SpaceShip();
 
+	nau->setup(shape, 40, 500, 50,
+			ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
+
+	PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(255,255,0),"PlayerArd");
+//
+	nau = new SpaceShip();
+
+	nau->setup(shape, 40, 500, 50,
+			ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
+
+	PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,255,255), "Player");
+	
 
 	//Carreguem els sons d'explosions d'asteroides i de dispars
-	//ESTA SILENCIAT ARA MATEIX
+	//Comença SILENCIAT pel be de tota la humanitat!!
 	explosion = new ofSoundPlayer();
 	explosion->loadSound("sounds/explosion.mp3", false);
 	AsteroidManager::getInstance()->setExplosionSound(NULL);
@@ -118,8 +115,6 @@ void ofApp::setup() {
 
 	// Debug
 	debug = false;
-
-
 }
 
 ofApp::~ofApp(){
@@ -136,10 +131,9 @@ void ofApp::killSound() {
 		explosion->unloadSound();
 	}
 }
-
-
-
+//AQUI ES REP I S'ENVIA A ARDUINO
 void ofApp::arduinoUpdate() {
+<<<<<<< HEAD
 	if(readAndSendMessage) {
 		//serial.writeByte(receivedBytes[0]);
 		
@@ -202,10 +196,19 @@ void ofApp::arduinoUpdate() {
 //		enviar[1] = 'A';
 //		enviar[2] = 'A';
 //		enviar[3] = '\n';
+=======
+	if(readAndSendMessage || acaba_partida) {
+		//Enviarem un byte,
+		unsigned char enviar[1];
+		//memset(enviar, 0, 4);
+		enviar[0] = 'A';
+	
+>>>>>>> 1145223f43e95b057d5e98629ae56fa2e10b217f
 		if (guanyador != NULL){
 			switch (guanyador->getId()) {
 			case 0:
 				enviar[0] = 'Z';
+<<<<<<< HEAD
 //				enviar[1] = 'Z';
 //				enviar[2] = 'Z';
 //				enviar[3] = '\0';
@@ -282,6 +285,57 @@ void ofApp::arduinoUpdate() {
 		}
 		}
 
+=======
+			break;
+			case 1:
+				enviar[0] = 'U';
+			break;
+			case 2:
+				enviar[0] = 'D';
+			break;
+			case 3:
+				enviar[0] = 'T';
+			break;
+			case 4:
+				enviar[0] = 'Q';
+			break;
+			case 5:
+				enviar[0] = 'C';
+			break;
+			}
+		}
+			
+		if(acaba_partida)
+			enviar[0] = 'F';
+		//Enviem el byte.
+		serial.writeBytes(enviar,1);
+		//Si hi ha alguna cosa per llegir,
+		if(serial.available()) {
+			int x; int y;
+			//Llegim 4 bytes.
+			unsigned char bytesRead[NUM_BYTES];
+			memset(bytesRead, 0, NUM_BYTES);
+			while(serial.readBytes(bytesRead, NUM_BYTES) > 0){ }
+			//X-Axis 
+			x = bytesRead[0];
+			x <<= 8;
+			x += bytesRead[1];
+			//Y-Axis
+			y = bytesRead[2];
+			y <<= 8;
+			y += bytesRead[3];
+			//cout << "X " << x << " Y " << y <<endl;
+			if (x == 0 && y == 0) //Senyal de reset
+				reset();
+			//Fem una "filtre" cutre per no passar tonteries. Smooth.
+			else {
+				if (x > 0 && x < 770 && y > 0 && y < 770 ) {
+						ofPoint pos = ofPoint(x,y);
+						ofNotifyEvent(ArdEvent, pos, this);
+				}
+			}
+		}
+>>>>>>> 1145223f43e95b057d5e98629ae56fa2e10b217f
 		readAndSendMessage = false;
 	}
 
@@ -294,68 +348,81 @@ void ofApp::arduinoUpdate() {
 
 //--------------------------------------------------------------
 void ofApp::update() {
+	if (!acaba_partida) { 
+		// We get the time that last frame lasted, and use it to update asteroids logic
+		// so their behaviour is independent to the framerate
+		float elapsedTime = ofGetLastFrameTime();
 
-	// We get the time that last frame lasted, and use it to update asteroids logic
-	// so their behaviour is independent to the framerate
-	float elapsedTime = ofGetLastFrameTime();
+		//Preguntem a PlayerManager si hi ha guanyador, si n'hi ha no updategem res.
+		guanyador = PlayerManager::getInstance()->hihaguanyador(MAX_SCORE);
+		if (guanyador == NULL){
 
-	//Preguntem a PlayerManager si hi ha guanyador, si n'hi ha no updategem res.
-	guanyador = PlayerManager::getInstance()->hihaguanyador(MAX_SCORE);
-	if (guanyador == NULL){
+			//Comprova colisions d'Asteroides amb spaceShips
+			AsteroidManager::getInstance()->comprova();
 
-		//Comprova colisions d'Asteroides (amb bullets i amb Players)
-		AsteroidManager::getInstance()->comprova();
-
-		//Fa els updates de tot
-		BulletManager::getInstance()->update(elapsedTime);
-		AsteroidManager::getInstance()->update(elapsedTime);
-		PlayerManager::getInstance()->update(elapsedTime);
-
-
+			//Fa els updates de tot
+			BulletManager::getInstance()->update(elapsedTime);
+			AsteroidManager::getInstance()->update(elapsedTime);
+			PlayerManager::getInstance()->update(elapsedTime);
+		}
 	}
-	//AQUI ES REP I S'ENVIA A ARDUINO
+	//Update dels controladors arduino
 	arduinoUpdate();
 }	
 
 //--------------------------------------------------------------
 void ofApp::draw() {
-	//Si algu ha guanyat nomes dibuixem la pantalla de restart
-	if ( guanyador ) {
-		ofPushStyle();
-		ofSetColor(guanyador->getColor());
-		stringstream id;
-		id << "WINER JUGADOR ";
-		id << guanyador->getId();
-		id << " -> SCORE = ";
-		id << guanyador->getScore();
-		ofDrawBitmapString(id.str(), 390, 450);
-		ofPopStyle();
-		ofDrawBitmapString("Press 'r' to restart.", 390, 470);
+	if (!acaba_partida) {
+		//Si algu ha guanyat nomes dibuixem la pantalla de restart
+		if ( guanyador ) {
+			ofPushStyle();
+				ofSetColor(guanyador->getColor());
+				stringstream id;
+				id << "WINER JUGADOR " << guanyador->getId();
+				id << " -> SCORE = " << guanyador->getScore();
+				ofDrawBitmapString(id.str(), 390, 450);
+			ofPopStyle();
+			ofDrawBitmapString("Press 'r' to restart, 'f' to finish", 390, 470);
+		}
+		else {
+			//Dibuixem instruccions
+			ofPushStyle();
+			ofSetColor(255,255,255);
+				ofDrawBitmapString("Player 1 a w d s, Player 0 up, left, right, down, Player 2 mouse, Player 3 joystic i 4 sols per Vacilar.", 5, 745);
+				ofDrawBitmapString("Press '1' to debug, '2' to unmute/mute, 'r' to restart, 'f' to finish, 'ESC' to get out", 5, 760);
+			ofPopStyle();
+
+			//Dibuixem totes les bales i asteroides
+			BulletManager::getInstance()->draw();
+			AsteroidManager::getInstance()->draw(debug);
+			PlayerManager::getInstance()->draw(debug);
+
+			if (debug) {
+				ofPushStyle();
+				ofSetColor(255);
+				ofDrawBitmapString(ofToString(ofGetFrameRate()), 900, 20);
+				ofPopStyle();
+			}
+		}
 	}
 	else {
-
-		//Dibuixem instruccions
+		//Pantalla de finalització del joc.
 		ofPushStyle();
-		ofSetColor(255,255,255);
-		ofDrawBitmapString("Player 1 a w d s, Player 0 up, left, right, down .Press '1' to debug, '2' to mute", 5, 760);
+			ofSetColor(0,255,0);
+			ofDrawBitmapString("MOLTES GRACIES PER JUGAR!", 240, 364);
 		ofPopStyle();
-
-
-		//Draw Scores
-		//PlayerManager::getInstance()->drawScores();
-
-		//Dibuixem totes les bales i asteroides
-		BulletManager::getInstance()->draw();
-		AsteroidManager::getInstance()->draw(debug);
-		PlayerManager::getInstance()->draw(debug);
-
-
-		if (debug) {
-			ofPushStyle();
-			ofSetColor(255);
-			ofDrawBitmapString(ofToString(ofGetFrameRate()), 900, 20);
-			ofPopStyle();
-		}
+		ofPushStyle();
+			ofSetColor(0,255,0);
+			ofDrawBitmapString("Joc creat per Marc Mateu i Ignasi Larroca", 240, 384);
+		ofPopStyle();
+		ofPushStyle();
+			ofSetColor(255,0,0);
+			ofDrawBitmapString("No, la musica infernal no s'acaba mai.", 240, 404);
+		ofPopStyle();
+		ofPushStyle();
+			
+			ofDrawBitmapString("'ESC' per sortir, 'r' per reiniciar la partida amb la musiqueta dels ******", 240, 464);
+		ofPopStyle();
 	}
 }
 
@@ -390,6 +457,10 @@ void ofApp::keyPressed(int key) {
 		cout << "Reset at:" << endl;
 		cout << PlayerManager::getInstance()->getAllScores();
 		reset();
+		break;
+	case 'f':
+		acaba_partida = true;
+		cout << "MENTIDAAAAAAAAAAAAAAAAAAA, musicaaaa i mes musicaaaaa muahahahahhah!" << endl;
 		break;
 		//----------------------------------------------------------------------
 	}
@@ -427,13 +498,7 @@ void ofApp::mouseDragged(int x, int y, int button) {
 
 //--------------------------------------------------------------
 void ofApp::mousePressed(int x, int y, int button) {
-	//	for (int i = 0; i < asteroids.size(); i++) {
-	//		if (asteroids[i]->getCollision(ofPoint(x, y))) {
-	//			cout << "Mouse hit Asteroid " << i << endl;
-	//			splitAsteroid(i);
-	//
-	//		}
-	//	}
+
 }
 
 

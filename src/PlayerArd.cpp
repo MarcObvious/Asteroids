@@ -7,8 +7,6 @@
 
 PlayerArd::PlayerArd(SpaceShip* contr, int id, int score_inicial, int lives, ofColor color)
 : Controlador(contr,  id,  score_inicial,  lives,  color) {
-//	ofRegisterKeyEvents(this);
-//	ofAddListener(BaseButton::clickedInside, this, &o::buttonPressed);
 	ofAddListener(ofApp::ArdEvent, this, &PlayerArd::moviment);
 	_controlat = contr;
 	_id = id;

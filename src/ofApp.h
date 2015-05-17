@@ -16,7 +16,7 @@
 #include "AsteroidManager.h"
 #include "PlayerManager.h"
 
-#define NUM_BYTES 8
+#define NUM_BYTES 4
 
 class ofApp: public ofBaseApp {
 
@@ -55,11 +55,11 @@ private:
 	int cyclesCounter;
 	int cyclesJumped;
 	bool readAndSendMessage;
-	unsigned char receivedBytes[NUM_BYTES];
-	int primer_cop;
+	
+	bool acaba_partida;
 
 	bool debug;
 	Controlador* guanyador;
-
+	
 
 };

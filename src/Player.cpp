@@ -23,10 +23,10 @@ void Player::keyPressed(ofKeyEventArgs & args) {
 
 	if (_id == 0) {
 		switch (args.key) {
-		case OF_KEY_UP:
+		case OF_KEY_DOWN:
 			_controlat->setThrust(true);
 			break;
-		case OF_KEY_DOWN:
+		case OF_KEY_UP:
 			_controlat->shot(true);
 			break;
 		case OF_KEY_LEFT:
@@ -41,10 +41,10 @@ void Player::keyPressed(ofKeyEventArgs & args) {
 	}
 	else if (_id == 1){
 		switch (args.key) {
-		case 'w':
+		case 's':
 			_controlat->setThrust(true);
 			break;
-		case 's':
+		case 'w':
 			_controlat->shot(true);
 			break;
 		case 'a':
@@ -63,13 +63,13 @@ void Player::keyPressed(ofKeyEventArgs & args) {
 void Player::keyReleased(ofKeyEventArgs & args) {
 	if (_id == 0) {
 		switch (args.key) {
-		case OF_KEY_UP:
+		case OF_KEY_DOWN:
 			_controlat->setThrust(false);
 			break;
 		case OF_KEY_LEFT:
 			_controlat->gira_e(false);
 			break;
-		case OF_KEY_DOWN:
+		case OF_KEY_UP:
 			_controlat->shot(false);
 			break;
 		case OF_KEY_RIGHT:
@@ -79,13 +79,13 @@ void Player::keyReleased(ofKeyEventArgs & args) {
 	}
 	else if(_id == 1) {
 		switch (args.key) {
-		case 'w':
+		case 's':
 			_controlat->setThrust(false);
 			break;
 		case 'a':
 			_controlat->gira_e(false);
 			break;
-		case 's':
+		case 'w':
 			_controlat->shot(false);
 			break;
 		case 'd':
