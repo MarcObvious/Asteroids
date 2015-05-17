@@ -13,9 +13,9 @@ L'únic addon OpenFrameworks es el de Xml.
 Tot el codi es nostre o està acrediat, els patrons i manera de gestionar events ens els hem 
 inventat o tret l'assignatura de Jocs Electronics.
 
-La lògica amb Arduino es simple, Un joystic per controlar un player, un button o touchButton per a
-reiniciar el joc, una pantalla LCD que informa de diferents events i un led i buzzer que ens reservem
-dir quan i que fan ;).
+La lògica amb Arduino es simple, Un joystic per controlar un player, un button o touchButton per
+a reiniciar el joc, una pantalla LCD que informa de diferents events i un led i buzzer que 
+ens reservem dir quan i que fan ;).
 
 Per a compilar i executar:
 
