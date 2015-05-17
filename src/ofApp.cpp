@@ -27,9 +27,9 @@ void ofApp::setupArduino() {
 
 		// Diferents configuracions segons Mac Linux o Windows
 		int baud = 9600;
-		//serial.setup("COM4", baud); // Windows
+		serial.setup("COM4", baud); // Windows
 		//serial.setup("/dev/tty.usbserial-A4001JEC", baud);  //Mac
-		serial.setup("/dev/ttyACM0", baud); //Linux powa!
+		//serial.setup("/dev/ttyACM0", baud); //Linux powa!
 	}
 
 	cyclesCounter = 0;
