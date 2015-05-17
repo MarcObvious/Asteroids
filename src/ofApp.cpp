@@ -21,19 +21,19 @@ int INITIAL_SCORE = 0;
 //--------------------------------------------------------------
 
 void ofApp::setupArduino() {
-	//if (!serial.isInitialized()) {
+	if (!serial.isInitialized()) {
 		serial.listDevices();
 		vector <ofSerialDeviceInfo> deviceList = serial.getDeviceList();
 
 		// Diferents configuracions segons Mac Linux o Windows
 		int baud = 9600;
-		//serial.setup("COM4", baud); // Windows
+		serial.setup("COM4", baud); // Windows
 		//serial.setup("/dev/tty.usbserial-A4001JEC", baud);  //Mac
-		serial.setup("/dev/ttyACM0", baud); //Linux powa!
-	//}
+		//serial.setup("/dev/ttyACM0", baud); //Linux powa!
+	}
 
 	cyclesCounter = 0;
-	cyclesJumped = 3;
+	cyclesJumped = 5;
 
 	readAndSendMessage = false;
 }
@@ -133,159 +133,16 @@ void ofApp::killSound() {
 }
 //AQUI ES REP I S'ENVIA A ARDUINO
 void ofApp::arduinoUpdate() {
-<<<<<<< HEAD
-	if(readAndSendMessage) {
-		//serial.writeByte(receivedBytes[0]);
-		
-	//	
-		//enviar[7] = '\0';
-		
-		//unsigned char high;
-
-		/*if (guanyador != NULL){
-			int g = guanyador->getId();
-			if (g == 0)
-				high = ((0 >> 8) & 0xFF);
-			if (g == 1)
-				high = ((1 >> 8) & 0xFF);
-			if (g == 2)
-				high = ((2 >> 8) & 0xFF);
-			if (g == 3)
-				high = ((3 >> 8) & 0xFF);
-			if (g == 4)
-				high = ((4 >> 8) & 0xFF);
-		}*/
-		//else 
-				//high = (('V' >> 8) & 0xFF);
-	//	cout << high << endl;
-
-		//serial.writeByte(high);
-		//bitset<8> low;
-	//	byte highByte = ((val >> 8) & 0xFF);
-		//byte lowByte = ((val) & 0xFF);
-
-		/*enviar[0] = send;
-		enviar[1] = send;
-		enviar[2] = send;
-		enviar[3] = send;
-		enviar[4] = send;
-		enviar[5] = send;
-		enviar[6] = send;*/
-
-
-
-		//cout << enviar << endl;
-		//serial.writeBytes(enviar, enviar[0]);
-		/*memset(receivedBytes, 0, NUM_BYTES);
-		serial.readBytes(receivedBytes, NUM_BYTES);
-		cout << "PUTAAAAAAAAAAAAAAAAA" << receivedBytes << endl;
-		//PlayerManager::getInstance()->update(elapsedTime, receivedBytes);
-		//char point = receivedBytes;
-		char aux[3];
-		aux[0]= receivedBytes[0];
-		aux[1] = receivedBytes[1];
-		aux[2]= receivedBytes[2];
-		stringstream aux1;
-		aux1 << aux;
-		int pos_x = 0;
-		aux1 >> pos_x;
-		*/
-		unsigned char enviar[1];
-		memset(enviar, 0, 1);
-		enviar[0] = 'A';
-//		enviar[1] = 'A';
-//		enviar[2] = 'A';
-//		enviar[3] = '\n';
-=======
 	if(readAndSendMessage || acaba_partida) {
 		//Enviarem un byte,
 		unsigned char enviar[1];
 		//memset(enviar, 0, 4);
 		enviar[0] = 'A';
 	
->>>>>>> 1145223f43e95b057d5e98629ae56fa2e10b217f
 		if (guanyador != NULL){
 			switch (guanyador->getId()) {
 			case 0:
 				enviar[0] = 'Z';
-<<<<<<< HEAD
-//				enviar[1] = 'Z';
-//				enviar[2] = 'Z';
-//				enviar[3] = '\0';
-				//cout << "GUANYADOR z" <<endl;
-			break;
-			case 1:
-				enviar[0] = 'U';
-//				enviar[1] = 'U';
-//				enviar[2] = 'U';
-//				enviar[3] = '\0';
-			//	cout << "GUANYADOR U" <<endl;
-			break;
-			case 2:
-				enviar[0] = 'D';
-//				enviar[1] = 'D';
-//				enviar[2] = 'D';
-//				enviar[3] = '\0';
-			//	cout << "GUANYADOR T" <<endl;
-			break;
-			case 3:
-				enviar[0] = 'T';
-//				enviar[1] = 'T';
-//				enviar[2] = 'T';
-//				enviar[3] = '\0';
-			//	cout << "GUANYADOR D" <<endl;
-			break;
-			case 4:
-				enviar[0] = 'Q';
-//				enviar[1] = 'Q';
-//				enviar[2] = 'Q';
-//				enviar[3] = '\0';
-				//cout << "GUANYADOR Q" <<endl;
-			break;
-			
-		
-		}
-
-		}
-		serial.writeBytes(enviar,1);
-		
-		//char send = 'N';
-		
-		//enviar[4] =  '\n';
-		//cout << enviar << endl;
-		if(serial.available()) {
-
-		int x;
-		int y;
-		//const int NUM_BYTES = 4;
-		unsigned char bytesReturned[4];
-		memset(bytesReturned, 0, 4); //Set 0 for NUM_BYTES in bytesReturned
-		while(serial.readBytes(bytesReturned, 4) > 0){ }
-		//X-Axis 
-		x = bytesReturned[0];
-		x <<= 8;
-		x += bytesReturned[1];
-		//Y-Axis
-		y = bytesReturned[2];
-		y <<= 8;
-		y += bytesReturned[3];
-		//cout << "X " << x << " Y " << y <<endl;
-		if (x == 0 && y == 0){
-			reset();
-		}
-		else {
-			if (x > 0 && x < 770) {
-				if (y > 0 && y < 770) {
-					//cout << "X " << pos_x << " Y " << pos_y << endl;
-					ofPoint pos = ofPoint(x,y);
-					ofNotifyEvent(ArdEvent, pos, this);
-
-				}
-			}
-		}
-		}
-
-=======
 			break;
 			case 1:
 				enviar[0] = 'U';
@@ -335,7 +192,6 @@ void ofApp::arduinoUpdate() {
 				}
 			}
 		}
->>>>>>> 1145223f43e95b057d5e98629ae56fa2e10b217f
 		readAndSendMessage = false;
 	}
 

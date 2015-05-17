@@ -37,15 +37,7 @@ int yPosition = 0;
 int buttonState = 0;
 bool guanyador = false;
 
-<<<<<<< HEAD
-char sortida ='N';
-
 char inData[1]; // Allocate some space for the string
-char inChar; // Where to store the character read
-byte index = 0; // Index into array; where to store the character
-=======
-char inData[1]; // Allocate some space for the string
->>>>>>> 1145223f43e95b057d5e98629ae56fa2e10b217f
 
 void setup() {
     // initialize serial communications at 9600 bps:
@@ -58,27 +50,9 @@ void setup() {
      
     slcd.begin();
     pinMode(ledPin, OUTPUT);
-<<<<<<< HEAD
-  // sets the ledPin to be an output
-  pinMode(speakerPin, OUTPUT);
-  //sets the speakerPin to be an output
-  slcd.backlight();
-
-}
-void Joystic() {
-    int x = 0;
-    x = analogRead(xPin);
-    printVal(x);
-    int y = 0;
-    y = analogRead(yPin);
-    printVal(y);
-    //delay(70);
-    
-=======
     // sets the ledPin to be an output
     pinMode(speakerPin, OUTPUT);
     //sets the speakerPin to be an output
->>>>>>> 1145223f43e95b057d5e98629ae56fa2e10b217f
 }
 
 void printVal(int val) {
@@ -89,18 +63,6 @@ void printVal(int val) {
     //delay(40);
 }
 
-<<<<<<< HEAD
-void winner (char w) {
-  
-      slcd.setCursor(0, 0);
-      slcd.print(" Winner Player ");
-      slcd.print(w);
-      slcd.print(",  Your're The BOSS");
-      slcd.setCursor(0,1); 
-      slcd.print(" Press r to restart! Keep KILLING    ");
-      guanyador = true;
-  
-=======
 void Joystic() {
     xPosition = analogRead(xPin);
     printVal(xPosition);
@@ -108,7 +70,6 @@ void Joystic() {
     printVal(yPosition);
     //delay(70);
 }
->>>>>>> 1145223f43e95b057d5e98629ae56fa2e10b217f
 
 void winner (char w) {
     slcd.backlight();
@@ -132,123 +93,6 @@ void finish() {
 }
 
 void loop() {
-<<<<<<< HEAD
-
-        
-        slcd.scrollDisplayLeft();
-   /* if (buttonState == HIGH) {
-          printVal(000);
-           printVal(000);
-          }*/
-     while(Serial.readBytes(inData,1) > 0){ 
-          Joystic();
-         if (inData[0] == 'Z') 
-               winner('0');
-         else if (inData[0] == 'U') 
-               winner('1');
-         else if (inData[0] == 'D') 
-               winner('2');
-         else if (inData[0] == 'T') 
-               winner('3');
-         else if (inData[0] == 'Q') 
-               winner('4');  
-         else if (inData[0]== 'A')
-               guanyador = false;    
-       }
-       if (!guanyador) {
-                slcd.setCursor(0,0);
-                slcd.print("Pium Pium Pium! Just SHOT!          ");
-                slcd.setCursor(0,1);
-                slcd.print("Player 0 dir_key ,1 asdw, 2 Joystic.");
-        }
-} 
-     
-          
-    //while (Serial.available() > 0) {
-           //char inByte = Serial.read();
-        
-        /* while(Serial.available() > 0) {
-       /* buttonState = digitalRead(buttonPin);
-        
-          
-        
-         if (Serial.find("A")) {
-            slcd.print("RES");
-          }
-           else if (Serial.find("Z")) {
-            slcd.print("ZERO");
-          }
-           else if (Serial.find("U")) {
-            slcd.print("UUUU");
-          }
-           else if (Serial.find("T")) {
-            slcd.print("TRES");
-          }
-           else if (Serial.find("Q")) {
-            slcd.print("QUATRE");
-          }*/
-          
-             
-
-        
-          // inChar = Serial.read();
-         /*   slcd.print(inChar);
-            if(Serial.readBytes(inData, 4) > 0){ }
-		//X-Axis 
-		inChar = inData[0];
-		inChar <<= 8;
-		inChar += inData[1];
-              slcd.print(inData);*/
-
-           
-
-             //if(index < 7)  {// One less than the size of the array
-         
-  //      inChar = Serial.read(); // Read a character
-                  /*inData[index] = inChar; // Store it
-                  index++; // Increment where to write next
-                  inData[index] = '\0'; // Null terminate the string
-              }*//*
-        //sortida = 'N';
-        switch (inChar) {
-        case 'Z':    // your hand is on the sensor
-          sortida = '0';
-          break;
-        case 'U':    // your hand is close to the sensor
-          sortida = '1';
-          break;
-        case 'D':    // your hand is a few inches from the sensor
-          sortida = '2';
-          break;
-        case 'T':    // your hand is nowhere near the sensor
-          sortida = '3';
-          break;
-        case 'Q':    // your hand is nowhere near the sensor
-          sortida = '4';
-          break;
-        case 'N':
-          sortida = 'N';
-          break;
-      
-        } 
-           
-       if (sortida != 'N') {
-          slcd.backlight();
-          slcd.scrollDisplayLeft();
-          slcd.setCursor(0, 0);
-           // slcd.print(inByte);
-          slcd.print("Winner Player ");
-          slcd.print(sortida);
-          slcd.print(",  Your're The BOSS");
-          slcd.setCursor(0,1);
-          
-          slcd.print("Press r to restart! Keep KILLING    ");
-          //march();
-       }
-    
-    else if (sortida == 'N'){
-        slcd.scrollDisplayLeft();
-=======
     buttonState = digitalRead(buttonPin);
     if (buttonState == HIGH) {
         printVal(000);
@@ -272,7 +116,6 @@ void loop() {
           finish();
     }
     if (!guanyador) {
->>>>>>> 1145223f43e95b057d5e98629ae56fa2e10b217f
         slcd.noBacklight();
         slcd.setCursor(0,0);
         slcd.print("Pium Pium Pium! Just SHOT!            ");
