@@ -1,0 +1,6 @@
+Esquema Arduino:
+Buzzer -> Port 9
+Led -> Port 13
+Touch/Button -> Port 2
+LCD -> Port 11
+Joystic -> A1/A0

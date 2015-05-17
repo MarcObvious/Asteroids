@@ -1,0 +1,23 @@
+Controls
+
+Keyboard:
+Player 0:
+Left_Key left ,Right_Key right, Up shot, Down thrust.
+Player 1:
+a left, d right, w shot, s thrust.
+
+Mouse:
+Player 2:
+Left_button left, Right_button right, Middle_button shot, Middle_button drag thrust.
+
+Arduino:
+Player 3:
+Joystyic. Figure it yourself. It's easy.
+
+Player 4:
+IA -> It's not working now. Just bothers.
+
+ESC to close the game.
+f to see the "credits".
+r to re-start the game.
+Arduino button/touch also restart the game. Anytime.
