@@ -2,9 +2,16 @@ Controls
 
 Keyboard:
 Player 0:
-Left_Key left ,Right_Key right, Up shot, Down thrust.
+'Left_Key' left, 'Right_Key' right, 'Up_Key' shot, 'Down_Key' thrust.
 Player 1:
-a left, d right, w shot, s thrust.
+'a' left, 'd' right, 'w' shot, 's' thrust.
+
+'1' debug/help mode
+'2' mute/unmute
+'ESC' to close the game.
+'f' to see the "credits".
+'r' to re-start the game.
+Arduino button/touch also restart the game. Anytime.
 
 Mouse:
 Player 2:
@@ -17,7 +24,4 @@ Joystyic. Figure it yourself. It's easy.
 Player 4:
 IA -> It's not working now. Just bothers.
 
-ESC to close the game.
-f to see the "credits".
-r to re-start the game.
-Arduino button/touch also restart the game. Anytime.
+

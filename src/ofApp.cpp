@@ -91,7 +91,7 @@ void ofApp::setup() {
 			ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
 
 	PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(255,255,0),"PlayerArd");
-//
+
 	nau = new SpaceShip();
 
 	nau->setup(shape, 40, 500, 50,
@@ -164,8 +164,10 @@ void ofApp::arduinoUpdate() {
 
 		if(acaba_partida)
 			enviar[0] = 'F';
+
 		//Enviem el byte.
 		serial.writeBytes(enviar,1);
+
 		//Si hi ha alguna cosa per llegir,
 		if(serial.available()) {
 
@@ -185,10 +187,11 @@ void ofApp::arduinoUpdate() {
 			//cout << "X " << x << " Y " << y <<endl;
 			if (x == 0 && y == 0) //Senyal de reset
 				reset();
-			//Fem una "filtre" cutre per no passar tonteries. Smooth.
 			else {
+				//Fem una "filtre" cutre per no passar tonteries. Smooth.
 				if (x > 0 && x < 770 && y > 0 && y < 770 ) {
 						ofPoint pos = ofPoint(x,y);
+						//Event que indica a les classes Ard quina posicio tene els Axis
 						ofNotifyEvent(ArdEvent, pos, this);
 				}
 			}
@@ -213,7 +216,6 @@ void ofApp::update() {
 		//Preguntem a PlayerManager si hi ha guanyador, si n'hi ha no updategem res.
 		guanyador = PlayerManager::getInstance()->hihaguanyador(MAX_SCORE);
 		if (guanyador == NULL){
-
 			//Comprova colisions d'Asteroides amb spaceShips
 			AsteroidManager::getInstance()->comprova();
 
@@ -224,7 +226,7 @@ void ofApp::update() {
 		}
 	}
 	//Update dels controladors arduino
-	if ( serial.isInitialized())
+	if (serial.isInitialized())
 			arduinoUpdate();
 }	
 
@@ -245,10 +247,10 @@ void ofApp::draw() {
 		else {
 			//Dibuixem instruccions
 			ofPushStyle();
-			ofSetColor(255,255,255);
-				ofDrawBitmapString("Player 1 a w d s, Player 0 up, left, right, down, Player 2 mouse, Player 3 joystic i 4 sols per Vacilar.", 5, 745);
-				ofDrawBitmapString("Press '1' to debug, '2' to unmute/mute, 'r' to restart, 'f' to finish, 'ESC' to get out", 5, 760);
+				ofSetColor(255,255,255);
+				ofDrawBitmapString("Press '1' to debug/help, '2' to unmute/mute, 'r' to restart, 'f' to finish, 'ESC' to get out", 5, 760);
 			ofPopStyle();
+
 
 			//Dibuixem totes les bales i asteroides
 			BulletManager::getInstance()->draw();
@@ -258,8 +260,11 @@ void ofApp::draw() {
 			if (debug) {
 				ofPushStyle();
 				ofSetColor(255);
-				ofDrawBitmapString(ofToString(ofGetFrameRate()), 900, 20);
+					ofDrawBitmapString(ofToString(ofGetFrameRate()), 900, 20);
+					ofDrawBitmapString("Player 1 a w d s, Player 0 up, left, right, down, Player 2 mouse, Player 3 joystic i 4 sols per Vacilar.", 5, 745);
 				ofPopStyle();
+
+
 			}
 		}
 	}
@@ -268,9 +273,6 @@ void ofApp::draw() {
 		ofPushStyle();
 			ofSetColor(0,255,0);
 			ofDrawBitmapString("MOLTES GRACIES PER JUGAR!", 240, 364);
-		ofPopStyle();
-		ofPushStyle();
-			ofSetColor(0,255,0);
 			ofDrawBitmapString("Joc creat per Marc Mateu i Ignasi Larroca", 240, 384);
 		ofPopStyle();
 		ofPushStyle();
@@ -278,7 +280,6 @@ void ofApp::draw() {
 			ofDrawBitmapString("No, la musica infernal no s'acaba mai.", 240, 404);
 		ofPopStyle();
 		ofPushStyle();
-			
 			ofDrawBitmapString("'ESC' per sortir, 'r' per reiniciar la partida amb la musiqueta dels ******", 240, 464);
 		ofPopStyle();
 	}
@@ -287,7 +288,7 @@ void ofApp::draw() {
 
 void ofApp::keyPressed(int key) {
 	switch (key) {
-	// If pressed 1 change debug mode
+	// If pressed 1 change debug/help mode
 	case '1':
 		debug = !debug;
 		break;
@@ -316,9 +317,10 @@ void ofApp::keyPressed(int key) {
 		cout << PlayerManager::getInstance()->getAllScores();
 		reset();
 		break;
+		//f, "Finalitzem" el joc el joc
 	case 'f':
 		acaba_partida = true;
-		cout << "MENTIDAAAAAAAAAAAAAAAAAAA, musicaaaa i mes musicaaaaa muahahahahhah!" << endl;
+		cout << "MENTIDAAAAAAAAAAAAAAAAAAA, musicaaaa i mes musicaaaaa Muahahahahhah!" << endl;
 		break;
 		//----------------------------------------------------------------------
 	}
