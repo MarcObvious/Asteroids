@@ -37,10 +37,7 @@ Descomentar la linea serial.setup("COM4", baud); a ofApp (amb el port correspone
 Comentar la de Linux.
 Compilar i executar VisualStudio en Release.
 
-Per jugar:
-2 players amb el teclat (però està preparat per a que puguin ser mes players, 
-i diferents tipus de controladors Player separat de spaceship).
-
+ES POT JUGAR SENSE ARDUINO.
 
 src/ conté:
 Entity.cpp .h -> Base de cada objecte amb representació visual
@@ -66,6 +63,9 @@ data/sounds/lasergun.mp3
 
 Arduino/
 arduino_stars/arduino_stars.io -> Logica que carreguem a la placa Arduino UNO
-SerialLCD.rar -> LLibreries per utilitzar SerialLCD.s
+SerialLCD.rar -> LLibreries per utilitzar SerialLCD
+
+
+*La música per al buzzer no l'hem fet nosaltres, al codi està mencionat l'autor.
 
 
