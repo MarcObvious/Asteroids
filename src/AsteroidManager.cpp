@@ -131,7 +131,7 @@ void AsteroidManager::generateAsteroids(int numAsteroids) {
 	}
 }
 
-//-TOT IGUAL QUE ABANS, ARA AMB SO
+//-TOT IGUAL QUE ABANS, ARA AMB SO. Yuhuu
 void AsteroidManager::splitAsteroid(int which) {
 	int asteroidShape = 0;
 

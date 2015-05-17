@@ -7,6 +7,8 @@
 
 PlayerArd::PlayerArd(SpaceShip* contr, int id, int score_inicial, int lives, ofColor color)
 : Controlador(contr,  id,  score_inicial,  lives,  color) {
+
+	//Listener dels upgrades a ArdEvent (event arduino a ofApp)
 	ofAddListener(ofApp::ArdEvent, this, &PlayerArd::moviment);
 	_controlat = contr;
 	_id = id;
@@ -18,6 +20,7 @@ PlayerArd::PlayerArd(SpaceShip* contr, int id, int score_inicial, int lives, ofC
 	_tipus = 2;
 }
 
+//Es controla amb la x-Axis i y-Axis del joystic!
 void PlayerArd::moviment(ofPoint& pos) {
 
 	if (pos.x > 650) {
@@ -48,6 +51,3 @@ void PlayerArd::moviment(ofPoint& pos) {
 	//cout << pos.x << " "<< pos.y << endl;
 
 }
-
-
-

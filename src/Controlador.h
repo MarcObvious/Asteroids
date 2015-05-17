@@ -2,6 +2,8 @@
 //                   Marc Mateu Sagues,       Nia:146756                      //
 //                   Ignasi Larroca Barcelo   Nia:158633                      //
 //****************************************************************************//
+//Classe que controla una Spaceship. En gestionara les vides, scores, etc i sera la base
+//per als controladors personalitzats (moviment a carrec d'arduino, o teclat o mouse)
 
 #pragma once
 #include "SpaceShip.h"
