@@ -168,6 +168,7 @@ void ofApp::arduinoUpdate() {
 		serial.writeBytes(enviar,1);
 		//Si hi ha alguna cosa per llegir,
 		if(serial.available()) {
+
 			int x; int y;
 			//Llegim 4 bytes.
 			unsigned char bytesRead[NUM_BYTES];
