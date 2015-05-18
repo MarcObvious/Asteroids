@@ -51,7 +51,7 @@ void ofApp::setup() {
 	AsteroidManager::getInstance()->loadAsteroids();
 
 	// Create Asteroids
-	AsteroidManager::getInstance()->generateAsteroids(4);
+	AsteroidManager::getInstance()->generateAsteroids(7);
 
 
 	//Manera cutre d'afegir la forma (vertex) de les nostres naus (tenen la mateixa forma
@@ -61,7 +61,7 @@ void ofApp::setup() {
 	shape.push_back(ofPoint(-25,-25));
 	shape.push_back(ofPoint(-25, 25));
 
-	//Demanem al PlayerManager que ens creei un Player o PlayerArd, amb la Spaceship que vulgueem
+	//Demanem al PlayerManager que ens creei un Player o PlayerArd, amb la Spaceship que vulguem
 	///tot això ho hauria de fer un parser.
 	SpaceShip* nau = new SpaceShip();
 
