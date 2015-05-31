@@ -47,6 +47,7 @@ public:
 	void gotMessage(ofMessage msg);
 	void reset();
 	void killSound();
+	void enviairep();
 
 
 private:

@@ -118,7 +118,7 @@ void ofApp::setup() {
 			ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
 
 	PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,255,255), "Player");
-	
+
 
 	//Carreguem els sons d'explosions d'asteroides i de dispars
 	//Comença SILENCIAT pel be de tota la humanitat!!
@@ -163,22 +163,22 @@ void ofApp::arduinoUpdate() {
 			switch (guanyador->getId()) {
 			case 0:
 				enviar[0] = 'Z';
-			break;
+				break;
 			case 1:
 				enviar[0] = 'U';
-			break;
+				break;
 			case 2:
 				enviar[0] = 'D';
-			break;
+				break;
 			case 3:
 				enviar[0] = 'T';
-			break;
+				break;
 			case 4:
 				enviar[0] = 'Q';
-			break;
+				break;
 			case 5:
 				enviar[0] = 'C';
-			break;
+				break;
 			}
 		}
 
@@ -210,9 +210,9 @@ void ofApp::arduinoUpdate() {
 			else {
 				//Fem una "filtre" cutre per no passar tonteries. Smooth.
 				if (x > 0 && x < 770 && y > 0 && y < 770 ) {
-						ofPoint pos = ofPoint(x,y);
-						//Event que indica a les classes Ard quina posicio tene els Axis
-						ofNotifyEvent(ArdEvent, pos, this);
+					ofPoint pos = ofPoint(x,y);
+					//Event que indica a les classes Ard quina posicio tene els Axis
+					ofNotifyEvent(ArdEvent, pos, this);
 				}
 			}
 		}
@@ -226,8 +226,7 @@ void ofApp::arduinoUpdate() {
 	}
 }
 
-//--------------------------------------------------------------
-void ofApp::update() {
+void ofApp::enviairep(){
 	if (clientServidor == 0) {
 		if(receiver.hasWaitingMessages()){
 			ofxOscMessage m;
@@ -236,15 +235,29 @@ void ofApp::update() {
 				cout << m.getArgAsString(0) << endl;
 			}
 		}
+		ofxOscMessage m;
+		m.setAddress("bullshit");
+		m.addStringArg("servidor envia tonteries");
+		sender.sendMessage(m);
 
 	}
 	else if (clientServidor == 1) {
 		ofxOscMessage m;
 		m.setAddress("bullshit");
-		//m.setAddress())
-		m.addStringArg("sender envia tonteries");
+		m.addStringArg("client envia tonteries");
 		sender.sendMessage(m);
+		if(receiver.hasWaitingMessages()){
+			ofxOscMessage m;
+			receiver.getNextMessage(&m);
+			if(m.getAddress() == "bullshit"){
+				cout << m.getArgAsString(0) << endl;
+			}
+		}
 	}
+}
+//--------------------------------------------------------------
+void ofApp::update() {
+	enviairep();
 	if (!acaba_partida) { 
 		// We get the time that last frame lasted, and use it to update asteroids logic
 		// so their behaviour is independent to the framerate
@@ -264,7 +277,7 @@ void ofApp::update() {
 	}
 	//Update dels controladors arduino
 	if (serial.isInitialized())
-			arduinoUpdate();
+		arduinoUpdate();
 }	
 
 //--------------------------------------------------------------
@@ -273,19 +286,19 @@ void ofApp::draw() {
 		//Si algu ha guanyat nomes dibuixem la pantalla de restart
 		if ( guanyador ) {
 			ofPushStyle();
-				ofSetColor(guanyador->getColor());
-				stringstream id;
-				id << "WINER JUGADOR " << guanyador->getId();
-				id << " -> SCORE = " << guanyador->getScore();
-				ofDrawBitmapString(id.str(), 390, 450);
+			ofSetColor(guanyador->getColor());
+			stringstream id;
+			id << "WINER JUGADOR " << guanyador->getId();
+			id << " -> SCORE = " << guanyador->getScore();
+			ofDrawBitmapString(id.str(), 390, 450);
 			ofPopStyle();
 			ofDrawBitmapString("Press 'r' to restart, 'f' to finish", 390, 470);
 		}
 		else {
 			//Dibuixem instruccions
 			ofPushStyle();
-				ofSetColor(255,255,255);
-				ofDrawBitmapString("Press '1' to debug/help, '2' to unmute/mute, 'r' to restart, 'f' to finish, 'ESC' to get out", 5, 760);
+			ofSetColor(255,255,255);
+			ofDrawBitmapString("Press '1' to debug/help, '2' to unmute/mute, 'r' to restart, 'f' to finish, 'ESC' to get out", 5, 760);
 			ofPopStyle();
 
 
@@ -297,8 +310,8 @@ void ofApp::draw() {
 			if (debug) {
 				ofPushStyle();
 				ofSetColor(255);
-					ofDrawBitmapString(ofToString(ofGetFrameRate()), 900, 20);
-					ofDrawBitmapString("Player 1 a w d s, Player 0 up, left, right, down, Player 2 mouse, Player 3 joystic i 4 sols per Vacilar.", 5, 745);
+				ofDrawBitmapString(ofToString(ofGetFrameRate()), 900, 20);
+				ofDrawBitmapString("Player 1 a w d s, Player 0 up, left, right, down, Player 2 mouse, Player 3 joystic i 4 sols per Vacilar.", 5, 745);
 				ofPopStyle();
 
 
@@ -308,16 +321,16 @@ void ofApp::draw() {
 	else {
 		//Pantalla de finalització del joc.
 		ofPushStyle();
-			ofSetColor(0,255,0);
-			ofDrawBitmapString("MOLTES GRACIES PER JUGAR!", 240, 364);
-			ofDrawBitmapString("Joc creat per Marc Mateu i Ignasi Larroca", 240, 384);
+		ofSetColor(0,255,0);
+		ofDrawBitmapString("MOLTES GRACIES PER JUGAR!", 240, 364);
+		ofDrawBitmapString("Joc creat per Marc Mateu i Ignasi Larroca", 240, 384);
 		ofPopStyle();
 		ofPushStyle();
-			ofSetColor(255,0,0);
-			ofDrawBitmapString("No, la musica infernal no s'acaba mai.", 240, 404);
+		ofSetColor(255,0,0);
+		ofDrawBitmapString("No, la musica infernal no s'acaba mai.", 240, 404);
 		ofPopStyle();
 		ofPushStyle();
-			ofDrawBitmapString("'ESC' per sortir, 'r' per reiniciar la partida amb la musiqueta dels ******", 240, 464);
+		ofDrawBitmapString("'ESC' per sortir, 'r' per reiniciar la partida amb la musiqueta dels ******", 240, 464);
 		ofPopStyle();
 	}
 }
