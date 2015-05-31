@@ -20,6 +20,14 @@ int INITIAL_SCORE = 0;
 
 //--------------------------------------------------------------
 
+
+ofApp::ofApp(int cli, int SO) {
+	clientServidor = cli;
+	sistemaOp = SO; //Fer mes endevant
+
+
+	//setup();
+}
 void ofApp::setupArduino() {
 	if (!serial.isInitialized()) {
 		serial.listDevices();
@@ -40,6 +48,16 @@ void ofApp::setupArduino() {
 
 
 void ofApp::setup() {
+
+	if (clientServidor == 0) {
+		sender.setup(HOST, PORT);
+		cout << "Server" <<endl;
+	}
+	else if (clientServidor == 1) {
+		receiver.setup(PORT);
+		cout << "Client" <<endl;
+	}
+
 	// Set framerate to 60 FPS
 	ofSetFrameRate(60);
 
@@ -51,7 +69,7 @@ void ofApp::setup() {
 	AsteroidManager::getInstance()->loadAsteroids();
 
 	// Create Asteroids
-	AsteroidManager::getInstance()->generateAsteroids(4);
+	AsteroidManager::getInstance()->generateAsteroids(7);
 
 
 	//Manera cutre d'afegir la forma (vertex) de les nostres naus (tenen la mateixa forma
@@ -61,7 +79,7 @@ void ofApp::setup() {
 	shape.push_back(ofPoint(-25,-25));
 	shape.push_back(ofPoint(-25, 25));
 
-	//Demanem al PlayerManager que ens creei un Player o PlayerArd, amb la Spaceship que vulgueem
+	//Demanem al PlayerManager que ens creei un Player o PlayerArd, amb la Spaceship que vulguem
 	///tot això ho hauria de fer un parser.
 	SpaceShip* nau = new SpaceShip();
 
