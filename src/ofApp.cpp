@@ -49,11 +49,11 @@ void ofApp::setupArduino() {
 
 void ofApp::setup() {
 
-	if (clientServidor == 0) {
+	if (clientServidor == 1) {
 		sender.setup(HOST, PORT);
 		cout << "Server" <<endl;
 	}
-	else if (clientServidor == 1) {
+	else if (clientServidor == 0) {
 		receiver.setup(PORT);
 		cout << "Client" <<endl;
 	}
@@ -227,18 +227,19 @@ void ofApp::arduinoUpdate() {
 //--------------------------------------------------------------
 void ofApp::update() {
 	if (clientServidor == 0) {
-	//	if(receiver.hasWaitingMessages()){
-//			ofxOscMessage m;
-//			receiver.getNextMessage(&m);
-//			if(m.getAddress() == "bullshit"){
-//				cout << m.getArgAsString(0) << endl;
-//			}
-		//}
+		if(receiver.hasWaitingMessages()){
+			ofxOscMessage m;
+			receiver.getNextMessage(&m);
+			if(m.getAddress() == "bullshit"){
+				cout << m.getArgAsString(0) << endl;
+			}
+		}
 
 	}
 	else if (clientServidor == 1) {
 		ofxOscMessage m;
 		m.setAddress("bullshit");
+		//m.setAddress())
 		m.addStringArg("sender envia merda");
 		sender.sendMessage(m);
 	}
