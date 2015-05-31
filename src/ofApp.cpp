@@ -23,7 +23,7 @@ int INITIAL_SCORE = 0;
 
 ofApp::ofApp(int cli, int SO) {
 	clientServidor = cli;
-	sistemaOp = SO;
+	sistemaOp = SO; //Fer mes endevant
 	setup();
 }
 void ofApp::setupArduino() {

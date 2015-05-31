@@ -13,7 +13,7 @@ int main( ){
 	cout << "Aquesta instancia sera 0 servidor o 1 client?" << endl;
 	cin >> clientServidor;
 	int sistemaOp;
-	cout << "Arduino no connectat 0, Ardunio en linux 1, Arduino en Windows 2" << endl;
+	cout << "Arduino no connectat 0, Ardunio en linux 1, Arduino en Windows 2, Arduino en MAC 3" << endl;
 	cin >> sistemaOp;
 
 	ofSetupOpenGL(1024,768,OF_WINDOW);			// <-------- setup the GL context
