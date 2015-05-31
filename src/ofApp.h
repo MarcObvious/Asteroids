@@ -22,7 +22,7 @@ class ofApp: public ofBaseApp {
 
 public:
 	static ofEvent<ofPoint> ArdEvent;
-
+	ofApp(int cli, int SO);
 	~ofApp();
 	void setup();
 	void setupArduino();
@@ -49,6 +49,8 @@ private:
 
 	ofSoundPlayer  * pium;
 	ofSoundPlayer * explosion;
+	int clientServidor;
+	int sistemaOp;
 
 	//ARDUINO
 	ofSerial	serial;
