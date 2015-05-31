@@ -226,6 +226,26 @@ void ofApp::arduinoUpdate() {
 
 //--------------------------------------------------------------
 void ofApp::update() {
+	if (clientServidor == 0) {
+		while(receiver.hasWaitingMessages()){
+			ofxOscMessage m;
+			receiver.getNextMessage(&m);
+			if(m.getAddress() == "bullshit"){
+				// both the arguments are int32's
+				string x = m.getArgAsInt32(0);
+				int y = m.getArgAsInt32(1);
+				drawXY(x,y);
+				cout << m.getArgAsString(0) << endl;
+			}
+		}
+
+	}
+	else if (clientServidor == 1) {
+		ofxOscMessage m;
+		m.setAddress("bullshit");
+		m.addStringArg("sender envia merda")
+		sender.sendMessage(m);
+	}
 	if (!acaba_partida) { 
 		// We get the time that last frame lasted, and use it to update asteroids logic
 		// so their behaviour is independent to the framerate
