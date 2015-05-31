@@ -14,8 +14,8 @@ PlayerManager* PlayerManager::_instance = NULL;
 ofEvent<ofPoint> ofApp::ArdEvent = ofEvent<ofPoint>();
 
 //Variables globals que defineixen les vides i la puntuacio maxima
-int MAX_SCORE = 500;
-int MAX_LIVES = 10;
+int MAX_SCORE = 1000;
+int MAX_LIVES = 50;
 int INITIAL_SCORE = 0;
 
 //--------------------------------------------------------------
