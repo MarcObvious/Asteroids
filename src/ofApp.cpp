@@ -227,13 +227,13 @@ void ofApp::arduinoUpdate() {
 //--------------------------------------------------------------
 void ofApp::update() {
 	if (clientServidor == 0) {
-		while(receiver.hasWaitingMessages()){
-			ofxOscMessage m;
-			receiver.getNextMessage(&m);
-			if(m.getAddress() == "bullshit"){
-				cout << m.getArgAsString(0) << endl;
-			}
-		}
+	//	if(receiver.hasWaitingMessages()){
+//			ofxOscMessage m;
+//			receiver.getNextMessage(&m);
+//			if(m.getAddress() == "bullshit"){
+//				cout << m.getArgAsString(0) << endl;
+//			}
+		//}
 
 	}
 	else if (clientServidor == 1) {
