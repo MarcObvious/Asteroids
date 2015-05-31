@@ -50,11 +50,13 @@ void ofApp::setupArduino() {
 void ofApp::setup() {
 
 	if (clientServidor == 1) {
-		sender.setup(HOST, PORT);
+		sender.setup("192.168.1.33", PORT);
+		receiver.setup(PORT);
 		cout << "Server" <<endl;
 	}
 	else if (clientServidor == 0) {
 		receiver.setup(PORT);
+		sender.setup("192.168.1.142", PORT);
 		cout << "Client" <<endl;
 	}
 
@@ -240,7 +242,7 @@ void ofApp::update() {
 		ofxOscMessage m;
 		m.setAddress("bullshit");
 		//m.setAddress())
-		m.addStringArg("sender envia merda");
+		m.addStringArg("sender envia tonteries");
 		sender.sendMessage(m);
 	}
 	if (!acaba_partida) { 

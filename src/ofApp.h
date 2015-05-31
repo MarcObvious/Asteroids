@@ -18,7 +18,7 @@
 #include "PlayerManager.h"
 
 //defs per sender/receiver
-#define HOST "192.168.1.33"
+#define HOST "localhost"
 #define PORT 12345
 #define NUM_PTS 800
 
