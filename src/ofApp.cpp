@@ -24,7 +24,9 @@ int INITIAL_SCORE = 0;
 ofApp::ofApp(int cli, int SO) {
 	clientServidor = cli;
 	sistemaOp = SO; //Fer mes endevant
-	setup();
+
+
+	//setup();
 }
 void ofApp::setupArduino() {
 	if (!serial.isInitialized()) {
@@ -46,6 +48,16 @@ void ofApp::setupArduino() {
 
 
 void ofApp::setup() {
+
+	if (clientServidor == 0) {
+		sender.setup(HOST, PORT);
+		cout << "Server" <<endl;
+	}
+	else if (clientServidor == 1) {
+		receiver.setup(PORT);
+		cout << "Client" <<endl;
+	}
+
 	// Set framerate to 60 FPS
 	ofSetFrameRate(60);
 

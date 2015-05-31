@@ -8,6 +8,7 @@
 #include "ofMain.h"
 
 #include "ofxXmlSettings.h"
+#include "ofxOsc.h"
 
 #include "Asteroid.h"
 #include "Bullet.h"
@@ -16,6 +17,12 @@
 #include "AsteroidManager.h"
 #include "PlayerManager.h"
 
+//defs per sender/receiver
+#define HOST "localhost"
+#define PORT 12345
+#define NUM_PTS 800
+
+//Bytes per arduino
 #define NUM_BYTES 4
 
 class ofApp: public ofBaseApp {
@@ -49,8 +56,13 @@ private:
 
 	ofSoundPlayer  * pium;
 	ofSoundPlayer * explosion;
-	int clientServidor;
+
 	int sistemaOp;
+
+	//SenderReceiver
+	int clientServidor;
+	ofxOscSender sender;
+	ofxOscReceiver receiver;
 
 	//ARDUINO
 	ofSerial	serial;
