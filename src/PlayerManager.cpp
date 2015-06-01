@@ -28,21 +28,28 @@ PlayerManager * PlayerManager::getInstance() {
 	return _instance;
 }
 //Crea Player de tipus tipus
-bool PlayerManager::createPlayer(SpaceShip* contr ,int score_inicial, int lives, ofColor color, string tipus) {
+bool PlayerManager::createPlayer(SpaceShip* contr ,int score_inicial, int lives, ofColor color, string tipus, bool network) {
 	if (tipus == "Player") {
 		Player* p = new Player(contr, _pos, score_inicial, lives, color);
+		if(network)
+			p->getControlat()->setNetwork(true);
 		_players.push_back(p);
 		++_pos;
+
 		return true;
 	}
 	else if (tipus == "PlayerArd") {
 		PlayerArd* p = new PlayerArd(contr, _pos, score_inicial, lives, color);
+		if(network)
+			p->getControlat()->setNetwork(true);
 		_players.push_back(p);
 		++_pos;
 		return true;
 	}
 	else if (tipus == "PlayerRat") {
 		PlayerRat* p = new PlayerRat(contr, _pos, score_inicial, lives, color);
+		if(network)
+			p->getControlat()->setNetwork(true);
 		_players.push_back(p);
 		++_pos;
 		return true;

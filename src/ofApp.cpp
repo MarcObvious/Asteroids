@@ -28,6 +28,7 @@ ofApp::ofApp(int cli, int SO) {
 
 	//setup();
 }
+
 void ofApp::setupArduino() {
 	if (!serial.isInitialized()) {
 		serial.listDevices();
@@ -35,9 +36,13 @@ void ofApp::setupArduino() {
 
 		// Diferents configuracions segons Mac Linux o Windows
 		int baud = 9600;
-		serial.setup("COM4", baud); // Windows
-		//serial.setup("/dev/tty.usbserial-A4001JEC", baud);  //Mac
-		//serial.setup("/dev/ttyACM0", baud); //Linux powa!
+		if (sistemaOp == 1)
+			serial.setup("/dev/ttyACM0", baud);  //Linux powa!
+		else if (sistemaOp == 2)
+			serial.setup("COM4", baud); // Windows
+		else if (sistemaOp == 3)
+			serial.setup("/dev/tty.usbserial-A4001JEC", baud); //Mac
+
 	}
 
 	cyclesCounter = 0;
@@ -46,25 +51,19 @@ void ofApp::setupArduino() {
 	readAndSendMessage = false;
 }
 
-
 void ofApp::setup() {
 
-	if (clientServidor == 1) {
-		sender.setup("192.168.1.33", PORT);
+	if (clientServidor == 1 || clientServidor == 0) {
 		receiver.setup(PORT);
-		cout << "Server" <<endl;
-	}
-	else if (clientServidor == 0) {
-		receiver.setup(PORT);
-		sender.setup("192.168.1.142", PORT);
-		cout << "Client" <<endl;
+		sender.setup(HOST, PORT);
 	}
 
 	// Set framerate to 60 FPS
 	ofSetFrameRate(60);
 
 	//Posem Arduino a punt
-	setupArduino();
+	if (sistemaOp != 0)
+		setupArduino();
 
 	acaba_partida = false;
 	// Load Asteroids from XML
@@ -88,22 +87,22 @@ void ofApp::setup() {
 	nau->setup(shape, 40, 500, 50,
 			ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
 
-	PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(255,0,0), "Player");
+	PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(255,0,0), "Player", false);
 
 	nau = new SpaceShip();
 
 	nau->setup(shape, 40, 500, 50,
 			ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
 
-	PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,0,255),"Player");
+	PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,0,255),"Player",false);
 
 	nau = new SpaceShip();
 
 	nau->setup(shape, 40, 500, 50,
 			ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
 
-	PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,255,0), "PlayerRat");
-
+	PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,255,0), "PlayerRat",true);
+/*
 
 	nau = new SpaceShip();
 
@@ -117,7 +116,7 @@ void ofApp::setup() {
 	nau->setup(shape, 40, 500, 50,
 			ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
 
-	PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,255,255), "Player");
+	PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,255,255), "Player");*/
 
 
 	//Carreguem els sons d'explosions d'asteroides i de dispars
@@ -231,25 +230,25 @@ void ofApp::enviairep(){
 		if(receiver.hasWaitingMessages()){
 			ofxOscMessage m;
 			receiver.getNextMessage(&m);
-			if(m.getAddress() == "bullshit"){
+			if(m.getAddress() == "servidor"){
 				cout << m.getArgAsString(0) << endl;
 			}
 		}
 		ofxOscMessage m;
-		m.setAddress("bullshit");
+		m.setAddress("client");
 		m.addStringArg("servidor envia tonteries");
 		sender.sendMessage(m);
 
 	}
 	else if (clientServidor == 1) {
 		ofxOscMessage m;
-		m.setAddress("bullshit");
+		m.setAddress("servidor");
 		m.addStringArg("client envia tonteries");
 		sender.sendMessage(m);
 		if(receiver.hasWaitingMessages()){
 			ofxOscMessage m;
 			receiver.getNextMessage(&m);
-			if(m.getAddress() == "bullshit"){
+			if(m.getAddress() == "client"){
 				cout << m.getArgAsString(0) << endl;
 			}
 		}
@@ -276,8 +275,9 @@ void ofApp::update() {
 		}
 	}
 	//Update dels controladors arduino
-	if (serial.isInitialized())
-		arduinoUpdate();
+	if (sistemaOp != 0)
+		if (serial.isInitialized())
+			arduinoUpdate();
 }	
 
 //--------------------------------------------------------------

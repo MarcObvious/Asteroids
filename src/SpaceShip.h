@@ -18,6 +18,7 @@ class SpaceShip: public Entity {
 private:
 	// SpaceShip's behaviour control variables
 	bool thrust, isFiring, gira_dreta, gira_esquerra;
+	bool _network;
 	int _controlador;
 	ofColor _color;
 
@@ -30,6 +31,7 @@ private:
 public:
 	SpaceShip();
 	~SpaceShip();
+	static ofEvent<ofPoint> NetworkEvent;
 
 	virtual bool setup();
 	virtual bool setup(vector<ofPoint> & shape, float size, float speed,
@@ -53,4 +55,6 @@ public:
 	void setColor(ofColor color);
 	bool isDestroyed() const;
 	void setDestroyed(bool destroyed);
+	bool isNetwork() const;
+	void setNetwork(bool network);
 };

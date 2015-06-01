@@ -5,6 +5,8 @@
 
 #include "SpaceShip.h"
 
+ofEvent<ofPoint> SpaceShip::NetworkEvent = ofEvent<ofPoint>();
+
 SpaceShip::SpaceShip() {
 	position.x = 0;
 	position.y = 0;
@@ -17,7 +19,7 @@ SpaceShip::SpaceShip() {
 	gira_dreta=false;
 	gira_esquerra=false;
 	_color = ofColor(0,0,0);
-
+	_network = false;
 }
 
 SpaceShip::~SpaceShip() {
@@ -116,22 +118,66 @@ void SpaceShip::addThrust(float thrust) {
 
 void  SpaceShip::setThrust(bool trust) {
 	thrust = trust;
+	if(_network) {
+			ofPoint estat;
+			if(!trust)
+				estat = ofPoint(0,0);
+			else
+				estat = ofPoint(0,1);
+			ofNotifyEvent(NetworkEvent, estat, this);
+		}
 }
-void  SpaceShip::gira_d(bool dreta) {
-	gira_dreta = dreta;
-}
-void  SpaceShip::gira_e(bool esquerra) {
-	gira_esquerra = esquerra;
-}
+
 void SpaceShip::shot(bool disp) {
 	isFiring = disp;
+	if(_network) {
+			ofPoint estat;
+			if(!disp)
+				estat = ofPoint(1,0);
+			else
+				estat = ofPoint(1,1);
+			ofNotifyEvent(NetworkEvent, estat, this);
+		}
 }
+
+void  SpaceShip::gira_d(bool dreta) {
+	gira_dreta = dreta;
+	if(_network) {
+		ofPoint estat;
+		if(!dreta)
+			estat = ofPoint(2,0);
+		else
+			estat = ofPoint(2,1);
+		ofNotifyEvent(NetworkEvent, estat, this);
+	}
+}
+
+void  SpaceShip::gira_e(bool esquerra) {
+	gira_esquerra = esquerra;
+	if(_network) {
+			ofPoint estat;
+			if(!esquerra)
+				estat = ofPoint(3,0);
+			else
+				estat = ofPoint(3,1);
+			ofNotifyEvent(NetworkEvent, estat, this);
+		}
+}
+
 void SpaceShip::setControlador(int contr){
 	_controlador = contr;
 }
 
 bool SpaceShip::isDestroyed() const {
 	return destroyed;
+}
+
+bool SpaceShip::isNetwork() const {
+	return _network;
+}
+
+void SpaceShip::setNetwork(bool network) {
+	_network = network;
 }
 
 void SpaceShip::setDestroyed(bool destroyed) {

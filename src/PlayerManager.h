@@ -33,7 +33,7 @@ public:
 
 	static PlayerManager * getInstance();
 
-	bool createPlayer(SpaceShip* contr ,int score_inicial, int lives, ofColor color, string tipus); //crea player...
+	bool createPlayer(SpaceShip* contr ,int score_inicial, int lives, ofColor color, string tipus, bool network); //crea player...
 
 	Controlador* getPlayer(int i);
 
