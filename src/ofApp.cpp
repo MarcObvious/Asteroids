@@ -14,8 +14,8 @@ PlayerManager* PlayerManager::_instance = NULL;
 ofEvent<ofPoint> ofApp::ArdEvent = ofEvent<ofPoint>();
 
 //Variables globals que defineixen les vides i la puntuacio maxima
-int MAX_SCORE = 500;
-int MAX_LIVES = 10;
+int MAX_SCORE = 1000;
+int MAX_LIVES = 30;
 int INITIAL_SCORE = 0;
 
 //--------------------------------------------------------------
@@ -56,6 +56,8 @@ void ofApp::setup() {
 	if (clientServidor == 1 || clientServidor == 0) {
 		receiver.setup(PORT);
 		sender.setup(HOST, PORT);
+		if (clientServidor == 1)
+			ofAddListener(SpaceShip::NetworkEvent, this, &ofApp::clientSend);
 	}
 
 	// Set framerate to 60 FPS
@@ -225,13 +227,23 @@ void ofApp::arduinoUpdate() {
 	}
 }
 
+void ofApp::clientSend(ofPoint& ordre) {
+	ofxOscMessage m;
+	m.setAddress("servidor");
+	m.addIntArg(ordre.x);
+	m.addIntArg(ordre.y);
+	m.addIntArg(ordre.z);
+	//m.addStringArg("client envia tonteries");
+	sender.sendMessage(m);
+}
+
 void ofApp::enviairep(){
 	if (clientServidor == 0) {
 		if(receiver.hasWaitingMessages()){
 			ofxOscMessage m;
 			receiver.getNextMessage(&m);
 			if(m.getAddress() == "servidor"){
-				cout << m.getArgAsString(0) << endl;
+				cout << m.getArgAsInt32(0) << " " << m.getArgAsInt32(1) << "" <<m.getArgAsInt32(2)<< endl;
 			}
 		}
 		ofxOscMessage m;
@@ -241,17 +253,17 @@ void ofApp::enviairep(){
 
 	}
 	else if (clientServidor == 1) {
-		ofxOscMessage m;
-		m.setAddress("servidor");
-		m.addStringArg("client envia tonteries");
-		sender.sendMessage(m);
-		if(receiver.hasWaitingMessages()){
-			ofxOscMessage m;
-			receiver.getNextMessage(&m);
-			if(m.getAddress() == "client"){
-				cout << m.getArgAsString(0) << endl;
-			}
-		}
+//		ofxOscMessage m;
+//		m.setAddress("servidor");
+//		m.addStringArg("client envia tonteries");
+//		sender.sendMessage(m);
+//		if(receiver.hasWaitingMessages()){
+//			ofxOscMessage m;
+//			receiver.getNextMessage(&m);
+//			if(m.getAddress() == "client"){
+//				cout << m.getArgAsString(0) << endl;
+//			}
+//		}
 	}
 }
 //--------------------------------------------------------------

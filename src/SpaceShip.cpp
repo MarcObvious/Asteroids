@@ -119,11 +119,12 @@ void SpaceShip::addThrust(float thrust) {
 void  SpaceShip::setThrust(bool trust) {
 	thrust = trust;
 	if(_network) {
+	//cout << _controlador << endl;
 			ofPoint estat;
 			if(!trust)
-				estat = ofPoint(0,0);
+				estat = ofPoint(_controlador,0,0);
 			else
-				estat = ofPoint(0,1);
+				estat = ofPoint(_controlador,0,1);
 			ofNotifyEvent(NetworkEvent, estat, this);
 		}
 }
@@ -133,9 +134,9 @@ void SpaceShip::shot(bool disp) {
 	if(_network) {
 			ofPoint estat;
 			if(!disp)
-				estat = ofPoint(1,0);
+				estat = ofPoint(_controlador,1,0);
 			else
-				estat = ofPoint(1,1);
+				estat = ofPoint(_controlador,1,1);
 			ofNotifyEvent(NetworkEvent, estat, this);
 		}
 }
@@ -145,9 +146,9 @@ void  SpaceShip::gira_d(bool dreta) {
 	if(_network) {
 		ofPoint estat;
 		if(!dreta)
-			estat = ofPoint(2,0);
+			estat = ofPoint(_controlador,2,0);
 		else
-			estat = ofPoint(2,1);
+			estat = ofPoint(_controlador,2,1);
 		ofNotifyEvent(NetworkEvent, estat, this);
 	}
 }
@@ -157,9 +158,9 @@ void  SpaceShip::gira_e(bool esquerra) {
 	if(_network) {
 			ofPoint estat;
 			if(!esquerra)
-				estat = ofPoint(3,0);
+				estat = ofPoint(_controlador,3,0);
 			else
-				estat = ofPoint(3,1);
+				estat = ofPoint(_controlador,3,1);
 			ofNotifyEvent(NetworkEvent, estat, this);
 		}
 }

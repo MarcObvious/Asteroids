@@ -48,6 +48,7 @@ public:
 	void reset();
 	void killSound();
 	void enviairep();
+	void clientSend(ofPoint& ordre);
 
 
 private:
