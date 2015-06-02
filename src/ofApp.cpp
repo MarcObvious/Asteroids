@@ -12,6 +12,7 @@ PlayerManager* PlayerManager::_instance = NULL;
 
 //Event que registra el canvi al joystic arduino
 ofEvent<ofPoint> ofApp::ArdEvent = ofEvent<ofPoint>();
+ofEvent<ofPoint> ofApp::NetEvent = ofEvent<ofPoint>();
 
 //Variables globals que defineixen les vides i la puntuacio maxima
 int MAX_SCORE = 2000;
@@ -99,8 +100,10 @@ void ofApp::setup() {
 
 	nau->setup(shape, 40, 500, 50,
 			ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
-
-	PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,255,0), "PlayerRat",true);
+	if (clientServidor == 1)
+		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,255,0), "PlayerRat",true);
+	else
+		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,255,0), "PlayerNet",false);
 /*
 
 	nau = new SpaceShip();
@@ -240,7 +243,10 @@ void ofApp::enviairep(){
 			ofxOscMessage m;
 			receiver.getNextMessage(&m);
 			if(m.getAddress() == "servidor"){
-				cout << m.getArgAsInt32(0) << " " << m.getArgAsInt32(1) << "" <<m.getArgAsInt32(2)<< endl;
+				ofPoint pos = ofPoint( m.getArgAsInt32(0),m.getArgAsInt32(1),m.getArgAsInt32(2));
+				//Event que indica a les classes Ard quina posicio tene els Axis
+				ofNotifyEvent(NetEvent, pos, this);
+				//cout << << " " <<  << "" <<m.getArgAsInt32(2)<< endl;
 			}
 		}
 		ofxOscMessage m;

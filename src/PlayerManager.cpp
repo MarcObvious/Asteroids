@@ -54,6 +54,12 @@ bool PlayerManager::createPlayer(SpaceShip* contr ,int score_inicial, int lives,
 		++_pos;
 		return true;
 	}
+	else if (tipus == "PlayerNet") {
+			PlayerNet* p = new PlayerNet(contr, _pos, score_inicial, lives, color);
+			_players.push_back(p);
+			++_pos;
+			return true;
+		}
 	return false;
 }
 

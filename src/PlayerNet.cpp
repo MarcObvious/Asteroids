@@ -8,8 +8,8 @@
 PlayerNet::PlayerNet(SpaceShip* contr, int id, int score_inicial, int lives, ofColor color)
 : Controlador(contr,  id,  score_inicial,  lives,  color) {
 
-	//Listener dels upgrades a ArdEvent (event arduino a ofApp)
-	ofAddListener(ofApp::ArdEvent, this, &PlayerNet::moviment);
+	//Listener dels upgrades a ArdEvent (event network a ofApp)
+	ofAddListener(ofApp::NetEvent, this, &PlayerNet::moviment);
 	_controlat = contr;
 	_id = id;
 	_controlat->setControlador(id);
@@ -21,33 +21,32 @@ PlayerNet::PlayerNet(SpaceShip* contr, int id, int score_inicial, int lives, ofC
 }
 
 //Es controla amb la x-Axis i y-Axis del joystic!
-void PlayerNet::moviment(ofPoint& pos) {
-
-	if (pos.x > 650) {
-		_controlat->gira_d(true);
-		_controlat->gira_e(false);
-	}
-	else if (pos.x < 300) {
-		_controlat->gira_e(true);
-		_controlat->gira_d(false);
-	}
-	else if (pos.x == 0 && pos.y == 0) {
-		_controlat->gira_e(false);
-		_controlat->gira_d(false);
-	}
-	else {
-		_controlat->gira_e(false);
-		_controlat->gira_d(false);
-	}
-	if(pos.y > 650)
+void PlayerNet::moviment(ofPoint& ordre) {
+	if(ordre.y == 0 && ordre.z == 1)
 		_controlat->setThrust(true);
 	else
 		_controlat->setThrust(false);
-	if(pos.y < 270)
+
+	if(ordre.y == 1 && ordre.z == 1)
 		_controlat->shot(true);
 	else
 		_controlat->shot(false);
 
-	//cout << pos.x << " "<< pos.y << endl;
+	if (ordre.y == 2 && ordre.z == 1) {
+		_controlat->gira_d(true);
+		_controlat->gira_e(false);
+	}
+	else if (ordre.y == 3 && ordre.z == 1) {
+		_controlat->gira_e(true);
+		_controlat->gira_d(false);
+	}
+//	else if (ordre.x == 0 && ordre.y == 0) {
+//		_controlat->gira_e(false);
+//		_controlat->gira_d(false);
+//	}
+	else {
+		_controlat->gira_e(false);
+		_controlat->gira_d(false);
+	}
 
 }

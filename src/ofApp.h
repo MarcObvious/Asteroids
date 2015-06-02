@@ -29,6 +29,7 @@ class ofApp: public ofBaseApp {
 
 public:
 	static ofEvent<ofPoint> ArdEvent;
+	static ofEvent<ofPoint> NetEvent;
 	ofApp(int cli, int SO);
 	~ofApp();
 	void setup();

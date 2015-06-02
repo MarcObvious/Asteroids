@@ -2,7 +2,7 @@
 //                   Marc Mateu Sagues,       Nia:146756                      //
 //                   Ignasi Larroca Barcelo   Nia:158633                      //
 //****************************************************************************//
-//PlayerNet es un controlador (d'una nau) que utilitza el Events d'ARDUINO! pel moviment
+//PlayerNet es un controlador (d'una nau) que utilitza el Events net! pel moviment
 
 #pragma once
 #include "SpaceShip.h"
@@ -17,7 +17,7 @@ public:
 
 	~PlayerNet(){};
 
-	void moviment(ofPoint& pos);
+	void moviment(ofPoint& ordre);
 
 };
 

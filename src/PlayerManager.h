@@ -9,6 +9,7 @@
 
 #include "Controlador.h"
 #include "Player.h"
+#include "PlayerNet.h"
 #include "PlayerArd.h"
 #include "PlayerRat.h"
 
