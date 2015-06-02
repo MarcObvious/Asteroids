@@ -78,7 +78,7 @@ void SpaceShip::update(float elapsedTime) {
 
 	}
 	else {
-		
+
 		this->addRotation( 1.5*elapsedTime);
 	}
 
@@ -93,18 +93,18 @@ void SpaceShip::draw(bool debug) {
 	//Shape que hem carregat prevament
 	ofPushStyle();
 	ofPushMatrix();
-		ofSetColor(_color);
-		glTranslatef(position.x, position.y, 0);
-		//S'ha de passar a radians!
-		glRotatef(rotation  / PI * 180, 0, 0, 1);
+	ofSetColor(_color);
+	glTranslatef(position.x, position.y, 0);
+	//S'ha de passar a radians!
+	glRotatef(rotation  / PI * 180, 0, 0, 1);
 
-		if (debug) {
-			ofPushStyle();
-			ofNoFill();
-			ofCircle(0, 0, size);
-			ofPopStyle();
-		}
-		p.draw();
+	if (debug) {
+		ofPushStyle();
+		ofNoFill();
+		ofCircle(0, 0, size);
+		ofPopStyle();
+	}
+	p.draw();
 	ofPopMatrix();
 	ofPopStyle();
 
@@ -119,26 +119,26 @@ void SpaceShip::addThrust(float thrust) {
 void  SpaceShip::setThrust(bool trust) {
 	thrust = trust;
 	if(_network) {
-	//cout << _controlador << endl;
-			ofPoint estat;
-			if(!trust)
-				estat = ofPoint(_controlador,0,0);
-			else
-				estat = ofPoint(_controlador,0,1);
-			ofNotifyEvent(NetworkEvent, estat, this);
-		}
+		//cout << _controlador << endl;
+		ofPoint estat;
+		if(!trust)
+			estat = ofPoint(_controlador,0,0);
+		else
+			estat = ofPoint(_controlador,0,1);
+		ofNotifyEvent(NetworkEvent, estat, this);
+	}
 }
 
 void SpaceShip::shot(bool disp) {
 	isFiring = disp;
 	if(_network) {
-			ofPoint estat;
-			if(!disp)
-				estat = ofPoint(_controlador,1,0);
-			else
-				estat = ofPoint(_controlador,1,1);
-			ofNotifyEvent(NetworkEvent, estat, this);
-		}
+		ofPoint estat;
+		if(!disp)
+			estat = ofPoint(_controlador,1,0);
+		else
+			estat = ofPoint(_controlador,1,1);
+		ofNotifyEvent(NetworkEvent, estat, this);
+	}
 }
 
 void  SpaceShip::gira_d(bool dreta) {
@@ -156,13 +156,13 @@ void  SpaceShip::gira_d(bool dreta) {
 void  SpaceShip::gira_e(bool esquerra) {
 	gira_esquerra = esquerra;
 	if(_network) {
-			ofPoint estat;
-			if(!esquerra)
-				estat = ofPoint(_controlador,3,0);
-			else
-				estat = ofPoint(_controlador,3,1);
-			ofNotifyEvent(NetworkEvent, estat, this);
-		}
+		ofPoint estat;
+		if(!esquerra)
+			estat = ofPoint(_controlador,3,0);
+		else
+			estat = ofPoint(_controlador,3,1);
+		ofNotifyEvent(NetworkEvent, estat, this);
+	}
 }
 
 void SpaceShip::setControlador(int contr){

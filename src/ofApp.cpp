@@ -14,7 +14,7 @@ PlayerManager* PlayerManager::_instance = NULL;
 ofEvent<ofPoint> ofApp::ArdEvent = ofEvent<ofPoint>();
 
 //Variables globals que defineixen les vides i la puntuacio maxima
-int MAX_SCORE = 1000;
+int MAX_SCORE = 2000;
 int MAX_LIVES = 30;
 int INITIAL_SCORE = 0;
 
@@ -23,9 +23,7 @@ int INITIAL_SCORE = 0;
 
 ofApp::ofApp(int cli, int SO) {
 	clientServidor = cli;
-	sistemaOp = SO; //Fer mes endevant
-
-
+	sistemaOp = SO;
 	//setup();
 }
 
@@ -42,7 +40,6 @@ void ofApp::setupArduino() {
 			serial.setup("COM4", baud); // Windows
 		else if (sistemaOp == 3)
 			serial.setup("/dev/tty.usbserial-A4001JEC", baud); //Mac
-
 	}
 
 	cyclesCounter = 0;
