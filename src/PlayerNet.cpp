@@ -22,7 +22,7 @@ PlayerNet::PlayerNet(SpaceShip* contr, int id, int score_inicial, int lives, ofC
 
 //Es controla amb la x-Axis i y-Axis del joystic!
 void PlayerNet::moviment(ofPoint& ordre) {
-	if(ordre.y == 0 && ordre.z == 1)
+	/*if(ordre.y == 0 && ordre.z == 1)
 		_controlat->setThrust(true);
 	else
 		_controlat->setThrust(false);
@@ -47,6 +47,9 @@ void PlayerNet::moviment(ofPoint& ordre) {
 	else {
 		_controlat->gira_e(false);
 		_controlat->gira_d(false);
-	}
+	}*/
+	_controlat->setPosition(ofPoint(ordre.x,ordre.y));
+	_controlat->setRotation(ordre.z);
+	_controlat->setDirection(ofPoint(cos(ordre.z),sin(ordre.z)));
 
 }

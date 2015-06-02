@@ -230,25 +230,26 @@ void ofApp::arduinoUpdate() {
 void ofApp::clientSend(ofPoint& ordre) {
 	ofxOscMessage m;
 	m.setAddress("servidor");
-	m.addIntArg(ordre.x);
-	m.addIntArg(ordre.y);
-	m.addIntArg(ordre.z);
+	m.addFloatArg(ordre.x);
+	m.addFloatArg(ordre.y);
+	m.addFloatArg(ordre.z);
 	//m.addStringArg("client envia tonteries");
 	sender.sendMessage(m);
 }
 
 void ofApp::enviairep(){
 	if (clientServidor == 0) {
-		if(receiver.hasWaitingMessages()){
+		while(receiver.hasWaitingMessages()){
 			ofxOscMessage m;
 			receiver.getNextMessage(&m);
 			if(m.getAddress() == "servidor"){
-				ofPoint pos = ofPoint( m.getArgAsInt32(0),m.getArgAsInt32(1),m.getArgAsInt32(2));
+				ofPoint pos = ofPoint( m.getArgAsFloat(0),m.getArgAsFloat(1),m.getArgAsFloat(2));
 				//Event que indica a les classes Ard quina posicio tene els Axis
 				ofNotifyEvent(NetEvent, pos, this);
-				//cout << << " " <<  << "" <<m.getArgAsInt32(2)<< endl;
+				cout << pos.x << " " <<  pos.y << endl;
 			}
 		}
+
 		ofxOscMessage m;
 		m.setAddress("client");
 		m.addStringArg("servidor envia tonteries");

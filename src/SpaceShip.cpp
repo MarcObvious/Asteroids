@@ -84,6 +84,12 @@ void SpaceShip::update(float elapsedTime) {
 
 	//Actualtizem posició respecte direcció speed i elapsedTime (diferents maquines! s'ha de tenir en compte)
 	position += direction * speed * elapsedTime;
+
+	if (_network) {
+		ofPoint estat = ofPoint(position.x, position.y,rotation);
+		cout << position.x << " " << position.y << endl;
+		ofNotifyEvent(NetworkEvent, estat, this);
+	}
 	marginsWrap();
 
 }
@@ -125,7 +131,7 @@ void  SpaceShip::setThrust(bool trust) {
 			estat = ofPoint(_controlador,0,0);
 		else
 			estat = ofPoint(_controlador,0,1);
-		ofNotifyEvent(NetworkEvent, estat, this);
+		//ofNotifyEvent(NetworkEvent, estat, this);
 	}
 }
 
@@ -137,7 +143,7 @@ void SpaceShip::shot(bool disp) {
 			estat = ofPoint(_controlador,1,0);
 		else
 			estat = ofPoint(_controlador,1,1);
-		ofNotifyEvent(NetworkEvent, estat, this);
+	//	ofNotifyEvent(NetworkEvent, estat, this);
 	}
 }
 
@@ -149,7 +155,7 @@ void  SpaceShip::gira_d(bool dreta) {
 			estat = ofPoint(_controlador,2,0);
 		else
 			estat = ofPoint(_controlador,2,1);
-		ofNotifyEvent(NetworkEvent, estat, this);
+	//	ofNotifyEvent(NetworkEvent, estat, this);
 	}
 }
 
@@ -161,7 +167,7 @@ void  SpaceShip::gira_e(bool esquerra) {
 			estat = ofPoint(_controlador,3,0);
 		else
 			estat = ofPoint(_controlador,3,1);
-		ofNotifyEvent(NetworkEvent, estat, this);
+	//	ofNotifyEvent(NetworkEvent, estat, this);
 	}
 }
 
