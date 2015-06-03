@@ -16,7 +16,7 @@ ofEvent<Missatge> ofApp::NetEvent = ofEvent<Missatge>();
 
 //Variables globals que defineixen les vides i la puntuacio maxima
 int MAX_SCORE = 2000;
-int MAX_LIVES = 20;
+int MAX_LIVES = 75;
 int INITIAL_SCORE = 0;
 
 //--------------------------------------------------------------
@@ -25,6 +25,10 @@ int INITIAL_SCORE = 0;
 ofApp::ofApp(int cli, int SO) {
 	clientServidor = cli;
 	sistemaOp = SO;
+	if (sistemaOp == 0)
+		s_clientServidor = "servidor";
+	else
+		s_clientServidor = "client";
 	//setup();
 }
 
@@ -54,9 +58,10 @@ void ofApp::setup() {
 	if (clientServidor == 1 || clientServidor == 0) {
 		receiver.setup(PORT);
 		sender.setup(HOST, PORT);
-		if (clientServidor == 1)
-			ofAddListener(SpaceShip::NetworkEvent, this, &ofApp::clientSend);
+		//if (clientServidor == 1)
+		ofAddListener(SpaceShip::NetworkEvent, this, &ofApp::clientSend);
 	}
+	timer = 0;
 
 	// Set framerate to 60 FPS
 	ofSetFrameRate(60);
@@ -236,8 +241,11 @@ void ofApp::arduinoUpdate() {
 
 void ofApp::clientSend(Missatge& ordre) {
 	ofxOscMessage m;
-
-	m.setAddress("servidor");
+	//
+	//if (sistemaOp == 1)
+		m.setAddress("d_per"+s_clientServidor);
+	/*else
+		m.setAddress("d_per_client");*/
 	m.addIntArg(ordre.id);
 	m.addFloatArg(ordre.posicio.x);
 	m.addFloatArg(ordre.posicio.y);
@@ -252,27 +260,35 @@ void ofApp::clientSend(Missatge& ordre) {
 		m.addIntArg(0);
 	//m.addStringArg("client envia tonteries");
 	sender.sendMessage(m);
+
 }
+
 void ofApp::enviaBi(string ordre) {
 	ofxOscMessage m;
-	if (sistemaOp == 1)
-		m.setAddress("client");
-	else
-		m.setAddress("servidor");
+	/*if (sistemaOp == 1)
+		m.setAddress("o_per_servidor");
+	else*/
+		m.setAddress("o_per"+s_clientServidor);
 
 	m.addIntArg(99);
 	m.addStringArg(ordre);
 	if (ordre == "guanyador")
 		m.addIntArg(guanyador->getId());
 	sender.sendMessage(m);
+
 }
 
 void ofApp::enviairep(){
-	//if (clientServidor == 0) {
+	string wut;
+
+	if (clientServidor == 0)
+		wut = "o_per_servidor";
+	else wut = "o_per_client";
+
 	while(receiver.hasWaitingMessages()){
 		ofxOscMessage m;
 		receiver.getNextMessage(&m);
-		if(m.getAddress() == "servidor" || m.getAddress() == "client"){
+		if(m.getAddress() == "o_per"+s_clientServidor){
 			Missatge ordre;
 			ordre.id =  m.getArgAsInt32(0);
 			if (ordre.id == 99) {
@@ -282,23 +298,26 @@ void ofApp::enviairep(){
 				else if (ord == "guanyador")
 					guanyador = PlayerManager::getInstance()->getPlayer(m.getArgAsInt32(2));
 			}
-			else {
-				ordre.posicio = ofPoint( m.getArgAsFloat(1),m.getArgAsFloat(2),m.getArgAsFloat(3));
-				if (m.getArgAsInt32(4) == 0)
-					ordre.dispara = false;
-				else
-					ordre.dispara = true;
+		}
+		else if (m.getAddress() == "d_per"+s_clientServidor ){
+			Missatge ordre;
+			ordre.id =  m.getArgAsInt32(0);
+			ordre.posicio = ofPoint( m.getArgAsFloat(1),m.getArgAsFloat(2),m.getArgAsFloat(3));
+			if (m.getArgAsInt32(4) == 0)
+				ordre.dispara = false;
+			else
+				ordre.dispara = true;
 
-				if (m.getArgAsInt32(5) == 0)
-					ordre.thrust = false;
-				else
-					ordre.thrust = true;
+			if (m.getArgAsInt32(5) == 0)
+				ordre.thrust = false;
+			else
+				ordre.thrust = true;
 
-				//ofPoint pos = ofPoint( m.getArgAsFloat(0),m.getArgAsFloat(1),m.getArgAsFloat(2));
-				//Event que indica a les classes Ard quina posicio tene els Axis
-				ofNotifyEvent(NetEvent, ordre, this);
-				//cout << pos.x << " " <<  pos.y << endl;
-			}
+			//ofPoint pos = ofPoint( m.getArgAsFloat(0),m.getArgAsFloat(1),m.getArgAsFloat(2));
+			//Event que indica a les classes Ard quina posicio tene els Axis
+			ofNotifyEvent(NetEvent, ordre, this);
+			//cout << pos.x << " " <<  pos.y << endl;
+
 		}
 	}
 	/*
@@ -331,18 +350,26 @@ void ofApp::update() {
 		float elapsedTime = ofGetLastFrameTime();
 
 		//Preguntem a PlayerManager si hi ha guanyador, si n'hi ha no updategem res.
-		guanyador = PlayerManager::getInstance()->hihaguanyador(MAX_SCORE);
-		if (guanyador == NULL){
-			//Comprova colisions d'Asteroides amb spaceShips
-			AsteroidManager::getInstance()->comprova();
+		if (clientServidor == 0) {
+			guanyador = PlayerManager::getInstance()->hihaguanyador(MAX_SCORE);
+			if (guanyador == NULL){
+				//Comprova colisions d'Asteroides amb spaceShips
+				AsteroidManager::getInstance()->comprova();
 
-			//Fa els updates de tot
-			BulletManager::getInstance()->update(elapsedTime);
-			AsteroidManager::getInstance()->update(elapsedTime);
-			PlayerManager::getInstance()->update(elapsedTime);
+				//Fa els updates de tot
+				BulletManager::getInstance()->update(elapsedTime);
+				AsteroidManager::getInstance()->update(elapsedTime);
+				PlayerManager::getInstance()->update(elapsedTime);
+			}
+			else
+				enviaBi("guanyador");
 		}
-		else
-			enviaBi("guanyador");
+		else {
+			if (guanyador == NULL){
+				BulletManager::getInstance()->update(elapsedTime);
+				PlayerManager::getInstance()->update(elapsedTime);
+			}
+		}
 	}
 	//Update dels controladors arduino
 	if (sistemaOp != 0)
@@ -406,43 +433,48 @@ void ofApp::draw() {
 
 
 void ofApp::keyPressed(int key) {
-	switch (key) {
-	// If pressed 1 change debug/help mode
-	case '1':
-		debug = !debug;
-		break;
-		// Apretem 2 silenciem, no silenciem
-	case '2':
-		if (explosion->isLoaded()) {
-			explosion->unloadSound();
-			AsteroidManager::getInstance()->setExplosionSound(NULL);
+	if (timer > 2) {
+		switch (key) {
+		// If pressed 1 change debug/help mode
+		case '1':
+			debug = !debug;
+			break;
+			// Apretem 2 silenciem, no silenciem
+		case '2':
+			if (explosion->isLoaded()) {
+				explosion->unloadSound();
+				AsteroidManager::getInstance()->setExplosionSound(NULL);
+			}
+			else {
+				explosion->loadSound("sounds/explosion.mp3", false);
+				AsteroidManager::getInstance()->setExplosionSound(explosion);
+			}
+			if (pium->isLoaded()) {
+				pium->unloadSound();
+				BulletManager::getInstance()->setBulletSound(NULL);
+			}
+			else {
+				pium->loadSound("sounds/explosion.mp3", false);
+				BulletManager::getInstance()->setBulletSound(pium);
+			}
+			break;
+			//r, ressetegem el joc
+		case 'r':
+			cout << "Reset at:" << endl;
+			cout << PlayerManager::getInstance()->getAllScores();
+			reset();
+			break;
+			//f, "Finalitzem" el joc el joc
+		case 'f':
+			acaba_partida = true;
+			cout << "MENTIDAAAAAAAAAAAAAAAAAAA, musicaaaa i mes musicaaaaa Muahahahahhah!" << endl;
+			break;
+			//----------------------------------------------------------------------
+			timer = 0;
 		}
-		else {
-			explosion->loadSound("sounds/explosion.mp3", false);
-			AsteroidManager::getInstance()->setExplosionSound(explosion);
-		}
-		if (pium->isLoaded()) {
-			pium->unloadSound();
-			BulletManager::getInstance()->setBulletSound(NULL);
-		}
-		else {
-			pium->loadSound("sounds/explosion.mp3", false);
-			BulletManager::getInstance()->setBulletSound(pium);
-		}
-		break;
-		//r, ressetegem el joc
-	case 'r':
-		cout << "Reset at:" << endl;
-		cout << PlayerManager::getInstance()->getAllScores();
-		reset();
-		break;
-		//f, "Finalitzem" el joc el joc
-	case 'f':
-		acaba_partida = true;
-		cout << "MENTIDAAAAAAAAAAAAAAAAAAA, musicaaaa i mes musicaaaaa Muahahahahhah!" << endl;
-		break;
-		//----------------------------------------------------------------------
 	}
+	else
+		++timer;
 }
 //Reset del joc.
 void ofApp::reset() {

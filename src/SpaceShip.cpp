@@ -88,12 +88,13 @@ void SpaceShip::update(float elapsedTime) {
 
 	//Actualtizem posició respecte direcció speed i elapsedTime (diferents maquines! s'ha de tenir en compte)
 	position += direction * speed * elapsedTime;
+
 	if (_network) {
 		m.posicio = ofPoint(position.x, position.y,rotation);
 		m.thrust = thrust;
 		m.dispara = isFiring;
 		//ofPoint estat = ofPoint(position.x, position.y,rotation);
-		cout << position.x << " " << position.y << endl;
+		//cout << position.x << " " << position.y << endl;
 		ofNotifyEvent(NetworkEvent, m, this);
 	}
 	marginsWrap();
