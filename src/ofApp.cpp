@@ -16,7 +16,7 @@ ofEvent<Missatge> ofApp::NetEvent = ofEvent<Missatge>();
 
 //Variables globals que defineixen les vides i la puntuacio maxima
 int MAX_SCORE = 2000;
-int MAX_LIVES = 75;
+int MAX_LIVES = 20;
 int INITIAL_SCORE = 0;
 
 //--------------------------------------------------------------
