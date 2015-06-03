@@ -21,35 +21,22 @@ PlayerNet::PlayerNet(SpaceShip* contr, int id, int score_inicial, int lives, ofC
 }
 
 //Es controla amb la x-Axis i y-Axis del joystic!
-void PlayerNet::moviment(ofPoint& ordre) {
-	/*if(ordre.y == 0 && ordre.z == 1)
-		_controlat->setThrust(true);
-	else
-		_controlat->setThrust(false);
+void PlayerNet::moviment(Missatge& ordre) {
+	if (ordre.id == _id) {
+	//	cout << _id << "_id vs id" << ordre.id << endl;
+		if(ordre.thrust)
+			_controlat->setThrust(true);
+		else
+			_controlat->setThrust(false);
 
-	if(ordre.y == 1 && ordre.z == 1)
-		_controlat->shot(true);
-	else
-		_controlat->shot(false);
+		if(ordre.dispara)
+			_controlat->shot(true);
+		else
+			_controlat->shot(false);
 
-	if (ordre.y == 2 && ordre.z == 1) {
-		_controlat->gira_d(true);
-		_controlat->gira_e(false);
+		_controlat->setPosition(ofPoint(ordre.posicio.x,ordre.posicio.y));
+		_controlat->setRotation(ordre.posicio.z);
+		_controlat->setDirection(ofPoint(cos(ordre.posicio.z),sin(ordre.posicio.z)));
 	}
-	else if (ordre.y == 3 && ordre.z == 1) {
-		_controlat->gira_e(true);
-		_controlat->gira_d(false);
-	}
-//	else if (ordre.x == 0 && ordre.y == 0) {
-//		_controlat->gira_e(false);
-//		_controlat->gira_d(false);
-//	}
-	else {
-		_controlat->gira_e(false);
-		_controlat->gira_d(false);
-	}*/
-	_controlat->setPosition(ofPoint(ordre.x,ordre.y));
-	_controlat->setRotation(ordre.z);
-	_controlat->setDirection(ofPoint(cos(ordre.z),sin(ordre.z)));
 
 }

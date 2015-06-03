@@ -12,11 +12,11 @@ PlayerManager* PlayerManager::_instance = NULL;
 
 //Event que registra el canvi al joystic arduino
 ofEvent<ofPoint> ofApp::ArdEvent = ofEvent<ofPoint>();
-ofEvent<ofPoint> ofApp::NetEvent = ofEvent<ofPoint>();
+ofEvent<Missatge> ofApp::NetEvent = ofEvent<Missatge>();
 
 //Variables globals que defineixen les vides i la puntuacio maxima
 int MAX_SCORE = 2000;
-int MAX_LIVES = 30;
+int MAX_LIVES = 50;
 int INITIAL_SCORE = 0;
 
 //--------------------------------------------------------------
@@ -87,24 +87,31 @@ void ofApp::setup() {
 	nau->setup(shape, 40, 500, 50,
 			ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
 
-	PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(255,0,0), "Player", false);
+	if (clientServidor == 1)
+		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(255,0,0), "Player", true);
+	else
+		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(255,0,0), "PlayerNet", false);
 
 	nau = new SpaceShip();
 
 	nau->setup(shape, 40, 500, 50,
 			ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
 
-	PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,0,255),"Player",false);
+	if (clientServidor == 0)
+		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,0,255),"Player",true);
+	else
+		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,0,255),"PlayerNet",false);
 
 	nau = new SpaceShip();
 
 	nau->setup(shape, 40, 500, 50,
 			ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
+
 	if (clientServidor == 1)
 		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,255,0), "PlayerRat",true);
 	else
 		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,255,0), "PlayerNet",false);
-/*
+	/*
 
 	nau = new SpaceShip();
 
@@ -227,48 +234,71 @@ void ofApp::arduinoUpdate() {
 	}
 }
 
-void ofApp::clientSend(ofPoint& ordre) {
+void ofApp::clientSend(Missatge& ordre) {
 	ofxOscMessage m;
+
 	m.setAddress("servidor");
-	m.addFloatArg(ordre.x);
-	m.addFloatArg(ordre.y);
-	m.addFloatArg(ordre.z);
+	m.addIntArg(ordre.id);
+	m.addFloatArg(ordre.posicio.x);
+	m.addFloatArg(ordre.posicio.y);
+	m.addFloatArg(ordre.posicio.z);
+	if (ordre.dispara)
+		m.addIntArg(1);
+	else
+		m.addIntArg(0);
+	if (ordre.thrust)
+		m.addIntArg(1);
+	else
+		m.addIntArg(0);
 	//m.addStringArg("client envia tonteries");
 	sender.sendMessage(m);
 }
 
 void ofApp::enviairep(){
-	if (clientServidor == 0) {
+	//if (clientServidor == 0) {
 		while(receiver.hasWaitingMessages()){
 			ofxOscMessage m;
 			receiver.getNextMessage(&m);
 			if(m.getAddress() == "servidor"){
-				ofPoint pos = ofPoint( m.getArgAsFloat(0),m.getArgAsFloat(1),m.getArgAsFloat(2));
+				Missatge ordre;
+				ordre.id =  m.getArgAsInt32(0);
+				ordre.posicio = ofPoint( m.getArgAsFloat(1),m.getArgAsFloat(2),m.getArgAsFloat(3));
+				if (m.getArgAsInt32(4) == 0)
+					ordre.dispara = false;
+				else
+					ordre.dispara = true;
+
+				if (m.getArgAsInt32(5) == 0)
+					ordre.thrust = false;
+				else
+					ordre.thrust = true;
+
+				//ofPoint pos = ofPoint( m.getArgAsFloat(0),m.getArgAsFloat(1),m.getArgAsFloat(2));
 				//Event que indica a les classes Ard quina posicio tene els Axis
-				ofNotifyEvent(NetEvent, pos, this);
-				cout << pos.x << " " <<  pos.y << endl;
+				ofNotifyEvent(NetEvent, ordre, this);
+				//cout << pos.x << " " <<  pos.y << endl;
 			}
 		}
-
+/*
 		ofxOscMessage m;
 		m.setAddress("client");
 		m.addStringArg("servidor envia tonteries");
-		sender.sendMessage(m);
+		sender.sendMessage(m);*/
 
-	}
-	else if (clientServidor == 1) {
-//		ofxOscMessage m;
-//		m.setAddress("servidor");
-//		m.addStringArg("client envia tonteries");
-//		sender.sendMessage(m);
-//		if(receiver.hasWaitingMessages()){
-//			ofxOscMessage m;
-//			receiver.getNextMessage(&m);
-//			if(m.getAddress() == "client"){
-//				cout << m.getArgAsString(0) << endl;
-//			}
-//		}
-	}
+	//}
+	//else if (clientServidor == 1) {
+		//		ofxOscMessage m;
+		//		m.setAddress("servidor");
+		//		m.addStringArg("client envia tonteries");
+		//		sender.sendMessage(m);
+		//		if(receiver.hasWaitingMessages()){
+		//			ofxOscMessage m;
+		//			receiver.getNextMessage(&m);
+		//			if(m.getAddress() == "client"){
+		//				cout << m.getArgAsString(0) << endl;
+		//			}
+		//		}
+	//}
 }
 //--------------------------------------------------------------
 void ofApp::update() {

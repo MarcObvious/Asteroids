@@ -4,8 +4,7 @@
 //****************************************************************************//
 
 #include "SpaceShip.h"
-
-ofEvent<ofPoint> SpaceShip::NetworkEvent = ofEvent<ofPoint>();
+ofEvent<Missatge> SpaceShip::NetworkEvent = ofEvent<Missatge>();
 
 SpaceShip::SpaceShip() {
 	position.x = 0;
@@ -20,6 +19,11 @@ SpaceShip::SpaceShip() {
 	gira_esquerra=false;
 	_color = ofColor(0,0,0);
 	_network = false;
+
+	m.id = 0;
+	m.posicio = ofPoint(0,0,0);
+	m.thrust = false;
+	m.dispara = false;
 }
 
 SpaceShip::~SpaceShip() {
@@ -84,11 +88,13 @@ void SpaceShip::update(float elapsedTime) {
 
 	//Actualtizem posició respecte direcció speed i elapsedTime (diferents maquines! s'ha de tenir en compte)
 	position += direction * speed * elapsedTime;
-
 	if (_network) {
-		ofPoint estat = ofPoint(position.x, position.y,rotation);
+		m.posicio = ofPoint(position.x, position.y,rotation);
+		m.thrust = thrust;
+		m.dispara = isFiring;
+		//ofPoint estat = ofPoint(position.x, position.y,rotation);
 		cout << position.x << " " << position.y << endl;
-		ofNotifyEvent(NetworkEvent, estat, this);
+		ofNotifyEvent(NetworkEvent, m, this);
 	}
 	marginsWrap();
 
@@ -173,6 +179,7 @@ void  SpaceShip::gira_e(bool esquerra) {
 
 void SpaceShip::setControlador(int contr){
 	_controlador = contr;
+	m.id = contr;
 }
 
 bool SpaceShip::isDestroyed() const {

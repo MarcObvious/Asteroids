@@ -17,7 +17,7 @@ public:
 
 	~PlayerNet(){};
 
-	void moviment(ofPoint& ordre);
+	void moviment(Missatge& ordre);
 
 };
 

@@ -29,7 +29,7 @@ class ofApp: public ofBaseApp {
 
 public:
 	static ofEvent<ofPoint> ArdEvent;
-	static ofEvent<ofPoint> NetEvent;
+	static ofEvent<Missatge> NetEvent;
 	ofApp(int cli, int SO);
 	~ofApp();
 	void setup();
@@ -49,7 +49,7 @@ public:
 	void reset();
 	void killSound();
 	void enviairep();
-	void clientSend(ofPoint& ordre);
+	void clientSend(Missatge& ordre);
 
 
 private:
