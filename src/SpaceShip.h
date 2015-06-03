@@ -12,12 +12,19 @@
 
 //Spaceship es la "forma" que dona voltes pel mapa. Ha de ser controlada per un player
 
+typedef struct{
+	int id;
+	ofPoint posicio;
+	bool dispara;
+	bool thrust;
+}Missatge;
 
 class SpaceShip: public Entity {
 
 private:
 	// SpaceShip's behaviour control variables
 	bool thrust, isFiring, gira_dreta, gira_esquerra;
+	bool _network;
 	int _controlador;
 	ofColor _color;
 
@@ -26,10 +33,12 @@ private:
 	ofPolyline p;
 	bool destroyed;
 	bool out;
+	Missatge m;
 
 public:
 	SpaceShip();
 	~SpaceShip();
+	static ofEvent<Missatge> NetworkEvent;
 
 	virtual bool setup();
 	virtual bool setup(vector<ofPoint> & shape, float size, float speed,
@@ -53,4 +62,6 @@ public:
 	void setColor(ofColor color);
 	bool isDestroyed() const;
 	void setDestroyed(bool destroyed);
+	bool isNetwork() const;
+	void setNetwork(bool network);
 };

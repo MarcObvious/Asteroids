@@ -4,6 +4,7 @@
 //****************************************************************************//
 
 #include "SpaceShip.h"
+ofEvent<Missatge> SpaceShip::NetworkEvent = ofEvent<Missatge>();
 
 SpaceShip::SpaceShip() {
 	position.x = 0;
@@ -17,7 +18,12 @@ SpaceShip::SpaceShip() {
 	gira_dreta=false;
 	gira_esquerra=false;
 	_color = ofColor(0,0,0);
+	_network = false;
 
+	m.id = 0;
+	m.posicio = ofPoint(0,0,0);
+	m.thrust = false;
+	m.dispara = false;
 }
 
 SpaceShip::~SpaceShip() {
@@ -76,12 +82,21 @@ void SpaceShip::update(float elapsedTime) {
 
 	}
 	else {
-		
+
 		this->addRotation( 1.5*elapsedTime);
 	}
 
 	//Actualtizem posició respecte direcció speed i elapsedTime (diferents maquines! s'ha de tenir en compte)
 	position += direction * speed * elapsedTime;
+
+	if (_network) {
+		m.posicio = ofPoint(position.x, position.y,rotation);
+		m.thrust = thrust;
+		m.dispara = isFiring;
+		//ofPoint estat = ofPoint(position.x, position.y,rotation);
+		//cout << position.x << " " << position.y << endl;
+		ofNotifyEvent(NetworkEvent, m, this);
+	}
 	marginsWrap();
 
 }
@@ -91,18 +106,18 @@ void SpaceShip::draw(bool debug) {
 	//Shape que hem carregat prevament
 	ofPushStyle();
 	ofPushMatrix();
-		ofSetColor(_color);
-		glTranslatef(position.x, position.y, 0);
-		//S'ha de passar a radians!
-		glRotatef(rotation  / PI * 180, 0, 0, 1);
+	ofSetColor(_color);
+	glTranslatef(position.x, position.y, 0);
+	//S'ha de passar a radians!
+	glRotatef(rotation  / PI * 180, 0, 0, 1);
 
-		if (debug) {
-			ofPushStyle();
-			ofNoFill();
-			ofCircle(0, 0, size);
-			ofPopStyle();
-		}
-		p.draw();
+	if (debug) {
+		ofPushStyle();
+		ofNoFill();
+		ofCircle(0, 0, size);
+		ofPopStyle();
+	}
+	p.draw();
 	ofPopMatrix();
 	ofPopStyle();
 
@@ -116,22 +131,68 @@ void SpaceShip::addThrust(float thrust) {
 
 void  SpaceShip::setThrust(bool trust) {
 	thrust = trust;
+	if(_network) {
+		//cout << _controlador << endl;
+		ofPoint estat;
+		if(!trust)
+			estat = ofPoint(_controlador,0,0);
+		else
+			estat = ofPoint(_controlador,0,1);
+		//ofNotifyEvent(NetworkEvent, estat, this);
+	}
 }
-void  SpaceShip::gira_d(bool dreta) {
-	gira_dreta = dreta;
-}
-void  SpaceShip::gira_e(bool esquerra) {
-	gira_esquerra = esquerra;
-}
+
 void SpaceShip::shot(bool disp) {
 	isFiring = disp;
+	if(_network) {
+		ofPoint estat;
+		if(!disp)
+			estat = ofPoint(_controlador,1,0);
+		else
+			estat = ofPoint(_controlador,1,1);
+	//	ofNotifyEvent(NetworkEvent, estat, this);
+	}
 }
+
+void  SpaceShip::gira_d(bool dreta) {
+	gira_dreta = dreta;
+	if(_network) {
+		ofPoint estat;
+		if(!dreta)
+			estat = ofPoint(_controlador,2,0);
+		else
+			estat = ofPoint(_controlador,2,1);
+	//	ofNotifyEvent(NetworkEvent, estat, this);
+	}
+}
+
+void  SpaceShip::gira_e(bool esquerra) {
+	gira_esquerra = esquerra;
+	if(_network) {
+		ofPoint estat;
+		if(!esquerra)
+			estat = ofPoint(_controlador,3,0);
+		else
+			estat = ofPoint(_controlador,3,1);
+	//	ofNotifyEvent(NetworkEvent, estat, this);
+	}
+}
+
 void SpaceShip::setControlador(int contr){
 	_controlador = contr;
+	m.id = contr;
 }
 
 bool SpaceShip::isDestroyed() const {
 	return destroyed;
+}
+
+bool SpaceShip::isNetwork() const {
+	return _network;
+}
+
+void SpaceShip::setNetwork(bool network) {
+	_network = network;
 }
 
 void SpaceShip::setDestroyed(bool destroyed) {

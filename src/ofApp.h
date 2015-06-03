@@ -29,6 +29,7 @@ class ofApp: public ofBaseApp {
 
 public:
 	static ofEvent<ofPoint> ArdEvent;
+	static ofEvent<Missatge> NetEvent;
 	ofApp(int cli, int SO);
 	~ofApp();
 	void setup();
@@ -48,6 +49,8 @@ public:
 	void reset();
 	void killSound();
 	void enviairep();
+	void clientSend(Missatge& ordre);
+	void enviaBi(string ordre);
 
 
 private:
@@ -59,9 +62,10 @@ private:
 	ofSoundPlayer * explosion;
 
 	int sistemaOp;
-
+	float timer;
 	//SenderReceiver
 	int clientServidor;
+	string s_clientServidor;
 	ofxOscSender sender;
 	ofxOscReceiver receiver;
 
