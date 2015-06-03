@@ -55,12 +55,17 @@ void ofApp::setupArduino() {
 
 void ofApp::setup() {
 
-	if (clientServidor == 1 || clientServidor == 0) {
+	if (clientServidor == 1) {
 		receiver.setup(PORT);
-		sender.setup(HOST, PORT);
+		sender.setup("192.168.1.33", PORT);
+
 		//if (clientServidor == 1)
-		ofAddListener(SpaceShip::NetworkEvent, this, &ofApp::clientSend);
 	}
+	else if (clientServidor == 0) {
+		receiver.setup(PORT);
+		sender.setup("192.168.1.135", PORT);
+	}
+	ofAddListener(SpaceShip::NetworkEvent, this, &ofApp::clientSend);
 	timer = 0;
 
 	// Set framerate to 60 FPS
@@ -243,7 +248,7 @@ void ofApp::clientSend(Missatge& ordre) {
 	ofxOscMessage m;
 	//
 	//if (sistemaOp == 1)
-		m.setAddress("d_per"+s_clientServidor);
+	m.setAddress("d_per"+s_clientServidor);
 	/*else
 		m.setAddress("d_per_client");*/
 	m.addIntArg(ordre.id);
@@ -268,7 +273,7 @@ void ofApp::enviaBi(string ordre) {
 	/*if (sistemaOp == 1)
 		m.setAddress("o_per_servidor");
 	else*/
-		m.setAddress("o_per"+s_clientServidor);
+	m.setAddress("o_per"+s_clientServidor);
 
 	m.addIntArg(99);
 	m.addStringArg(ordre);
