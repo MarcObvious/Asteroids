@@ -20,8 +20,6 @@ int MAX_LIVES = 75;
 int INITIAL_SCORE = 0;
 
 //--------------------------------------------------------------
-
-
 ofApp::ofApp(int cli, int SO) {
 	clientServidor = cli;
 	sistemaOp = SO;
@@ -57,13 +55,13 @@ void ofApp::setup() {
 
 	if (clientServidor == 1) {
 		receiver.setup(PORT);
-		sender.setup("192.168.1.135", PORT);
+		sender.setup("192.168.1.33", PORT);
 
 		//if (clientServidor == 1)
 	}
 	else if (clientServidor == 0) {
 		receiver.setup(PORT);
-		sender.setup("192.168.1.133", PORT);
+		sender.setup("192.168.1.135", PORT);
 	}
 	ofAddListener(SpaceShip::NetworkEvent, this, &ofApp::clientSend);
 	timer = 0;
