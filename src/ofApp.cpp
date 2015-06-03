@@ -16,7 +16,7 @@ ofEvent<Missatge> ofApp::NetEvent = ofEvent<Missatge>();
 
 //Variables globals que defineixen les vides i la puntuacio maxima
 int MAX_SCORE = 2000;
-int MAX_LIVES = 50;
+int MAX_LIVES = 20;
 int INITIAL_SCORE = 0;
 
 //--------------------------------------------------------------
@@ -253,15 +253,36 @@ void ofApp::clientSend(Missatge& ordre) {
 	//m.addStringArg("client envia tonteries");
 	sender.sendMessage(m);
 }
+void ofApp::enviaBi(string ordre) {
+	ofxOscMessage m;
+	if (sistemaOp == 1)
+		m.setAddress("client");
+	else
+		m.setAddress("servidor");
+
+	m.addIntArg(99);
+	m.addStringArg(ordre);
+	if (ordre == "guanyador")
+		m.addIntArg(guanyador->getId());
+	sender.sendMessage(m);
+}
 
 void ofApp::enviairep(){
 	//if (clientServidor == 0) {
-		while(receiver.hasWaitingMessages()){
-			ofxOscMessage m;
-			receiver.getNextMessage(&m);
-			if(m.getAddress() == "servidor"){
-				Missatge ordre;
-				ordre.id =  m.getArgAsInt32(0);
+	while(receiver.hasWaitingMessages()){
+		ofxOscMessage m;
+		receiver.getNextMessage(&m);
+		if(m.getAddress() == "servidor" || m.getAddress() == "client"){
+			Missatge ordre;
+			ordre.id =  m.getArgAsInt32(0);
+			if (ordre.id == 99) {
+				string ord = m.getArgAsString(1);
+				if (ord == "reset")
+					reset();
+				else if (ord == "guanyador")
+					guanyador = PlayerManager::getInstance()->getPlayer(m.getArgAsInt32(2));
+			}
+			else {
 				ordre.posicio = ofPoint( m.getArgAsFloat(1),m.getArgAsFloat(2),m.getArgAsFloat(3));
 				if (m.getArgAsInt32(4) == 0)
 					ordre.dispara = false;
@@ -279,7 +300,8 @@ void ofApp::enviairep(){
 				//cout << pos.x << " " <<  pos.y << endl;
 			}
 		}
-/*
+	}
+	/*
 		ofxOscMessage m;
 		m.setAddress("client");
 		m.addStringArg("servidor envia tonteries");
@@ -287,22 +309,22 @@ void ofApp::enviairep(){
 
 	//}
 	//else if (clientServidor == 1) {
-		//		ofxOscMessage m;
-		//		m.setAddress("servidor");
-		//		m.addStringArg("client envia tonteries");
-		//		sender.sendMessage(m);
-		//		if(receiver.hasWaitingMessages()){
-		//			ofxOscMessage m;
-		//			receiver.getNextMessage(&m);
-		//			if(m.getAddress() == "client"){
-		//				cout << m.getArgAsString(0) << endl;
-		//			}
-		//		}
+	//		ofxOscMessage m;
+	//		m.setAddress("servidor");
+	//		m.addStringArg("client envia tonteries");
+	//		sender.sendMessage(m);
+	//		if(receiver.hasWaitingMessages()){
+	//			ofxOscMessage m;
+	//			receiver.getNextMessage(&m);
+	//			if(m.getAddress() == "client"){
+	//				cout << m.getArgAsString(0) << endl;
+	//			}
+	//		}
 	//}
 }
 //--------------------------------------------------------------
 void ofApp::update() {
-	enviairep();
+
 	if (!acaba_partida) { 
 		// We get the time that last frame lasted, and use it to update asteroids logic
 		// so their behaviour is independent to the framerate
@@ -319,11 +341,14 @@ void ofApp::update() {
 			AsteroidManager::getInstance()->update(elapsedTime);
 			PlayerManager::getInstance()->update(elapsedTime);
 		}
+		else
+			enviaBi("guanyador");
 	}
 	//Update dels controladors arduino
 	if (sistemaOp != 0)
 		if (serial.isInitialized())
 			arduinoUpdate();
+	enviairep();
 }	
 
 //--------------------------------------------------------------
@@ -359,8 +384,6 @@ void ofApp::draw() {
 				ofDrawBitmapString(ofToString(ofGetFrameRate()), 900, 20);
 				ofDrawBitmapString("Player 1 a w d s, Player 0 up, left, right, down, Player 2 mouse, Player 3 joystic i 4 sols per Vacilar.", 5, 745);
 				ofPopStyle();
-
-
 			}
 		}
 	}
@@ -423,6 +446,8 @@ void ofApp::keyPressed(int key) {
 }
 //Reset del joc.
 void ofApp::reset() {
+
+	enviaBi("reset");
 
 	BulletManager::getInstance()->reset();
 	AsteroidManager::getInstance()->reset();

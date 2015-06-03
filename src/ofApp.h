@@ -50,6 +50,7 @@ public:
 	void killSound();
 	void enviairep();
 	void clientSend(Missatge& ordre);
+	void enviaBi(string ordre);
 
 
 private:
