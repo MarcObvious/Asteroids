@@ -57,13 +57,13 @@ void ofApp::setup() {
 
 	if (clientServidor == 1) {
 		receiver.setup(PORT);
-		sender.setup("192.168.1.33", PORT);
+		sender.setup("192.168.1.135", PORT);
 
 		//if (clientServidor == 1)
 	}
 	else if (clientServidor == 0) {
 		receiver.setup(PORT);
-		sender.setup("192.168.1.135", PORT);
+		sender.setup("192.168.1.133", PORT);
 	}
 	ofAddListener(SpaceShip::NetworkEvent, this, &ofApp::clientSend);
 	timer = 0;
