@@ -246,7 +246,7 @@ void ofApp::clientSend(Missatge& ordre) {
 	ofxOscMessage m;
 	//
 	//if (sistemaOp == 1)
-	m.setAddress("d_per"+s_clientServidor);
+	m.setAddress("d_per_"+s_clientServidor);
 	/*else
 		m.setAddress("d_per_client");*/
 	m.addIntArg(ordre.id);
