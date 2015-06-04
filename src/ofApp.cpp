@@ -271,7 +271,7 @@ void ofApp::enviaBi(string ordre) {
 	if (s_clientServidor == "client")
 		m.setAddress("o_per_servidor");
 	else
-		m.setAddress("o_per_client);
+		m.setAddress("o_per_client");
 
 	m.addIntArg(99);
 	m.addStringArg(ordre);
