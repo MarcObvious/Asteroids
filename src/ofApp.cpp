@@ -268,10 +268,10 @@ void ofApp::clientSend(Missatge& ordre) {
 
 void ofApp::enviaBi(string ordre) {
 	ofxOscMessage m;
-	/*if (sistemaOp == 1)
+	if (s_clientServidor == "client")
 		m.setAddress("o_per_servidor");
-	else*/
-	m.setAddress("o_per_"+s_clientServidor);
+	else
+		m.setAddress("o_per_client);
 
 	m.addIntArg(99);
 	m.addStringArg(ordre);
