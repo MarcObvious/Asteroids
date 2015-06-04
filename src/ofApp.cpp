@@ -307,8 +307,8 @@ void ofApp::enviairep(){
 			surt.addIntArg(mida);
 			for(unsigned int i = 0; i < asteroids.size(); i++) {
 				ofPoint position = asteroids[i]->getPosition();
-				cout << "FUCKING SIZE " << asteroids[i]->getSize() << endl;
 				surt.addFloatArg(position.x);
+				cout << "FUCKING SIZE " << asteroids[i]->getSize() << endl;
 				surt.addFloatArg(position.y);
 				surt.addFloatArg(position.z);
 				surt.addFloatArg(asteroids[i]->getSize());
@@ -367,7 +367,7 @@ void ofApp::enviairep(){
 				for(unsigned int i = 0; i < mida; i++) {
 					ofPoint position = ofPoint(entra.getArgAsFloat(i+1),entra.getArgAsFloat(i+2),entra.getArgAsFloat(i+3));
 					Asteroid* newAsteroid = new Asteroid();
-					cout << "FUCKING SIZE " << entra.getArgAsFloat(i+4)<<endl;
+					cout << "FUCKING SIZE " << entra.getArgAsFloat(i+4) << "PUA" << entra.getArgAsFloat(i+5) <<endl;
 					newAsteroid->setup(asteroidsDefinitions.at(0),
 							2,
 							0,
