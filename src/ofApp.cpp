@@ -359,7 +359,7 @@ void ofApp::enviairep(){
 					newAsteroid->setup(asteroidsDefinitions.at(0),
 							entra.getArgAsFloat(i+4),
 							0,
-							entra.getArgAsFloat(i+5),
+							2,
 							position,
 							ofPoint(-(ofRandom(-1, 1)), ofRandom(-1, 1)));
 					asteroids.push_back(newAsteroid);
