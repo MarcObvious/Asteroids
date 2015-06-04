@@ -348,6 +348,7 @@ void ofApp::enviairep(){
 
 		}
 		else if (entra.getAddress() == "a_per_"+s_clientServidor ){
+			cout << "missatge rebut??" << endl;
 			int mida = entra.getArgAsInt32(0);
 			if (mida != 0) {
 
@@ -362,7 +363,7 @@ void ofApp::enviairep(){
 							ofPoint(-(ofRandom(-1, 1)), ofRandom(-1, 1)));
 					asteroids.push_back(newAsteroid);
 				}
-				cout << "missatge rebut??" << endl;
+
 				AsteroidManager::getInstance()->setAsteroids(asteroids);
 
 			}
