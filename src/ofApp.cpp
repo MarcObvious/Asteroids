@@ -78,7 +78,7 @@ void ofApp::setup() {
 	AsteroidManager::getInstance()->loadAsteroids();
 
 	// Create Asteroids
-	AsteroidManager::getInstance()->generateAsteroids(7);
+	AsteroidManager::getInstance()->generateAsteroids(4);
 
 
 	//Manera cutre d'afegir la forma (vertex) de les nostres naus (tenen la mateixa forma
@@ -271,7 +271,7 @@ void ofApp::enviaBi(string ordre) {
 	/*if (sistemaOp == 1)
 		m.setAddress("o_per_servidor");
 	else*/
-	m.setAddress("o_per"+s_clientServidor);
+	m.setAddress("o_per_"+s_clientServidor);
 
 	m.addIntArg(99);
 	m.addStringArg(ordre);
@@ -281,33 +281,59 @@ void ofApp::enviaBi(string ordre) {
 
 }
 
+void ofApp::enviaOrepAsteroids() {
+
+}
+
 void ofApp::enviairep(){
+	ofxOscMessage surt;
+	vector<Asteroid*> asteroids;
 
+	if (s_clientServidor == "servidor") {
+		asteroids = AsteroidManager::getInstance()->getAsteroids();
+		surt.setAddress("a_per_client");
+		int mida = asteroids.size();
+		if (mida != 0) {
+			surt.addIntArg(mida);
+			for(unsigned int i = 0; i < asteroids.size(); i++) {
+				ofPoint position = asteroids[i]->getPosition();
+				surt.addFloatArg(position.x);
+				surt.addFloatArg(position.y);
+				surt.addFloatArg(position.z);
+				surt.addFloatArg(asteroids[i]->getSize());
+				surt.addFloatArg(asteroids[i]->getRotation());
+			}
+			sender.sendMessage(surt);
+		}
+	}
+	else if (s_clientServidor == "client") {
 
+	}
+	asteroids.clear();
 	while(receiver.hasWaitingMessages()){
-		ofxOscMessage m;
-		receiver.getNextMessage(&m);
-		if(m.getAddress() == "o_per"+s_clientServidor){
+		ofxOscMessage entra;
+		receiver.getNextMessage(&entra);
+		if(entra.getAddress() == "o_per_"+s_clientServidor){
 			Missatge ordre;
-			ordre.id =  m.getArgAsInt32(0);
+			ordre.id =  entra.getArgAsInt32(0);
 			if (ordre.id == 99) {
-				string ord = m.getArgAsString(1);
+				string ord = entra.getArgAsString(1);
 				if (ord == "reset")
 					reset();
 				else if (ord == "guanyador")
-					guanyador = PlayerManager::getInstance()->getPlayer(m.getArgAsInt32(2));
+					guanyador = PlayerManager::getInstance()->getPlayer(entra.getArgAsInt32(2));
 			}
 		}
-		else if (m.getAddress() == "d_per"+s_clientServidor ){
+		else if (entra.getAddress() == "d_per_"+s_clientServidor ){
 			Missatge ordre;
-			ordre.id =  m.getArgAsInt32(0);
-			ordre.posicio = ofPoint( m.getArgAsFloat(1),m.getArgAsFloat(2),m.getArgAsFloat(3));
-			if (m.getArgAsInt32(4) == 0)
+			ordre.id =  entra.getArgAsInt32(0);
+			ordre.posicio = ofPoint( entra.getArgAsFloat(1),entra.getArgAsFloat(2),entra.getArgAsFloat(3));
+			if (entra.getArgAsInt32(4) == 0)
 				ordre.dispara = false;
 			else
 				ordre.dispara = true;
 
-			if (m.getArgAsInt32(5) == 0)
+			if (entra.getArgAsInt32(5) == 0)
 				ordre.thrust = false;
 			else
 				ordre.thrust = true;
@@ -318,9 +344,28 @@ void ofApp::enviairep(){
 			//cout << pos.x << " " <<  pos.y << endl;
 
 		}
-		else if (m.getAddress() == "d_per"+s_clientServidor ){
-
+		if (s_clientServidor == "client") {
+			if (entra.getAddress() == "a_per_"+s_clientServidor ){
+				int mida = entra.getArgAsInt32(0);
+				if (mida != 0) {
+					vector<vector<ofPoint> > asteroidsDefinitions = AsteroidManager::getInstance()->getAsteroidsDefinitions();
+					for(unsigned int i = 0; i < mida; i++) {
+						ofPoint position = ofPoint(entra.getArgAsFloat(i+1),entra.getArgAsFloat(i+2),entra.getArgAsFloat(i+3));
+						Asteroid* newAsteroid = new Asteroid();
+						newAsteroid->setup(asteroidsDefinitions.at(0),
+								entra.getArgAsFloat(i+4),
+								0,
+								entra.getArgAsFloat(i+5),
+								position,
+								ofPoint(-(ofRandom(-1, 1)), ofRandom(-1, 1)));
+						asteroids.push_back(newAsteroid);
+					}
+					AsteroidManager::getInstance()->setAsteroids(asteroids);
+				}
+			}
 		}
+
+
 	}
 	/*
 		ofxOscMessage m;

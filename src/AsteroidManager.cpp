@@ -16,6 +16,15 @@ vector<Asteroid*> AsteroidManager::getAsteroids() const {
 	return _asteroids;
 }
 
+vector<vector<ofPoint> > AsteroidManager::getAsteroidsDefinitions() const {
+	return asteroidsDefinitions;
+}
+
+void AsteroidManager::setAsteroidsDefinitions(
+		vector<vector<ofPoint> > asteroidsDefinitions) {
+	this->asteroidsDefinitions = asteroidsDefinitions;
+}
+
 void AsteroidManager::setAsteroids(vector<Asteroid*> asteroids) {
 	_asteroids = asteroids;
 }

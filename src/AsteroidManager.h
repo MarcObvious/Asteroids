@@ -54,5 +54,7 @@ public:
 	vector<Asteroid*> getAsteroids() const;
 
 	void setAsteroids(vector<Asteroid*> asteroids);
+	vector<vector<ofPoint> > getAsteroidsDefinitions() const;
+	void setAsteroidsDefinitions(vector<vector<ofPoint> > asteroidsDefinitions);
 };
 
