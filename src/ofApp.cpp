@@ -16,7 +16,7 @@ ofEvent<Missatge> ofApp::NetEvent = ofEvent<Missatge>();
 
 //Variables globals que defineixen les vides i la puntuacio maxima
 int MAX_SCORE = 2000;
-int MAX_LIVES = 20;
+int MAX_LIVES = 50;
 int INITIAL_SCORE = 0;
 
 //--------------------------------------------------------------
@@ -282,11 +282,7 @@ void ofApp::enviaBi(string ordre) {
 }
 
 void ofApp::enviairep(){
-	string wut;
 
-	if (clientServidor == 0)
-		wut = "o_per_servidor";
-	else wut = "o_per_client";
 
 	while(receiver.hasWaitingMessages()){
 		ofxOscMessage m;
@@ -320,6 +316,9 @@ void ofApp::enviairep(){
 			//Event que indica a les classes Ard quina posicio tene els Axis
 			ofNotifyEvent(NetEvent, ordre, this);
 			//cout << pos.x << " " <<  pos.y << endl;
+
+		}
+		else if (m.getAddress() == "d_per"+s_clientServidor ){
 
 		}
 	}

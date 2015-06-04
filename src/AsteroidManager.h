@@ -51,5 +51,8 @@ public:
 
 	void reset();
 
+	vector<Asteroid*> getAsteroids() const;
+
+	void setAsteroids(vector<Asteroid*> asteroids);
 };
 

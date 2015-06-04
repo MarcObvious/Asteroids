@@ -12,6 +12,14 @@ AsteroidManager::AsteroidManager() {
 	_instance = this;
 }
 
+vector<Asteroid*> AsteroidManager::getAsteroids() const {
+	return _asteroids;
+}
+
+void AsteroidManager::setAsteroids(vector<Asteroid*> asteroids) {
+	_asteroids = asteroids;
+}
+
 void AsteroidManager::reset(){
 	_asteroids.clear();
 }
