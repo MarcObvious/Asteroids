@@ -316,6 +316,7 @@ void ofApp::enviairep(){
 	while(receiver.hasWaitingMessages()){
 		ofxOscMessage entra;
 		receiver.getNextMessage(&entra);
+		cout << s_clientServidor << endl;
 		if(entra.getAddress() == "o_per_"+s_clientServidor){
 			Missatge ordre;
 			ordre.id =  entra.getArgAsInt32(0);
