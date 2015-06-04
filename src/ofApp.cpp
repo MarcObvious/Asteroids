@@ -307,6 +307,7 @@ void ofApp::enviairep(){
 			surt.addIntArg(mida);
 			for(unsigned int i = 0; i < asteroids.size(); i++) {
 				ofPoint position = asteroids[i]->getPosition();
+				cout << "FUCKING SIZE " << asteroids[i]->getSize() << endl;
 				surt.addFloatArg(position.x);
 				surt.addFloatArg(position.y);
 				surt.addFloatArg(position.z);
@@ -355,7 +356,7 @@ void ofApp::enviairep(){
 			//ofPoint pos = ofPoint( m.getArgAsFloat(0),m.getArgAsFloat(1),m.getArgAsFloat(2));
 			//Event que indica a les classes Ard quina posicio tene els Axis
 			ofNotifyEvent(NetEvent, ordre, this);
-			cout << ordre.posicio.x << " " <<  ordre.posicio.y << endl;
+//			cout << ordre.posicio.x << " " <<  ordre.posicio.y << endl;
 
 		}
 		else if (entra.getAddress() == "a_per_"+s_clientServidor ){
@@ -366,7 +367,7 @@ void ofApp::enviairep(){
 				for(unsigned int i = 0; i < mida; i++) {
 					ofPoint position = ofPoint(entra.getArgAsFloat(i+1),entra.getArgAsFloat(i+2),entra.getArgAsFloat(i+3));
 					Asteroid* newAsteroid = new Asteroid();
-					cout << entra.getArgAsFloat(i+4)<<endl;
+					cout << "FUCKING SIZE " << entra.getArgAsFloat(i+4)<<endl;
 					newAsteroid->setup(asteroidsDefinitions.at(0),
 							2,
 							0,
