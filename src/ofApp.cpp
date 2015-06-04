@@ -304,12 +304,15 @@ void ofApp::enviairep(){
 				surt.addFloatArg(asteroids[i]->getRotation());
 			}
 			sender.sendMessage(surt);
+//			cout << "missatge enviat!?"<<endl;
 		}
 	}
 	else if (s_clientServidor == "client") {
 
 	}
 	asteroids.clear();
+	vector<vector<ofPoint> > asteroidsDefinitions = AsteroidManager::getInstance()->getAsteroidsDefinitions();
+
 	while(receiver.hasWaitingMessages()){
 		ofxOscMessage entra;
 		receiver.getNextMessage(&entra);
@@ -348,7 +351,7 @@ void ofApp::enviairep(){
 			if (entra.getAddress() == "a_per_"+s_clientServidor ){
 				int mida = entra.getArgAsInt32(0);
 				if (mida != 0) {
-					vector<vector<ofPoint> > asteroidsDefinitions = AsteroidManager::getInstance()->getAsteroidsDefinitions();
+
 					for(unsigned int i = 0; i < mida; i++) {
 						ofPoint position = ofPoint(entra.getArgAsFloat(i+1),entra.getArgAsFloat(i+2),entra.getArgAsFloat(i+3));
 						Asteroid* newAsteroid = new Asteroid();
@@ -360,6 +363,7 @@ void ofApp::enviairep(){
 								ofPoint(-(ofRandom(-1, 1)), ofRandom(-1, 1)));
 						asteroids.push_back(newAsteroid);
 					}
+					cout << "missatge rebut??" << endl;
 					AsteroidManager::getInstance()->setAsteroids(asteroids);
 				}
 			}
