@@ -321,7 +321,7 @@ void ofApp::enviairep(){
 	while(receiver.hasWaitingMessages()){
 		ofxOscMessage entra;
 		receiver.getNextMessage(&entra);
-		cout << s_clientServidor << endl;
+//		cout << s_clientServidor << endl;
 		if(entra.getAddress() == "o_per_"+s_clientServidor){
 			Missatge ordre;
 			ordre.id =  entra.getArgAsInt32(0);
@@ -350,11 +350,11 @@ void ofApp::enviairep(){
 			//ofPoint pos = ofPoint( m.getArgAsFloat(0),m.getArgAsFloat(1),m.getArgAsFloat(2));
 			//Event que indica a les classes Ard quina posicio tene els Axis
 			ofNotifyEvent(NetEvent, ordre, this);
-			//cout << pos.x << " " <<  pos.y << endl;
+			cout << ordre.posicio.x << " " <<  ordre.posicio.y << endl;
 
 		}
 		else if (entra.getAddress() == "a_per_"+s_clientServidor ){
-			cout << "missatge rebut??" << endl;
+//			cout << "missatge rebut??" << endl;
 			int mida = entra.getArgAsInt32(0);
 			if (mida != 0) {
 
