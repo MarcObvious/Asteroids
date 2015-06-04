@@ -23,7 +23,7 @@ int INITIAL_SCORE = 0;
 ofApp::ofApp(int cli, int SO) {
 	clientServidor = cli;
 	sistemaOp = SO;
-	if (sistemaOp == 0)
+	if (clientServidor == 0)
 		s_clientServidor = "servidor";
 	else
 		s_clientServidor = "client";
