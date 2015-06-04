@@ -249,10 +249,14 @@ void ofApp::clientSend(Missatge& ordre) {
 	//m.setAddress("d_per_"+s_clientServidor);
 	/*else
 		m.setAddress("d_per_client");*/
-	if (s_clientServidor == "client")
+	if (s_clientServidor == "client") {
 		m.setAddress("o_per_servidor");
-	else
+		cout << "enviant a servidor" << endl;
+	}
+	else {
 		m.setAddress("o_per_client");
+		cout << "enviant a client" << endl;
+	}
 
 	m.addIntArg(ordre.id);
 	m.addFloatArg(ordre.posicio.x);
@@ -266,8 +270,9 @@ void ofApp::clientSend(Missatge& ordre) {
 		m.addIntArg(1);
 	else
 		m.addIntArg(0);
-	//m.addStringArg("client envia tonteries");
+	m.addStringArg("client envia tonteries");
 	sender.sendMessage(m);
+
 
 }
 
@@ -353,7 +358,7 @@ void ofApp::enviairep(){
 			cout << ordre.posicio.x << " " <<  ordre.posicio.y << endl;
 
 		}
-		else if (entra.getAddress() == "a_per_"+s_clientServidor ){
+		/*else if (entra.getAddress() == "a_per_"+s_clientServidor ){
 //			cout << "missatge rebut??" << endl;
 			int mida = entra.getArgAsInt32(0);
 			if (mida != 0) {
@@ -373,7 +378,7 @@ void ofApp::enviairep(){
 				AsteroidManager::getInstance()->setAsteroids(asteroids);
 
 			}
-		}
+		}*/
 
 
 	}
