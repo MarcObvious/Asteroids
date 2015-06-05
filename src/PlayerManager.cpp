@@ -55,11 +55,11 @@ bool PlayerManager::createPlayer(SpaceShip* contr ,int score_inicial, int lives,
 		return true;
 	}
 	else if (tipus == "PlayerNet") {
-			PlayerNet* p = new PlayerNet(contr, _pos, score_inicial, lives, color);
-			_players.push_back(p);
-			++_pos;
-			return true;
-		}
+		PlayerNet* p = new PlayerNet(contr, _pos, score_inicial, lives, color);
+		_players.push_back(p);
+		++_pos;
+		return true;
+	}
 	return false;
 }
 
@@ -91,8 +91,8 @@ void PlayerManager::drawScores() {
 		else
 			score_line << " -> DEAAAAAAAAAAAAAAAD!!!!!" << endl;
 		ofPushStyle();
-			ofSetColor(ofColor(_players[i]->getColor()));
-			ofDrawBitmapString(score_line.str(), posicio_x, posicio_y);
+		ofSetColor(ofColor(_players[i]->getColor()));
+		ofDrawBitmapString(score_line.str(), posicio_x, posicio_y);
 		ofPopStyle();
 		posicio_y += 15;
 	}
@@ -141,5 +141,22 @@ void PlayerManager::update(float elapsed_time) {
 	for(unsigned int i = 0; i < _players.size(); i++) {
 		_players[i]->getControlat()->update(elapsed_time);
 	}
+}
+
+ofxOscMessage PlayerManager::generaMissatgePlayers(){
+	ofxOscMessage surt;
+	int midaP = _players.size();
+	if (midaP != 0) {
+		surt.addIntArg(midaP);
+		for(int i = 0; i < midaP; i++) {
+			surt.addIntArg(_players[i]->getLives());
+			surt.addInt64Arg(_players[i]->getScore());
+		}
+	}
+	return surt;
+}
+
+void PlayerManager::acceptaMissatgePlayers(ofxOscMessage entra){
+
 }
 

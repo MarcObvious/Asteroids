@@ -53,5 +53,9 @@ public:
 	void draw(bool debug);
 
 	void update(float elapsed_time);
+
+	ofxOscMessage generaMissatgePlayers();
+
+	void acceptaMissatgePlayers(ofxOscMessage entra);
 };
 
