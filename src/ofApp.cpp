@@ -61,7 +61,7 @@ void ofApp::setup() {
 	}
 	else if (clientServidor == 0) {
 		receiver.setup(PORT);
-		sender.setup("192.168.1.135", PORT);
+		sender.setup("192.168.1.130", PORT);
 	}
 	ofAddListener(SpaceShip::NetworkEvent, this, &ofApp::clientSend);
 	timer = 0;
@@ -120,7 +120,7 @@ void ofApp::setup() {
 	else
 		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,255,0), "PlayerNet",false);
 
-
+/*
 	nau = new SpaceShip();
 
 	nau->setup(shape, 40, 500, 50,
@@ -133,7 +133,7 @@ void ofApp::setup() {
 	nau->setup(shape, 40, 500, 50,
 			ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
 
-	PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,255,255), "Player");
+	PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,255,255), "Player");*/
 
 
 	//Carreguem els sons d'explosions d'asteroides i de dispars
