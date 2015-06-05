@@ -50,7 +50,7 @@ public:
 	void finish();
 	void killSound();
 	void enviairep();
-	void clientSend(Missatge& ordre);
+	void spaceshipEsMou(Missatge& ordre);
 	void enviaBi(string ordre);
 
 

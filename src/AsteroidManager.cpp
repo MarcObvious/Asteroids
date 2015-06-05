@@ -12,23 +12,6 @@ AsteroidManager::AsteroidManager() {
 	_instance = this;
 }
 
-vector<Asteroid*> AsteroidManager::getAsteroids() const {
-	return _asteroids;
-}
-
-vector<vector<ofPoint> > AsteroidManager::getAsteroidsDefinitions() const {
-	return asteroidsDefinitions;
-}
-
-void AsteroidManager::setAsteroidsDefinitions(
-		vector<vector<ofPoint> > asteroidsDefinitions) {
-	this->asteroidsDefinitions = asteroidsDefinitions;
-}
-
-void AsteroidManager::setAsteroids(vector<Asteroid*> asteroids) {
-	_asteroids = asteroids;
-}
-
 void AsteroidManager::reset(){
 	_asteroids.clear();
 }
@@ -182,6 +165,7 @@ void AsteroidManager::setExplosionSound (ofSoundPlayer *explosion){
 	_explosion_sound = explosion;
 }
 
+//Retorna missatge amb tota la info de tots els asteroides que hi han
 ofxOscMessage  AsteroidManager::generaMissatgeAsteroids() {
 	ofxOscMessage surt;
 	if (_asteroids.size() != 0) {
@@ -194,13 +178,11 @@ ofxOscMessage  AsteroidManager::generaMissatgeAsteroids() {
 			surt.addFloatArg(_asteroids[i]->getSize());
 			surt.addFloatArg(_asteroids[i]->getRotation());
 		}
-		//return surt;
-		//sender.sendMessage(surt);
 	}
 	return surt;
-	//return surt.clear();
 }
 
+//Es peta els asteroides i els substitueix per la info del missatge
 void AsteroidManager::acceptaMissatgeAsteroids(ofxOscMessage entra) {
 	int mida = entra.getArgAsInt32(0);
 	if (mida != 0) {

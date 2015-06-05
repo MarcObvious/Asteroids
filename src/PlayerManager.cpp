@@ -10,13 +10,13 @@ PlayerManager::PlayerManager() {
 	assert(_instance == NULL); //Si no es cumpleix PETA nomes 1 Instancia!
 	_instance = this;
 	_pos = 0;
-
 }
 
 void PlayerManager::reset() {
 	_players.clear();
 	_pos = 0;
 }
+
 PlayerManager::~PlayerManager() {
 	free(_instance);
 	_players.clear();
@@ -27,7 +27,8 @@ PlayerManager * PlayerManager::getInstance() {
 		_instance = new PlayerManager();
 	return _instance;
 }
-//Crea Player de tipus tipus
+
+//Crea Player de tipus tipus si està activat "networ" aquesta spaceshipe enviara la seva info a travès d'events
 bool PlayerManager::createPlayer(SpaceShip* contr ,int score_inicial, int lives, ofColor color, string tipus, bool network) {
 	if (tipus == "Player") {
 		Player* p = new Player(contr, _pos, score_inicial, lives, color);
@@ -35,7 +36,6 @@ bool PlayerManager::createPlayer(SpaceShip* contr ,int score_inicial, int lives,
 			p->getControlat()->setNetwork(true);
 		_players.push_back(p);
 		++_pos;
-
 		return true;
 	}
 	else if (tipus == "PlayerArd") {
@@ -66,6 +66,7 @@ bool PlayerManager::createPlayer(SpaceShip* contr ,int score_inicial, int lives,
 int PlayerManager::getNumPlayers() {
 	return _players.size();
 }
+
 //Retorna un Player concret
 Controlador* PlayerManager::getPlayer(int i){
 	return _players[i];
@@ -136,6 +137,7 @@ void PlayerManager::draw(bool debug){
 		_players[i]->getControlat()->draw(debug);
 
 }
+
 //Fa Update de tots els players
 void PlayerManager::update(float elapsed_time) {
 	for(unsigned int i = 0; i < _players.size(); i++) {
@@ -143,6 +145,7 @@ void PlayerManager::update(float elapsed_time) {
 	}
 }
 
+//Retorna el missatge amb la info de lives i scores de tot els players
 ofxOscMessage PlayerManager::generaMissatgePlayers(){
 	ofxOscMessage surt;
 	int midaP = _players.size();
@@ -156,7 +159,14 @@ ofxOscMessage PlayerManager::generaMissatgePlayers(){
 	return surt;
 }
 
+//Fa un set d'un missatge amb els scores i lives de tots els players
 void PlayerManager::acceptaMissatgePlayers(ofxOscMessage entra){
-
+	int mida = entra.getArgAsInt32(0);
+	int j = 0;
+	for(int i = 0; i < mida; i++) {
+		_players[i]->setLives(entra.getArgAsInt32(j+1));
+		_players[i]->setScore(entra.getArgAsInt64(j+2));
+		j += 2;
+	}
 }
 

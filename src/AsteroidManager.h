@@ -51,12 +51,6 @@ public:
 
 	void reset();
 
-	vector<Asteroid*> getAsteroids() const;
-
-	void setAsteroids(vector<Asteroid*> asteroids);
-
-	vector<vector<ofPoint> > getAsteroidsDefinitions() const;
-
 	ofxOscMessage generaMissatgeAsteroids();
 
 	void acceptaMissatgeAsteroids(ofxOscMessage entra);

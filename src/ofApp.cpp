@@ -32,8 +32,8 @@ ofApp::ofApp(int cli, int SO, string host) {
 			s_clientServidor = "servidor";
 		else
 			s_clientServidor = "client";
-		
-		ofAddListener(SpaceShip::NetworkEvent, this, &ofApp::clientSend);
+
+		ofAddListener(SpaceShip::NetworkEvent, this, &ofApp::spaceshipEsMou);
 	}
 	else 
 		s_clientServidor = "local";
@@ -62,9 +62,6 @@ void ofApp::setupArduino() {
 }
 
 void ofApp::setup() {
-
-
-
 	// Set framerate to 60 FPS
 	ofSetFrameRate(60);
 
@@ -92,7 +89,7 @@ void ofApp::setup() {
 	SpaceShip* nau = new SpaceShip();
 
 	nau->setup(shape, 40, 500, 50,
-		ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
+			ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
 
 	if (s_clientServidor == "client")
 		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(255,0,0), "Player", true);
@@ -100,11 +97,11 @@ void ofApp::setup() {
 		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(255,0,0), "PlayerNet", false);
 	else 
 		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(255,0,0), "Player", false);
-	
+
 	nau = new SpaceShip();
 
 	nau->setup(shape, 40, 500, 50,
-		ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
+			ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
 
 	if (s_clientServidor == "servidor")
 		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,0,255),"Player",true);
@@ -116,7 +113,7 @@ void ofApp::setup() {
 	nau = new SpaceShip();
 
 	nau->setup(shape, 40, 500, 50,
-		ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
+			ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
 
 	if (s_clientServidor == "client")
 		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,255,0), "PlayerRat",true);
@@ -128,7 +125,7 @@ void ofApp::setup() {
 	nau = new SpaceShip();
 
 	nau->setup(shape, 40, 500, 50,
-		ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
+			ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
 
 	if (s_clientServidor == "servidor")
 		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(255,255,0),"PlayerArd",true);
@@ -140,7 +137,7 @@ void ofApp::setup() {
 	nau = new SpaceShip();
 
 	nau->setup(shape, 40, 500, 50,
-		ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
+			ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
 
 	if (s_clientServidor == "client")
 		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,255,255), "Player",true);
@@ -260,7 +257,9 @@ void ofApp::arduinoUpdate() {
 	}
 }
 
-void ofApp::clientSend(Missatge& ordre) {
+//Informa de la info d'una spaceship (a través d'un event),
+//Al seu corresponent controlador Net (a través de missages)
+void ofApp::spaceshipEsMou(Missatge& dirs) {
 	ofxOscMessage m;
 
 	if (s_clientServidor == "client")
@@ -268,24 +267,23 @@ void ofApp::clientSend(Missatge& ordre) {
 	else
 		m.setAddress("d_per_client");
 
-	m.addIntArg(ordre.id);
-	m.addFloatArg(ordre.posicio.x);
-	m.addFloatArg(ordre.posicio.y);
-	m.addFloatArg(ordre.posicio.z);
-	if (ordre.dispara)
+	m.addIntArg(dirs.id);
+	m.addFloatArg(dirs.posicio.x);
+	m.addFloatArg(dirs.posicio.y);
+	m.addFloatArg(dirs.posicio.z);
+	if (dirs.dispara)
 		m.addIntArg(1);
 	else
 		m.addIntArg(0);
-	if (ordre.thrust)
+	if (dirs.thrust)
 		m.addIntArg(1);
 	else
 		m.addIntArg(0);
-	//m.addStringArg("client envia tonteries");
+
 	sender.sendMessage(m);
-
-
 }
 
+//Enviem ordres bidireccionalment!!! reset? finish? whatever!
 void ofApp::enviaBi(string ordre) {
 	ofxOscMessage m;
 	if (s_clientServidor == "client")
@@ -293,9 +291,9 @@ void ofApp::enviaBi(string ordre) {
 	else
 		m.setAddress("o_per_client");
 
-	m.addIntArg(99);
 	m.addStringArg(ordre);
 
+	//Si a mes l'ordre es que hi ha un guanyador, l'enviem també.
 	if (ordre == "guanyador")
 		m.addIntArg(guanyador->getId());
 
@@ -303,12 +301,12 @@ void ofApp::enviaBi(string ordre) {
 
 }
 
-
+//Envia i rep de toooot a cada Update. Pk ens la pela el framerate i ample de banda
 void ofApp::enviairep(){
-	ofxOscMessage surt;
-	vector<Asteroid*> asteroids;
 
+	//Si som el servidor enviem els asteroides i les puntuacions dels players
 	if (s_clientServidor == "servidor") {
+		ofxOscMessage surt;
 		surt = AsteroidManager::getInstance()->generaMissatgeAsteroids();
 		surt.setAddress("a_per_client");
 		sender.sendMessage(surt);
@@ -318,75 +316,51 @@ void ofApp::enviairep(){
 		surt.setAddress("p_per_client");
 		sender.sendMessage(surt);
 
-//		int midaP = PlayerManager::getInstance()->getNumPlayers();
-//		if (midaP != 0) {
-//			surt.addIntArg(midaP);
-//			for(int i = 0; i < midaP; i++) {
-//				surt.addIntArg(PlayerManager::getInstance()->getPlayer(i)->getLives());
-//				surt.addInt64Arg(PlayerManager::getInstance()->getPlayer(i)->getScore());
-//			}
-//			sender.sendMessage(surt);
-//		}
-
-	}
-	else if (s_clientServidor == "client") {
-
 	}
 
-	asteroids.clear();
-	vector<vector<ofPoint> > asteroidsDefinitions = AsteroidManager::getInstance()->getAsteroidsDefinitions();
-
+	//Independenment de qui som rebem missatges
 	while(receiver.hasWaitingMessages()){
 		ofxOscMessage entra;
 		receiver.getNextMessage(&entra);
-		//		cout << s_clientServidor << endl;
+
+		//Si hi han ordres tan per a client com per a servidor les executem
 		if(entra.getAddress() == "o_per_"+s_clientServidor){
 			Missatge ordre;
-			ordre.id =  entra.getArgAsInt32(0);
-			if (ordre.id == 99) {
-				string ord = entra.getArgAsString(1);
-				if (ord == "reset")
-					reset();
-				else if (ord == "guanyador")
-					guanyador = PlayerManager::getInstance()->getPlayer(entra.getArgAsInt32(2));
-				else if (ord == "finish")
-					finish();
-			}
+			string ord = entra.getArgAsString(1);
+			if (ord == "reset")
+				reset();
+			else if (ord == "guanyador")
+				guanyador = PlayerManager::getInstance()->getPlayer(entra.getArgAsInt32(2));
+			else if (ord == "finish")
+				finish();
+
 		}
+
+		//Si hi han direccions tan per a client com per a servidor (per a algun controlador Net)
 		else if (entra.getAddress() == "d_per_"+s_clientServidor ){
-			Missatge ordre;
-			ordre.id =  entra.getArgAsInt32(0);
-			ordre.posicio = ofPoint( entra.getArgAsFloat(1),entra.getArgAsFloat(2),entra.getArgAsFloat(3));
+			Missatge dirs;
+			dirs.id =  entra.getArgAsInt32(0); //id del controlador
+			dirs.posicio = ofPoint(entra.getArgAsFloat(1),entra.getArgAsFloat(2),entra.getArgAsFloat(3));
 			if (entra.getArgAsInt32(4) == 0)
-				ordre.dispara = false;
+				dirs.dispara = false;
 			else
-				ordre.dispara = true;
+				dirs.dispara = true;
 
 			if (entra.getArgAsInt32(5) == 0)
-				ordre.thrust = false;
+				dirs.thrust = false;
 			else
-				ordre.thrust = true;
+				dirs.thrust = true;
 
-			//ofPoint pos = ofPoint( m.getArgAsFloat(0),m.getArgAsFloat(1),m.getArgAsFloat(2));
-			//Event que indica a les classes Ard quina posicio tene els Axis
-			ofNotifyEvent(NetEvent, ordre, this);
-			//			cout << ordre.posicio.x << " " <<  ordre.posicio.y << endl;
-
+			//Event que indica a les classes Net la posicio i estat de les seves spaceships
+			ofNotifyEvent(NetEvent, dirs, this);
 		}
+
+		//Rebem els Asteroids (del servidor al client)
 		else if (entra.getAddress() == "a_per_"+s_clientServidor )
 			AsteroidManager::getInstance()->acceptaMissatgeAsteroids(entra);
-
-		else if (entra.getAddress() == "p_per_"+s_clientServidor ){
-			int mida = entra.getArgAsInt32(0);
-			int j = 0;
-			for(int i = 0; i < mida; i++) {
-				PlayerManager::getInstance()->getPlayer(i)->setLives(entra.getArgAsInt32(j+1));
-				PlayerManager::getInstance()->getPlayer(i)->setScore(entra.getArgAsInt64(j+2));
-				j += 2;
-			}
-		}
-
-
+		//Rebem els scores i vides (del servidor al client) Però podria ser a l'inversa! faacilment
+		else if (entra.getAddress() == "p_per_"+s_clientServidor )
+			PlayerManager::getInstance()->acceptaMissatgePlayers(entra);
 	}
 }
 //--------------------------------------------------------------
@@ -399,6 +373,7 @@ void ofApp::update() {
 
 		//Preguntem a PlayerManager si hi ha guanyador, si n'hi ha no updategem res.
 		if (s_clientServidor == "servidor" || s_clientServidor == "local") {
+
 			guanyador = PlayerManager::getInstance()->hihaguanyador(MAX_SCORE);
 			if (guanyador == NULL){
 				//Comprova colisions d'Asteroides amb spaceShips NOMES HO FA SERVIDOR!!! (i local)
@@ -410,9 +385,11 @@ void ofApp::update() {
 				PlayerManager::getInstance()->update(elapsedTime);
 			}
 			else
+				//We've got a winner! ding ding ding
 				if (s_clientServidor != "local")
 					enviaBi("guanyador");
 		}
+		//Updates de client
 		else {
 			if (guanyador == NULL){
 				BulletManager::getInstance()->update(elapsedTime);
@@ -424,6 +401,8 @@ void ofApp::update() {
 	if (sistemaOp != 0)
 		if (serial.isInitialized())
 			arduinoUpdate();
+
+	//Enviem i rebem de tot
 	if (s_clientServidor != "local")
 		enviairep();
 }	
@@ -484,7 +463,7 @@ void ofApp::draw() {
 
 void ofApp::keyPressed(int key) {
 	switch (key) {
-		// If pressed 1 change debug/help mode
+	// If pressed 1 change debug/help mode
 	case '1':
 		debug = !debug;
 		break;
@@ -510,23 +489,26 @@ void ofApp::keyPressed(int key) {
 		//r, ressetegem el joc
 	case 'r':
 		if (s_clientServidor != "local")
-			enviaBi("reset");
+			enviaBi("reset"); //enviem a tothom la comanda "reset"
 		reset();
 		break;
 		//f, "Finalitzem" el joc el joc
 	case 'f':
 		if (s_clientServidor != "local")
-			enviaBi("finish");
+			enviaBi("finish"); //enviem a tothom la comanda "finish"
 		finish();
 		break;
 		//----------------------------------------------------------------------
 	}
 
 }
+
+//Obvi no?
 void ofApp::finish() {
 	acaba_partida = true;
 	cout << "MENTIDAAAAAAAAAAAAAAAAAAA, musicaaaa i mes musicaaaaa Muahahahahhah!" << endl;
 }
+
 //Reset del joc.
 void ofApp::reset() {
 

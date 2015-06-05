@@ -8,7 +8,7 @@
 PlayerNet::PlayerNet(SpaceShip* contr, int id, int score_inicial, int lives, ofColor color)
 : Controlador(contr,  id,  score_inicial,  lives,  color) {
 
-	//Listener dels upgrades a ArdEvent (event network a ofApp)
+	//Listener dels upgrades a NetEvent (event network a ofApp)
 	ofAddListener(ofApp::NetEvent, this, &PlayerNet::moviment);
 	_controlat = contr;
 	_id = id;
@@ -20,7 +20,7 @@ PlayerNet::PlayerNet(SpaceShip* contr, int id, int score_inicial, int lives, ofC
 	_tipus = 2;
 }
 
-//Es controla amb la x-Axis i y-Axis del joystic!
+//Es controla en forma de missatges (struct a spaceship)
 void PlayerNet::moviment(Missatge& ordre) {
 	if (ordre.id == _id) {
 	//	cout << _id << "_id vs id" << ordre.id << endl;
@@ -35,7 +35,7 @@ void PlayerNet::moviment(Missatge& ordre) {
 			_controlat->shot(false);
 
 		_controlat->setPosition(ofPoint(ordre.posicio.x,ordre.posicio.y));
-		_controlat->setRotation(ordre.posicio.z);
+		_controlat->setRotation(ordre.posicio.z); //YEAH Z ES LA ROTACIO
 		_controlat->setDirection(ofPoint(cos(ordre.posicio.z),sin(ordre.posicio.z)));
 	}
 

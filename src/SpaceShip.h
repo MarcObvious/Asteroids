@@ -12,6 +12,7 @@
 
 //Spaceship es la "forma" que dona voltes pel mapa. Ha de ser controlada per un player
 
+//Struct per enviar l'estat d'una spaceship
 typedef struct{
 	int id;
 	ofPoint posicio;
@@ -38,6 +39,7 @@ private:
 public:
 	SpaceShip();
 	~SpaceShip();
+	//Event que informa dels moviments d'una spaceship per enviarho!
 	static ofEvent<Missatge> NetworkEvent;
 
 	virtual bool setup();
