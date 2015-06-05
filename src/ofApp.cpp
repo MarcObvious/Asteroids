@@ -430,7 +430,7 @@ void ofApp::update() {
 		if (s_clientServidor == "servidor" || s_clientServidor == "local") {
 			guanyador = PlayerManager::getInstance()->hihaguanyador(MAX_SCORE);
 			if (guanyador == NULL){
-				//Comprova colisions d'Asteroides amb spaceShips
+				//Comprova colisions d'Asteroides amb spaceShips NOMES HO FA SERVIDOR!!! (i local)
 				AsteroidManager::getInstance()->comprova();
 
 				//Fa els updates de tot
@@ -453,7 +453,7 @@ void ofApp::update() {
 	if (sistemaOp != 0)
 		if (serial.isInitialized())
 			arduinoUpdate();
-	if (s_clientServidor == "local")
+	if (s_clientServidor != "local")
 		enviairep();
 }	
 
