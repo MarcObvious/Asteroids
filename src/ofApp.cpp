@@ -20,7 +20,7 @@ int MAX_LIVES = 50;
 int INITIAL_SCORE = 0;
 
 //--------------------------------------------------------------
-ofApp::ofApp(int cli, int SO) {
+ofApp::ofApp(int cli, int SO,string HostS, string HostC) {
 	clientServidor = cli;
 	sistemaOp = SO;
 	if (clientServidor == 0)
