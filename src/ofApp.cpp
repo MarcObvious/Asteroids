@@ -489,14 +489,10 @@ void ofApp::keyPressed(int key) {
 		break;
 		//r, ressetegem el joc
 	case 'r':
-		if (s_clientServidor != "local")
-			enviaBi("reset"); //enviem a tothom la comanda "reset"
 		reset();
 		break;
 		//f, "Finalitzem" el joc el joc
 	case 'f':
-		if (s_clientServidor != "local")
-			enviaBi("finish"); //enviem a tothom la comanda "finish"
 		finish();
 		break;
 		//----------------------------------------------------------------------
@@ -506,12 +502,18 @@ void ofApp::keyPressed(int key) {
 
 //Obvi no?
 void ofApp::finish() {
+	//enviem a tothom la comanda "reset"
+	if (s_clientServidor != "local")
+		enviaBi("finish"); //enviem a tothom la comanda "finish"
+	
 	acaba_partida = true;
 	cout << "MENTIDAAAAAAAAAAAAAAAAAAA, musicaaaa i mes musicaaaaa Muahahahahhah!" << endl;
 }
 
 //Reset del joc.
 void ofApp::reset() {
+	if (s_clientServidor != "local")
+		enviaBi("reset");
 
 	cout << "Reset at:" << endl;
 	cout << PlayerManager::getInstance()->getAllScores();
