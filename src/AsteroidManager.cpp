@@ -182,12 +182,10 @@ void AsteroidManager::setExplosionSound (ofSoundPlayer *explosion){
 	_explosion_sound = explosion;
 }
 
-void AsteroidManager::enviaAsteroids(ofxOscSender sender, string desti) {
+ofxOscMessage  AsteroidManager::generaMissatgeAsteroids() {
 	ofxOscMessage surt;
-	surt.setAddress(desti);
-	int midaA = _asteroids.size();
-	if (midaA != 0) {
-		surt.addIntArg(midaA);
+	if (_asteroids.size() != 0) {
+		surt.addIntArg(_asteroids.size());
 		for(unsigned int i = 0; i < _asteroids.size(); i++) {
 			ofPoint position = _asteroids[i]->getPosition();
 			surt.addFloatArg(position.x);
@@ -196,7 +194,10 @@ void AsteroidManager::enviaAsteroids(ofxOscSender sender, string desti) {
 			surt.addFloatArg(_asteroids[i]->getSize());
 			surt.addFloatArg(_asteroids[i]->getRotation());
 		}
-		sender.sendMessage(surt);
+		//return surt;
+		//sender.sendMessage(surt);
 	}
+	return surt;
+	//return surt.clear();
 
 }

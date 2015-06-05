@@ -66,6 +66,7 @@ private:
 	//SenderReceiver
 	int clientServidor;
 	string s_clientServidor;
+
 	ofxOscSender sender;
 	ofxOscReceiver receiver;
 

@@ -309,11 +309,11 @@ void ofApp::enviairep(){
 	vector<Asteroid*> asteroids;
 
 	if (s_clientServidor == "servidor") {
-		AsteroidManager::getInstance()->enviaAsteroids(sender, "a_per_client");
-		/*asteroids = AsteroidManager::getInstance()->getAsteroids();
+		surt = AsteroidManager::getInstance()->generaMissatgeAsteroids();
+		//asteroids = AsteroidManager::getInstance()->getAsteroids();
 
 		surt.setAddress("a_per_client");
-		int midaA = asteroids.size();
+		/*int midaA = asteroids.size();
 		if (midaA != 0) {
 			surt.addIntArg(midaA);
 			for(unsigned int i = 0; i < asteroids.size(); i++) {
@@ -325,8 +325,9 @@ void ofApp::enviairep(){
 				surt.addFloatArg(asteroids[i]->getRotation());
 			}
 			sender.sendMessage(surt);
-		}
-		*/
+		}*/
+		//if (surt.)
+			sender.sendMessage(surt);
 		surt.clear();
 		surt.setAddress("p_per_client");
 		int midaP = PlayerManager::getInstance()->getNumPlayers();

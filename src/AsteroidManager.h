@@ -57,7 +57,7 @@ public:
 
 	vector<vector<ofPoint> > getAsteroidsDefinitions() const;
 
-	void enviaAsteroids(ofxOscSender sender, string desti);
+	ofxOscMessage generaMissatgeAsteroids();
 
 	void setAsteroidsDefinitions(vector<vector<ofPoint> > asteroidsDefinitions);
 };
