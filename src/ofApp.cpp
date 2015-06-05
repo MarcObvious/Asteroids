@@ -119,7 +119,7 @@ void ofApp::setup() {
 		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,255,0), "PlayerRat",true);
 	else
 		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,255,0), "PlayerNet",false);
-	/*
+
 
 	nau = new SpaceShip();
 
@@ -133,7 +133,7 @@ void ofApp::setup() {
 	nau->setup(shape, 40, 500, 50,
 			ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
 
-	PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,255,255), "Player");*/
+	PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,255,255), "Player");
 
 
 	//Carreguem els sons d'explosions d'asteroides i de dispars
@@ -304,14 +304,12 @@ void ofApp::enviairep(){
 			for(unsigned int i = 0; i < asteroids.size(); i++) {
 				ofPoint position = asteroids[i]->getPosition();
 				surt.addFloatArg(position.x);
-				cout << "FUCKING SIZE " << asteroids[i]->getSize() << endl;
 				surt.addFloatArg(position.y);
 				surt.addFloatArg(position.z);
 				surt.addFloatArg(asteroids[i]->getSize());
 				surt.addFloatArg(asteroids[i]->getRotation());
 			}
 			sender.sendMessage(surt);
-			//			cout << "missatge enviat!?"<<endl;
 		}
 	}
 	else if (s_clientServidor == "client") {
@@ -323,7 +321,7 @@ void ofApp::enviairep(){
 	while(receiver.hasWaitingMessages()){
 		ofxOscMessage entra;
 		receiver.getNextMessage(&entra);
-//		cout << s_clientServidor << endl;
+		//		cout << s_clientServidor << endl;
 		if(entra.getAddress() == "o_per_"+s_clientServidor){
 			Missatge ordre;
 			ordre.id =  entra.getArgAsInt32(0);
@@ -352,11 +350,11 @@ void ofApp::enviairep(){
 			//ofPoint pos = ofPoint( m.getArgAsFloat(0),m.getArgAsFloat(1),m.getArgAsFloat(2));
 			//Event que indica a les classes Ard quina posicio tene els Axis
 			ofNotifyEvent(NetEvent, ordre, this);
-//			cout << ordre.posicio.x << " " <<  ordre.posicio.y << endl;
+			//			cout << ordre.posicio.x << " " <<  ordre.posicio.y << endl;
 
 		}
 		else if (entra.getAddress() == "a_per_"+s_clientServidor ){
-//			cout << "missatge rebut??" << endl;
+			//			cout << "missatge rebut??" << endl;
 			int mida = entra.getArgAsInt32(0);
 			if (mida != 0) {
 				int j = 0;
@@ -380,26 +378,6 @@ void ofApp::enviairep(){
 
 
 	}
-	/*
-		ofxOscMessage m;
-		m.setAddress("client");
-		m.addStringArg("servidor envia tonteries");
-		sender.sendMessage(m);*/
-
-	//}
-	//else if (clientServidor == 1) {
-	//		ofxOscMessage m;
-	//		m.setAddress("servidor");
-	//		m.addStringArg("client envia tonteries");
-	//		sender.sendMessage(m);
-	//		if(receiver.hasWaitingMessages()){
-	//			ofxOscMessage m;
-	//			receiver.getNextMessage(&m);
-	//			if(m.getAddress() == "client"){
-	//				cout << m.getArgAsString(0) << endl;
-	//			}
-	//		}
-	//}
 }
 //--------------------------------------------------------------
 void ofApp::update() {
