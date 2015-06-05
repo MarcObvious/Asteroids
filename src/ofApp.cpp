@@ -24,6 +24,7 @@ ofApp::ofApp(int cli, int SO, string host) {
 	clientServidor = cli;
 	sistemaOp = SO;
 	Host = host;
+
 	if (clientServidor == 0 || clientServidor == 1) {
 		receiver.setup(PORT);
 		sender.setup(Host, PORT);
@@ -122,7 +123,7 @@ void ofApp::setup() {
 	else if (s_clientServidor == "servidor")
 		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,255,0), "PlayerNet",false);
 	else 
-		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,255,0), "PlayerRat", false);
+		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,255,0), "PlayerRat",false);
 
 	nau = new SpaceShip();
 
@@ -267,7 +268,6 @@ void ofApp::clientSend(Missatge& ordre) {
 	else
 		m.setAddress("d_per_client");
 
-
 	m.addIntArg(ordre.id);
 	m.addFloatArg(ordre.posicio.x);
 	m.addFloatArg(ordre.posicio.y);
@@ -309,8 +309,9 @@ void ofApp::enviairep(){
 	vector<Asteroid*> asteroids;
 
 	if (s_clientServidor == "servidor") {
+		AsteroidManager::getInstance()->enviaAsteroids(sender, "a_per_client");
+		/*asteroids = AsteroidManager::getInstance()->getAsteroids();
 
-		asteroids = AsteroidManager::getInstance()->getAsteroids();
 		surt.setAddress("a_per_client");
 		int midaA = asteroids.size();
 		if (midaA != 0) {
@@ -325,7 +326,7 @@ void ofApp::enviairep(){
 			}
 			sender.sendMessage(surt);
 		}
-
+		*/
 		surt.clear();
 		surt.setAddress("p_per_client");
 		int midaP = PlayerManager::getInstance()->getNumPlayers();
@@ -463,19 +464,19 @@ void ofApp::draw() {
 		//Si algu ha guanyat nomes dibuixem la pantalla de restart
 		if ( guanyador != NULL ) {
 			ofPushStyle();
-			ofSetColor(guanyador->getColor());
-			stringstream id;
-			id << "WINER JUGADOR " << guanyador->getId();
-			id << " -> SCORE = " << guanyador->getScore();
-			ofDrawBitmapString(id.str(), 390, 450);
+				ofSetColor(guanyador->getColor());
+				stringstream id;
+				id << "WINER JUGADOR " << guanyador->getId();
+				id << " -> SCORE = " << guanyador->getScore();
+				ofDrawBitmapString(id.str(), 390, 450);
 			ofPopStyle();
 			ofDrawBitmapString("Press 'r' to restart, 'f' to finish", 390, 470);
 		}
 		else {
 			//Dibuixem instruccions
 			ofPushStyle();
-			ofSetColor(255,255,255);
-			ofDrawBitmapString("Press '1' to debug/help, '2' to unmute/mute, 'r' to restart, 'f' to finish, 'ESC' to get out", 5, 760);
+				ofSetColor(255,255,255);
+				ofDrawBitmapString("Press '1' to debug/help, '2' to unmute/mute, 'r' to restart, 'f' to finish, 'ESC' to get out", 5, 760);
 			ofPopStyle();
 
 
@@ -486,9 +487,9 @@ void ofApp::draw() {
 
 			if (debug) {
 				ofPushStyle();
-				ofSetColor(255);
-				ofDrawBitmapString(ofToString(ofGetFrameRate()), 900, 20);
-				ofDrawBitmapString("Player 1 a w d s, Player 0 up, left, right, down, Player 2 mouse, Player 3 joystic i 4 sols per Vacilar.", 5, 745);
+					ofSetColor(255);
+					ofDrawBitmapString(ofToString(ofGetFrameRate()), 900, 20);
+					ofDrawBitmapString("Player 1 a w d s, Player 0 up, left, right, down, Player 2 mouse, Player 3 joystic i 4 sols per Vacilar.", 5, 745);
 				ofPopStyle();
 			}
 		}
@@ -496,16 +497,16 @@ void ofApp::draw() {
 	else {
 		//Pantalla de finalització del joc.
 		ofPushStyle();
-		ofSetColor(0,255,0);
-		ofDrawBitmapString("MOLTES GRACIES PER JUGAR!", 240, 364);
-		ofDrawBitmapString("Joc creat per Marc Mateu i Ignasi Larroca", 240, 384);
+			ofSetColor(0,255,0);
+			ofDrawBitmapString("MOLTES GRACIES PER JUGAR!", 240, 364);
+			ofDrawBitmapString("Joc creat per Marc Mateu i Ignasi Larroca", 240, 384);
 		ofPopStyle();
 		ofPushStyle();
-		ofSetColor(255,0,0);
-		ofDrawBitmapString("No, la musica infernal no s'acaba mai.", 240, 404);
+			ofSetColor(255,0,0);
+			ofDrawBitmapString("No, la musica infernal no s'acaba mai.", 240, 404);
 		ofPopStyle();
 		ofPushStyle();
-		ofDrawBitmapString("'ESC' per sortir, 'r' per reiniciar la partida amb la musiqueta dels ******", 240, 464);
+			ofDrawBitmapString("'ESC' per sortir, 'r' per reiniciar la partida amb la musiqueta dels ******", 240, 464);
 		ofPopStyle();
 	}
 }
