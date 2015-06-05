@@ -55,13 +55,13 @@ void ofApp::setup() {
 
 	if (clientServidor == 1) {
 		receiver.setup(PORT);
-		sender.setup("192.168.1.133", PORT);
+		sender.setup("192.168.1.130", PORT);
 
 		//if (clientServidor == 1)
 	}
 	else if (clientServidor == 0) {
 		receiver.setup(PORT);
-		sender.setup("192.168.1.130", PORT);
+		sender.setup("192.168.1.131", PORT);
 	}
 	ofAddListener(SpaceShip::NetworkEvent, this, &ofApp::clientSend);
 
@@ -92,7 +92,7 @@ void ofApp::setup() {
 	SpaceShip* nau = new SpaceShip();
 
 	nau->setup(shape, 40, 500, 50,
-			ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
+		ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
 
 	if (s_clientServidor == "client")
 		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(255,0,0), "Player", true);
@@ -102,7 +102,7 @@ void ofApp::setup() {
 	nau = new SpaceShip();
 
 	nau->setup(shape, 40, 500, 50,
-			ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
+		ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
 
 	if (s_clientServidor == "servidor")
 		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,0,255),"Player",true);
@@ -112,7 +112,7 @@ void ofApp::setup() {
 	nau = new SpaceShip();
 
 	nau->setup(shape, 40, 500, 50,
-			ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
+		ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
 
 	if (s_clientServidor == "client")
 		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,255,0), "PlayerRat",true);
@@ -123,7 +123,7 @@ void ofApp::setup() {
 	nau = new SpaceShip();
 
 	nau->setup(shape, 40, 500, 50,
-			ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
+		ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
 
 	if (s_clientServidor == "servidor")
 		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(255,255,0),"PlayerArd",true);
@@ -133,7 +133,7 @@ void ofApp::setup() {
 	nau = new SpaceShip();
 
 	nau->setup(shape, 40, 500, 50,
-			ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
+		ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
 
 	if (s_clientServidor == "client")
 		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,255,255), "Player",true);
@@ -156,6 +156,8 @@ void ofApp::setup() {
 
 	// Debug
 	debug = false;
+
+	guanyador = NULL;
 }
 
 ofApp::~ofApp(){
@@ -254,7 +256,6 @@ void ofApp::clientSend(Missatge& ordre) {
 
 	if (s_clientServidor == "client")
 		m.setAddress("d_per_servidor");
-
 	else
 		m.setAddress("d_per_client");
 
@@ -271,7 +272,7 @@ void ofApp::clientSend(Missatge& ordre) {
 		m.addIntArg(1);
 	else
 		m.addIntArg(0);
-	m.addStringArg("client envia tonteries");
+	//m.addStringArg("client envia tonteries");
 	sender.sendMessage(m);
 
 
@@ -386,11 +387,11 @@ void ofApp::enviairep(){
 					ofPoint position = ofPoint(entra.getArgAsFloat(j+1),entra.getArgAsFloat(j+2),entra.getArgAsFloat(j+3));
 					Asteroid* newAsteroid = new Asteroid();
 					newAsteroid->setup(asteroidsDefinitions.at(0),
-							entra.getArgAsFloat(j+4),
-							0,
-							entra.getArgAsFloat(j+5),
-							position,
-							ofPoint(-(ofRandom(-1, 1)), ofRandom(-1, 1)));
+						entra.getArgAsFloat(j+4),
+						0,
+						entra.getArgAsFloat(j+5),
+						position,
+						ofPoint(-(ofRandom(-1, 1)), ofRandom(-1, 1)));
 					asteroids.push_back(newAsteroid);
 					j += 5;
 				}
@@ -453,7 +454,7 @@ void ofApp::update() {
 void ofApp::draw() {
 	if (!acaba_partida) {
 		//Si algu ha guanyat nomes dibuixem la pantalla de restart
-		if ( guanyador ) {
+		if ( guanyador != NULL ) {
 			ofPushStyle();
 			ofSetColor(guanyador->getColor());
 			stringstream id;
@@ -504,42 +505,42 @@ void ofApp::draw() {
 
 
 void ofApp::keyPressed(int key) {
-		switch (key) {
+	switch (key) {
 		// If pressed 1 change debug/help mode
-		case '1':
-			debug = !debug;
-			break;
-			// Apretem 2 silenciem, no silenciem
-		case '2':
-			if (explosion->isLoaded()) {
-				explosion->unloadSound();
-				AsteroidManager::getInstance()->setExplosionSound(NULL);
-			}
-			else {
-				explosion->loadSound("sounds/explosion.mp3", false);
-				AsteroidManager::getInstance()->setExplosionSound(explosion);
-			}
-			if (pium->isLoaded()) {
-				pium->unloadSound();
-				BulletManager::getInstance()->setBulletSound(NULL);
-			}
-			else {
-				pium->loadSound("sounds/explosion.mp3", false);
-				BulletManager::getInstance()->setBulletSound(pium);
-			}
-			break;
-			//r, ressetegem el joc
-		case 'r':
-			enviaBi("reset");
-			reset();
-			break;
-			//f, "Finalitzem" el joc el joc
-		case 'f':
-			enviaBi("finish");
-			finish();
-			break;
-			//----------------------------------------------------------------------
+	case '1':
+		debug = !debug;
+		break;
+		// Apretem 2 silenciem, no silenciem
+	case '2':
+		if (explosion->isLoaded()) {
+			explosion->unloadSound();
+			AsteroidManager::getInstance()->setExplosionSound(NULL);
 		}
+		else {
+			explosion->loadSound("sounds/explosion.mp3", false);
+			AsteroidManager::getInstance()->setExplosionSound(explosion);
+		}
+		if (pium->isLoaded()) {
+			pium->unloadSound();
+			BulletManager::getInstance()->setBulletSound(NULL);
+		}
+		else {
+			pium->loadSound("sounds/explosion.mp3", false);
+			BulletManager::getInstance()->setBulletSound(pium);
+		}
+		break;
+		//r, ressetegem el joc
+	case 'r':
+		enviaBi("reset");
+		reset();
+		break;
+		//f, "Finalitzem" el joc el joc
+	case 'f':
+		enviaBi("finish");
+		finish();
+		break;
+		//----------------------------------------------------------------------
+	}
 
 }
 void ofApp::finish() {
