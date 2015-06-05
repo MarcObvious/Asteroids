@@ -244,19 +244,13 @@ void ofApp::arduinoUpdate() {
 
 void ofApp::clientSend(Missatge& ordre) {
 	ofxOscMessage m;
-	//
-	//if (sistemaOp == 1)
-	//m.setAddress("d_per_"+s_clientServidor);
-	/*else
-		m.setAddress("d_per_client");*/
-	if (s_clientServidor == "client") {
+
+	if (s_clientServidor == "client")
 		m.setAddress("d_per_servidor");
-		//cout << "enviant a servidor" << endl;
-	}
-	else {
+
+	else
 		m.setAddress("d_per_client");
-		//cout << "enviant a client" << endl;
-	}
+
 
 	m.addIntArg(ordre.id);
 	m.addFloatArg(ordre.posicio.x);
@@ -285,8 +279,10 @@ void ofApp::enviaBi(string ordre) {
 
 	m.addIntArg(99);
 	m.addStringArg(ordre);
+
 	if (ordre == "guanyador")
 		m.addIntArg(guanyador->getId());
+
 	sender.sendMessage(m);
 
 }
@@ -367,7 +363,6 @@ void ofApp::enviairep(){
 				for(unsigned int i = 0; i < mida; i++) {
 					ofPoint position = ofPoint(entra.getArgAsFloat(j+1),entra.getArgAsFloat(j+2),entra.getArgAsFloat(j+3));
 					Asteroid* newAsteroid = new Asteroid();
-//					cout << "FUCKING SIZE " <<  << "PUA" <<  << endl
 					newAsteroid->setup(asteroidsDefinitions.at(0),
 							entra.getArgAsFloat(j+4),
 							0,
@@ -527,6 +522,7 @@ void ofApp::keyPressed(int key) {
 		case 'r':
 			cout << "Reset at:" << endl;
 			cout << PlayerManager::getInstance()->getAllScores();
+			enviaBi("reset");
 			reset();
 			break;
 			//f, "Finalitzem" el joc el joc
@@ -543,8 +539,6 @@ void ofApp::keyPressed(int key) {
 }
 //Reset del joc.
 void ofApp::reset() {
-
-	enviaBi("reset");
 
 	BulletManager::getInstance()->reset();
 	AsteroidManager::getInstance()->reset();
