@@ -20,13 +20,20 @@ int MAX_LIVES = 50;
 int INITIAL_SCORE = 0;
 
 //--------------------------------------------------------------
-ofApp::ofApp(int cli, int SO,string HostS, string HostC) {
+ofApp::ofApp(int cli, int SO, string host) {
 	clientServidor = cli;
 	sistemaOp = SO;
-	if (clientServidor == 0)
-		s_clientServidor = "servidor";
-	else
-		s_clientServidor = "client";
+	Host = host;
+	if (clientServidor == 0 || clientServidor == 1) {
+		receiver.setup(PORT);
+		sender.setup(Host, PORT);
+		if (clientServidor == 0)
+			s_clientServidor = "servidor";
+		else
+			s_clientServidor = "client";
+		
+		ofAddListener(SpaceShip::NetworkEvent, this, &ofApp::clientSend);
+	}
 	//setup();
 }
 
@@ -53,17 +60,7 @@ void ofApp::setupArduino() {
 
 void ofApp::setup() {
 
-	if (clientServidor == 1) {
-		receiver.setup(PORT);
-		sender.setup("192.168.1.133", PORT);
 
-		//if (clientServidor == 1)
-	}
-	else if (clientServidor == 0) {
-		receiver.setup(PORT);
-		sender.setup("192.168.1.130", PORT);
-	}
-	ofAddListener(SpaceShip::NetworkEvent, this, &ofApp::clientSend);
 
 	// Set framerate to 60 FPS
 	ofSetFrameRate(60);

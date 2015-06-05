@@ -12,22 +12,10 @@ int main( ){
 	int clientServidor;
 	cout << "Aquesta instancia sera 0 servidor, 1 client o 3 sol?" << endl;
 	cin >> clientServidor;
-	string HostC = "localhost";
-	string HostS = "localhost";
+	string Host = "localhost";
 	if (clientServidor == 0 || clientServidor == 1) {
-		cout << "Introdueix la IP d'aquesta maquina" << endl;
-		if (clientServidor == 0) 
-			cin >> HostS;
-	
-		else if (clientServidor == 1) 
-			cin >> HostC;
-	
 		cout << "Introdueix la IP de l'altra maquina" << endl;
-		if (clientServidor == 0) 
-			cin >> HostC;
-	
-		else if (clientServidor == 1) 
-			cin >> HostS;
+		cin >> Host;
 	}
 	int sistemaOp;
 	cout << "Arduino no connectat 0, Ardunio en linux 1, Arduino en Windows 2, Arduino en MAC 3" << endl;
@@ -38,6 +26,6 @@ int main( ){
 	// this kicks off the running of my app
 	// can be OF_WINDOW or OF_FULLSCREEN
 	// pass in width and height too:
-	ofRunApp(new ofApp(clientServidor, sistemaOp, HostS, HostC));
+	ofRunApp(new ofApp(clientServidor, sistemaOp, Host));
 
 }

@@ -18,7 +18,6 @@
 #include "PlayerManager.h"
 
 //defs per sender/receiver
-#define HOST "localhost"
 #define PORT 12345
 #define NUM_PTS 800
 
@@ -30,7 +29,8 @@ class ofApp: public ofBaseApp {
 public:
 	static ofEvent<ofPoint> ArdEvent;
 	static ofEvent<Missatge> NetEvent;
-	ofApp(int cli, int SO, string HostS, string HostC);
+	
+	ofApp(int cli, int SO, string Host);
 	~ofApp();
 	void setup();
 	void setupArduino();
@@ -76,6 +76,8 @@ private:
 	int cyclesJumped;
 	bool readAndSendMessage;
 	
+	string Host;
+
 	bool acaba_partida;
 
 	bool debug;
