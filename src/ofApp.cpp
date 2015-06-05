@@ -34,6 +34,8 @@ ofApp::ofApp(int cli, int SO, string host) {
 		
 		ofAddListener(SpaceShip::NetworkEvent, this, &ofApp::clientSend);
 	}
+	else 
+		s_clientServidor = "local";
 	//setup();
 }
 
@@ -93,9 +95,11 @@ void ofApp::setup() {
 
 	if (s_clientServidor == "client")
 		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(255,0,0), "Player", true);
-	else
+	else if (s_clientServidor == "servidor")
 		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(255,0,0), "PlayerNet", false);
-
+	else 
+		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(255,0,0), "Player", false);
+	
 	nau = new SpaceShip();
 
 	nau->setup(shape, 40, 500, 50,
@@ -103,8 +107,10 @@ void ofApp::setup() {
 
 	if (s_clientServidor == "servidor")
 		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,0,255),"Player",true);
-	else
+	else if (s_clientServidor == "client")
 		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,0,255),"PlayerNet",false);
+	else 
+		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,0,255), "Player", false);
 
 	nau = new SpaceShip();
 
@@ -113,9 +119,10 @@ void ofApp::setup() {
 
 	if (s_clientServidor == "client")
 		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,255,0), "PlayerRat",true);
-	else
+	else if (s_clientServidor == "servidor")
 		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,255,0), "PlayerNet",false);
-
+	else 
+		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,255,0), "PlayerRat", false);
 
 	nau = new SpaceShip();
 
@@ -124,8 +131,10 @@ void ofApp::setup() {
 
 	if (s_clientServidor == "servidor")
 		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(255,255,0),"PlayerArd",true);
-	else
+	else if (s_clientServidor == "client")
 		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(255,255,0),"PlayerNet",false);
+	else 
+		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(255,255,0), "PlayerArd", false);
 
 	nau = new SpaceShip();
 
@@ -134,8 +143,10 @@ void ofApp::setup() {
 
 	if (s_clientServidor == "client")
 		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,255,255), "Player",true);
-	else
+	else if (s_clientServidor == "servidor")
 		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,255,255), "PlayerNet",false);
+	else 
+		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,255,255), "Player", false);
 
 
 	//Carreguem els sons d'explosions d'asteroides i de dispars
@@ -292,9 +303,6 @@ void ofApp::enviaBi(string ordre) {
 
 }
 
-void ofApp::enviaOrepAsteroids() {
-
-}
 
 void ofApp::enviairep(){
 	ofxOscMessage surt;
@@ -419,7 +427,7 @@ void ofApp::update() {
 		float elapsedTime = ofGetLastFrameTime();
 
 		//Preguntem a PlayerManager si hi ha guanyador, si n'hi ha no updategem res.
-		if (clientServidor == 0) {
+		if (s_clientServidor == "servidor" || s_clientServidor == "local") {
 			guanyador = PlayerManager::getInstance()->hihaguanyador(MAX_SCORE);
 			if (guanyador == NULL){
 				//Comprova colisions d'Asteroides amb spaceShips
@@ -431,7 +439,8 @@ void ofApp::update() {
 				PlayerManager::getInstance()->update(elapsedTime);
 			}
 			else
-				enviaBi("guanyador");
+				if (s_clientServidor != "local")
+					enviaBi("guanyador");
 		}
 		else {
 			if (guanyador == NULL){
@@ -444,7 +453,8 @@ void ofApp::update() {
 	if (sistemaOp != 0)
 		if (serial.isInitialized())
 			arduinoUpdate();
-	enviairep();
+	if (s_clientServidor == "local")
+		enviairep();
 }	
 
 //--------------------------------------------------------------
@@ -528,12 +538,14 @@ void ofApp::keyPressed(int key) {
 		break;
 		//r, ressetegem el joc
 	case 'r':
-		enviaBi("reset");
+		if (s_clientServidor != "local")
+			enviaBi("reset");
 		reset();
 		break;
 		//f, "Finalitzem" el joc el joc
 	case 'f':
-		enviaBi("finish");
+		if (s_clientServidor != "local")
+			enviaBi("finish");
 		finish();
 		break;
 		//----------------------------------------------------------------------

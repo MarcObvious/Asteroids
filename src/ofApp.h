@@ -47,12 +47,11 @@ public:
 	void dragEvent(ofDragInfo dragInfo);
 	void gotMessage(ofMessage msg);
 	void reset();
+	void finish();
 	void killSound();
 	void enviairep();
 	void clientSend(Missatge& ordre);
 	void enviaBi(string ordre);
-	void enviaOrepAsteroids();
-	void finish();
 
 
 private:
