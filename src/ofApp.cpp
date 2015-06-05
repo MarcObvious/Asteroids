@@ -74,7 +74,7 @@ void ofApp::setup() {
 	AsteroidManager::getInstance()->loadAsteroids();
 
 	// Create Asteroids
-	AsteroidManager::getInstance()->generateAsteroids(4);
+	AsteroidManager::getInstance()->generateAsteroids(6);
 
 
 	//Manera cutre d'afegir la forma (vertex) de les nostres naus (tenen la mateixa forma
@@ -84,8 +84,10 @@ void ofApp::setup() {
 	shape.push_back(ofPoint(-25,-25));
 	shape.push_back(ofPoint(-25, 25));
 
-	//Demanem al PlayerManager que ens creei un Player o PlayerArd, amb la Spaceship que vulguem
-	///tot això ho hauria de fer un parser.
+	//Demanem al PlayerManager que ens creei un Players, amb la Spaceship que vulguem
+	///els tipus poden ser Player (teclat), PlayerArd(arduino), PlayerRat(ratoli) i playerNet(Xarxa).
+	//PlayerNet es especial ja que es controla a traves de missatges.
+
 	SpaceShip* nau = new SpaceShip();
 
 	nau->setup(shape, 40, 500, 50,
@@ -315,7 +317,6 @@ void ofApp::enviairep(){
 		surt = PlayerManager::getInstance()->generaMissatgePlayers();
 		surt.setAddress("p_per_client");
 		sender.sendMessage(surt);
-
 	}
 
 	//Independenment de qui som rebem missatges
