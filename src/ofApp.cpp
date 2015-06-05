@@ -365,9 +365,9 @@ void ofApp::enviairep(){
 			if (mida != 0) {
 				int j = 1;
 				for(unsigned int i = 0; i < mida; i++) {
-					ofPoint position = ofPoint(entra.getArgAsFloat(j),entra.getArgAsFloat(j),entra.getArgAsFloat(j));
+					ofPoint position = ofPoint(entra.getArgAsFloat(j+1),entra.getArgAsFloat(j+2),entra.getArgAsFloat(j+3));
 					Asteroid* newAsteroid = new Asteroid();
-					cout << "FUCKING SIZE " << entra.getArgAsFloat(j) << "PUA" << entra.getArgAsFloat(j) <<endl;
+					cout << "FUCKING SIZE " << entra.getArgAsFloat(j+4) << "PUA" << entra.getArgAsFloat(j+5) <<endl;
 					newAsteroid->setup(asteroidsDefinitions.at(0),
 							2,
 							0,
