@@ -63,7 +63,6 @@ private:
 	ofSoundPlayer * explosion;
 
 	int sistemaOp;
-	float timer;
 	//SenderReceiver
 	int clientServidor;
 	string s_clientServidor;

@@ -64,7 +64,6 @@ void ofApp::setup() {
 		sender.setup("192.168.1.130", PORT);
 	}
 	ofAddListener(SpaceShip::NetworkEvent, this, &ofApp::clientSend);
-	timer = 0;
 
 	// Set framerate to 60 FPS
 	ofSetFrameRate(60);
@@ -95,7 +94,7 @@ void ofApp::setup() {
 	nau->setup(shape, 40, 500, 50,
 			ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
 
-	if (clientServidor == 1)
+	if (s_clientServidor == "client")
 		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(255,0,0), "Player", true);
 	else
 		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(255,0,0), "PlayerNet", false);
@@ -105,7 +104,7 @@ void ofApp::setup() {
 	nau->setup(shape, 40, 500, 50,
 			ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
 
-	if (clientServidor == 0)
+	if (s_clientServidor == "servidor")
 		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,0,255),"Player",true);
 	else
 		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,0,255),"PlayerNet",false);
@@ -115,25 +114,31 @@ void ofApp::setup() {
 	nau->setup(shape, 40, 500, 50,
 			ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
 
-	if (clientServidor == 0)
+	if (s_clientServidor == "client")
 		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,255,0), "PlayerRat",true);
 	else
 		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,255,0), "PlayerNet",false);
 
-/*
-	nau = new SpaceShip();
-
-	nau->setup(shape, 40, 500, 50,
-			ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
-
-	PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(255,255,0),"PlayerArd");
 
 	nau = new SpaceShip();
 
 	nau->setup(shape, 40, 500, 50,
 			ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
 
-	PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,255,255), "Player");*/
+	if (s_clientServidor == "servidor")
+		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(255,255,0),"PlayerArd",true);
+	else
+		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(255,255,0),"PlayerNet",false);
+
+	nau = new SpaceShip();
+
+	nau->setup(shape, 40, 500, 50,
+			ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
+
+	if (s_clientServidor == "client")
+		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,255,255), "Player",true);
+	else
+		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,255,255), "PlayerNet",false);
 
 
 	//Carreguem els sons d'explosions d'asteroides i de dispars
@@ -495,7 +500,6 @@ void ofApp::draw() {
 
 
 void ofApp::keyPressed(int key) {
-	if (timer > 2) {
 		switch (key) {
 		// If pressed 1 change debug/help mode
 		case '1':
@@ -533,11 +537,8 @@ void ofApp::keyPressed(int key) {
 			cout << "MENTIDAAAAAAAAAAAAAAAAAAA, musicaaaa i mes musicaaaaa Muahahahahhah!" << endl;
 			break;
 			//----------------------------------------------------------------------
-			timer = 0;
 		}
-	}
-	else
-		++timer;
+
 }
 //Reset del joc.
 void ofApp::reset() {
