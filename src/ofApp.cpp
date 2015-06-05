@@ -326,11 +326,11 @@ void ofApp::enviairep(){
 		//Si hi han ordres tan per a client com per a servidor les executem
 		if(entra.getAddress() == "o_per_"+s_clientServidor){
 			Missatge ordre;
-			string ord = entra.getArgAsString(1);
+			string ord = entra.getArgAsString(0);
 			if (ord == "reset")
 				reset();
 			else if (ord == "guanyador")
-				guanyador = PlayerManager::getInstance()->getPlayer(entra.getArgAsInt32(2));
+				guanyador = PlayerManager::getInstance()->getPlayer(entra.getArgAsInt32(1));
 			else if (ord == "finish")
 				finish();
 
