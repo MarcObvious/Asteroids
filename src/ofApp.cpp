@@ -363,11 +363,11 @@ void ofApp::enviairep(){
 //			cout << "missatge rebut??" << endl;
 			int mida = entra.getArgAsInt32(0);
 			if (mida != 0) {
-				int j = 1;
+				int j = 0;
 				for(unsigned int i = 0; i < mida; i++) {
 					ofPoint position = ofPoint(entra.getArgAsFloat(j+1),entra.getArgAsFloat(j+2),entra.getArgAsFloat(j+3));
 					Asteroid* newAsteroid = new Asteroid();
-					cout << "FUCKING SIZE " << entra.getArgAsFloat(j+4) << "PUA" << /*entra.getArgAsFloat(j+5) << */endl;
+					cout << "FUCKING SIZE " << entra.getArgAsFloat(j+4) << "PUA" << entra.getArgAsFloat(j+5) << endl;
 					newAsteroid->setup(asteroidsDefinitions.at(0),
 							2,
 							0,
