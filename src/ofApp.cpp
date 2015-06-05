@@ -386,26 +386,28 @@ void ofApp::enviairep(){
 
 		}
 		else if (entra.getAddress() == "a_per_"+s_clientServidor ){
+			AsteroidManager::getInstance()->acceptaMissatgeAsteroids(entra);
+
 			//			cout << "missatge rebut??" << endl;
-			int mida = entra.getArgAsInt32(0);
-			if (mida != 0) {
-				int j = 0;
-				for(int i = 0; i < mida; i++) {
-					ofPoint position = ofPoint(entra.getArgAsFloat(j+1),entra.getArgAsFloat(j+2),entra.getArgAsFloat(j+3));
-					Asteroid* newAsteroid = new Asteroid();
-					newAsteroid->setup(asteroidsDefinitions.at(0),
-						entra.getArgAsFloat(j+4),
-						0,
-						entra.getArgAsFloat(j+5),
-						position,
-						ofPoint(-(ofRandom(-1, 1)), ofRandom(-1, 1)));
-					asteroids.push_back(newAsteroid);
-					j += 5;
-				}
+//			int mida = entra.getArgAsInt32(0);
+//			if (mida != 0) {
+//				int j = 0;
+//				for(int i = 0; i < mida; i++) {
+//					ofPoint position = ofPoint(entra.getArgAsFloat(j+1),entra.getArgAsFloat(j+2),entra.getArgAsFloat(j+3));
+//					Asteroid* newAsteroid = new Asteroid();
+//					newAsteroid->setup(asteroidsDefinitions.at(0),
+//						entra.getArgAsFloat(j+4),
+//						0,
+//						entra.getArgAsFloat(j+5),
+//						position,
+//						ofPoint(-(ofRandom(-1, 1)), ofRandom(-1, 1)));
+//					asteroids.push_back(newAsteroid);
+//					j += 5;
+//				}
 
-				AsteroidManager::getInstance()->setAsteroids(asteroids);
+//				AsteroidManager::getInstance()->setAsteroids(asteroids);
 
-			}
+	//		}
 		}
 		else if (entra.getAddress() == "p_per_"+s_clientServidor ){
 			int mida = entra.getArgAsInt32(0);

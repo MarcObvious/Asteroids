@@ -59,6 +59,8 @@ public:
 
 	ofxOscMessage generaMissatgeAsteroids();
 
+	void acceptaMissatgeAsteroids(ofxOscMessage entra);
+
 	void setAsteroidsDefinitions(vector<vector<ofPoint> > asteroidsDefinitions);
 };
 
