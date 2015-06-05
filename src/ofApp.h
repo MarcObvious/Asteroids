@@ -52,6 +52,7 @@ public:
 	void clientSend(Missatge& ordre);
 	void enviaBi(string ordre);
 	void enviaOrepAsteroids();
+	void finish();
 
 
 private:

@@ -353,6 +353,8 @@ void ofApp::enviairep(){
 					reset();
 				else if (ord == "guanyador")
 					guanyador = PlayerManager::getInstance()->getPlayer(entra.getArgAsInt32(2));
+				else if (ord == "finish")
+					finish();
 			}
 		}
 		else if (entra.getAddress() == "d_per_"+s_clientServidor ){
@@ -528,22 +530,27 @@ void ofApp::keyPressed(int key) {
 			break;
 			//r, ressetegem el joc
 		case 'r':
-			cout << "Reset at:" << endl;
-			cout << PlayerManager::getInstance()->getAllScores();
 			enviaBi("reset");
 			reset();
 			break;
 			//f, "Finalitzem" el joc el joc
 		case 'f':
-			acaba_partida = true;
-			cout << "MENTIDAAAAAAAAAAAAAAAAAAA, musicaaaa i mes musicaaaaa Muahahahahhah!" << endl;
+			enviaBi("finish");
+			finish();
 			break;
 			//----------------------------------------------------------------------
 		}
 
 }
+void ofApp::finish() {
+	acaba_partida = true;
+	cout << "MENTIDAAAAAAAAAAAAAAAAAAA, musicaaaa i mes musicaaaaa Muahahahahhah!" << endl;
+}
 //Reset del joc.
 void ofApp::reset() {
+
+	cout << "Reset at:" << endl;
+	cout << PlayerManager::getInstance()->getAllScores();
 
 	BulletManager::getInstance()->reset();
 	AsteroidManager::getInstance()->reset();
