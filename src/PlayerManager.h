@@ -38,6 +38,8 @@ public:
 
 	Controlador* getPlayer(int i);
 
+	int getNumPlayers();
+
 	string getAllScores();
 
 	void drawScores();

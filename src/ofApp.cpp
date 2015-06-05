@@ -115,7 +115,7 @@ void ofApp::setup() {
 	nau->setup(shape, 40, 500, 50,
 			ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
 
-	if (clientServidor == 1)
+	if (clientServidor == 0)
 		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,255,0), "PlayerRat",true);
 	else
 		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,255,0), "PlayerNet",false);
@@ -296,11 +296,12 @@ void ofApp::enviairep(){
 	vector<Asteroid*> asteroids;
 
 	if (s_clientServidor == "servidor") {
+
 		asteroids = AsteroidManager::getInstance()->getAsteroids();
 		surt.setAddress("a_per_client");
-		int mida = asteroids.size();
-		if (mida != 0) {
-			surt.addIntArg(mida);
+		int midaA = asteroids.size();
+		if (midaA != 0) {
+			surt.addIntArg(midaA);
 			for(unsigned int i = 0; i < asteroids.size(); i++) {
 				ofPoint position = asteroids[i]->getPosition();
 				surt.addFloatArg(position.x);
@@ -311,10 +312,24 @@ void ofApp::enviairep(){
 			}
 			sender.sendMessage(surt);
 		}
+
+		surt.clear();
+		surt.setAddress("p_per_client");
+		int midaP = PlayerManager::getInstance()->getNumPlayers();
+		if (midaP != 0) {
+			surt.addIntArg(midaP);
+			for(int i = 0; i < midaP; i++) {
+				surt.addIntArg(PlayerManager::getInstance()->getPlayer(i)->getLives());
+				surt.addInt64Arg(PlayerManager::getInstance()->getPlayer(i)->getScore());
+			}
+			sender.sendMessage(surt);
+		}
+
 	}
 	else if (s_clientServidor == "client") {
 
 	}
+
 	asteroids.clear();
 	vector<vector<ofPoint> > asteroidsDefinitions = AsteroidManager::getInstance()->getAsteroidsDefinitions();
 
@@ -358,7 +373,7 @@ void ofApp::enviairep(){
 			int mida = entra.getArgAsInt32(0);
 			if (mida != 0) {
 				int j = 0;
-				for(unsigned int i = 0; i < mida; i++) {
+				for(int i = 0; i < mida; i++) {
 					ofPoint position = ofPoint(entra.getArgAsFloat(j+1),entra.getArgAsFloat(j+2),entra.getArgAsFloat(j+3));
 					Asteroid* newAsteroid = new Asteroid();
 					newAsteroid->setup(asteroidsDefinitions.at(0),
@@ -373,6 +388,15 @@ void ofApp::enviairep(){
 
 				AsteroidManager::getInstance()->setAsteroids(asteroids);
 
+			}
+		}
+		else if (entra.getAddress() == "p_per_"+s_clientServidor ){
+			int mida = entra.getArgAsInt32(0);
+			int j = 0;
+			for(int i = 0; i < mida; i++) {
+				PlayerManager::getInstance()->getPlayer(i)->setLives(entra.getArgAsInt32(j+1));
+				PlayerManager::getInstance()->getPlayer(i)->setScore(entra.getArgAsInt64(j+2));
+				j += 2;
 			}
 		}
 

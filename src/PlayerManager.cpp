@@ -63,6 +63,9 @@ bool PlayerManager::createPlayer(SpaceShip* contr ,int score_inicial, int lives,
 	return false;
 }
 
+int PlayerManager::getNumPlayers() {
+	return _players.size();
+}
 //Retorna un Player concret
 Controlador* PlayerManager::getPlayer(int i){
 	return _players[i];
