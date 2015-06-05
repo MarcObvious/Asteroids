@@ -32,6 +32,10 @@ int Controlador::getLives() const {
 
 void Controlador::setLives(int lives) {
 	_lives = lives;
+	if (_lives <= 0) {
+		_viu = false;
+		_controlat->setDestroyed(true);
+	}
 }
 
 ofColor Controlador::getColor() const {

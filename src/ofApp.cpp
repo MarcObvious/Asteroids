@@ -161,6 +161,7 @@ void ofApp::setup() {
 ofApp::~ofApp(){
 
 }
+
 //FUCK AUDIO!
 void ofApp::killSound() {
 	if (pium->isLoaded()){
@@ -172,6 +173,7 @@ void ofApp::killSound() {
 		explosion->unloadSound();
 	}
 }
+
 //AQUI ES REP I S'ENVIA A ARDUINO
 void ofApp::arduinoUpdate() {
 	if(readAndSendMessage || acaba_partida) {
