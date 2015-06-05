@@ -55,7 +55,7 @@ void ofApp::setup() {
 
 	if (clientServidor == 1) {
 		receiver.setup(PORT);
-		sender.setup("192.168.1.33", PORT);
+		sender.setup("192.168.1.133", PORT);
 
 		//if (clientServidor == 1)
 	}
