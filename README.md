@@ -35,6 +35,7 @@ tambè la IP de l'altre ordinador.
 (3) Els controla tots.
 (veure controls a doc/Arduino)
 
+------------------------------------------------------------------------------------------------------------
 Per a compilar i executar:
 Crear projecte Openframeworks amb AddOn xMlSettings i OSC.
 Clonar Repositori dins, git@github.com:MarcObvious/Asteroids.git
@@ -54,16 +55,25 @@ make run
 En Windows:
 Compilar i executar VisualStudio en Release.
 
+------------------------------------------------------------------------------------------------------------
+Notes:
+El joc es COMPLETAMENT dinamic. Si es vol fer mes players nomès s'han de demanar al PlayerManager i tota la 
+resta seguirà funcionant (Scores, updates, representació per pantalla, etc), està fet aixi ja que seria facil 
+implementar "rivals" controlats per IA (classe enemic, no acabada).
 
-Notes: 
 Amb arduino es possible que s'hagi de canviar el PORT a ofApp manualment.
+
 Nomes es selecciona Arduino a la instancia on estigui connectat.
+
 Els controls son els mateixos independentment si estas en client o servidor
+
 El joc comença SILENCIAT.
 
+------------------------------------------------------------------------------------------------------------
 doc /conté:
 Controls.txt -> Explicació sobre com es controla el joc.
 Esquema Arduino.txt -> Explicació de a quin port ha d'anar cada sensor
+
 
 src/ conté:
 Entity.cpp .h -> Base de cada objecte amb representació visual
@@ -81,7 +91,6 @@ PlayerRat.cpp .h -> Controlador que utilitza el ratolí
 PlayerNet.cpp .h -> Controlador que utilitza missatges rebuts per la Xarxa
 Enemic.cpp .h -> Controlador que utilitza certa IA (no està implementat)
 PlayerManager.cpp .h -> Gestiona tots els Controladors, els dibuixa, fa updates i informa dels resultats.
-
 
 bin/ conté
 data/asteroids.xml

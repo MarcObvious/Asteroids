@@ -150,6 +150,15 @@ void ofApp::setup() {
 	else 
 		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,255,255), "Player", false);
 
+	//Posar mes ja es Vacilar massa no??
+	if (s_clientServidor == "client")
+		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(255,255,255), "Player", true);
+	else if (s_clientServidor == "servidor")
+		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(255,255,255), "PlayerNet", false);
+	else
+		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(255,255,255), "Player", false);
+
+
 
 	//Carreguem els sons d'explosions d'asteroides i de dispars
 	//Comença SILENCIAT pel be de tota la humanitat!!
