@@ -1,17 +1,17 @@
 
 Marc Mateu Sagues        Nia: 146756
 Ignasi Larroca Barcelo   Nia: 158633
-git@github.com:MarcObvious/Asteroids.git
+https://github.com/MarcObvious/Asteroids
 
 ------------------------------------------------------------------------------------------------------------
-Projecte d'un joc interactiu d'Asteroids amb Arduino UNO per a la classe Sistemes interactius. UPF-2015.
+Projecte d'un joc interactiu Asteroids amb Arduino UNO per a la classe Sistemes interactius. UPF-2015.
 
 EL JOC ES CAÒTIC. Molts Asteroides i moltes Naus. Ho sabem, i ens agrada.
 
 Tot el codi es nostre o està acreditat, els patrons i manera de gestionar events ens els hem 
 inventat o tret l'assignatura de Jocs Electronics.
 
-Està programant, compilant i provant en un Linux de 64 bits.
+Està programat, compilat i provat en un Linux de 64 bits.
 També està testejat amb VisualStudio 2012 64 bits 
 
 Es MULTI-PLATAFORMA. Una instancia pot estar en Linux, l'altre en Windows, i tot funcionarà
@@ -38,7 +38,7 @@ també la IP de l'altre ordinador.
 (0) Controlarà Player 1, Player 3.
 (1) Controlarà Player 0, Player 2. 
 (3) Els controla tots.
-(veure controls a doc/Arduino)
+(veure controls a doc/Controls)
 
 ------------------------------------------------------------------------------------------------------------
 Per a compilar i executar:
