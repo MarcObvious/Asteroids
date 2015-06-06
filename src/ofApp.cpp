@@ -10,8 +10,9 @@ BulletManager* BulletManager::_instance = NULL;
 AsteroidManager* AsteroidManager::_instance = NULL;
 PlayerManager* PlayerManager::_instance = NULL;
 
-//Event que registra el canvi al joystic arduino
+//Event que registra el canvi al joystic arduino i l'envia al seu controlador Ard
 ofEvent<ofPoint> ofApp::ArdEvent = ofEvent<ofPoint>();
+//Event que registra l'entrada d'un missatge Net i l'envia al seu controlador Net
 ofEvent<Missatge> ofApp::NetEvent = ofEvent<Missatge>();
 
 //Variables globals que defineixen les vides i la puntuacio maxima
@@ -32,7 +33,7 @@ ofApp::ofApp(int cli, int SO, string host) {
 			s_clientServidor = "servidor";
 		else
 			s_clientServidor = "client";
-
+		//Listeener pels canvis a Spaceship que aixi ho demanen (per enviar per la xarxa)
 		ofAddListener(SpaceShip::NetworkEvent, this, &ofApp::spaceshipEsMou);
 	}
 	else 
@@ -77,7 +78,8 @@ void ofApp::setup() {
 	AsteroidManager::getInstance()->generateAsteroids(6);
 
 
-	//Manera cutre d'afegir la forma (vertex) de les nostres naus (tenen la mateixa forma
+	//Manera cutre d'afegir la forma (vertex) de les nostres naus (Tenen la mateixa forma, però seria fotudametn senzill
+	//Fer que en tinguessin de diferents.
 	vector<ofPoint> shape = vector<ofPoint>();
 	shape.push_back(ofPoint(-25, 25));
 	shape.push_back(ofPoint(35,0));
@@ -87,7 +89,7 @@ void ofApp::setup() {
 	//Demanem al PlayerManager que ens creei un Players, amb la Spaceship que vulguem
 	///els tipus poden ser Player (teclat), PlayerArd(arduino), PlayerRat(ratoli) i playerNet(Xarxa).
 	//PlayerNet es especial ja que es controla a traves de missatges.
-
+	//L'ultim boolea es per dir si s'ha d'informar de l'estat de spaceship o no.
 	SpaceShip* nau = new SpaceShip();
 
 	nau->setup(shape, 40, 500, 50,
@@ -106,9 +108,9 @@ void ofApp::setup() {
 			ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
 
 	if (s_clientServidor == "servidor")
-		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,0,255),"Player",true);
+		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,0,255), "Player", true);
 	else if (s_clientServidor == "client")
-		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,0,255),"PlayerNet",false);
+		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,0,255), "PlayerNet", false);
 	else 
 		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,0,255), "Player", false);
 
@@ -130,9 +132,9 @@ void ofApp::setup() {
 			ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
 
 	if (s_clientServidor == "servidor")
-		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(255,255,0),"PlayerArd",true);
+		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(255,255,0),"PlayerArd", true);
 	else if (s_clientServidor == "client")
-		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(255,255,0),"PlayerNet",false);
+		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(255,255,0),"PlayerNet", false);
 	else 
 		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(255,255,0), "PlayerArd", false);
 
@@ -142,9 +144,9 @@ void ofApp::setup() {
 			ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
 
 	if (s_clientServidor == "client")
-		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,255,255), "Player",true);
+		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,255,255), "Player", true);
 	else if (s_clientServidor == "servidor")
-		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,255,255), "PlayerNet",false);
+		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,255,255), "PlayerNet", false);
 	else 
 		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,255,255), "Player", false);
 
@@ -238,8 +240,11 @@ void ofApp::arduinoUpdate() {
 			y <<= 8;
 			y += bytesRead[3];
 			//cout << "X " << x << " Y " << y <<endl;
-			if (x == 0 && y == 0) //Senyal de reset
+			if (x == 0 && y == 0){ //Senyal de reset
+				if (s_clientServidor != "local")
+					enviaBi("reset");
 				reset();
+			}
 			else {
 				//Fem una "filtre" cutre per no passar tonteries. Smooth.
 				if (x > 0 && x < 770 && y > 0 && y < 770 ) {
@@ -259,7 +264,7 @@ void ofApp::arduinoUpdate() {
 	}
 }
 
-//Informa de la info d'una spaceship (a través d'un event),
+//Informa de l'estat d'una spaceship (a través d'un event),
 //Al seu corresponent controlador Net (a través de missages)
 void ofApp::spaceshipEsMou(Missatge& dirs) {
 	ofxOscMessage m;
@@ -412,7 +417,7 @@ void ofApp::update() {
 void ofApp::draw() {
 	if (!acaba_partida) {
 		//Si algu ha guanyat nomes dibuixem la pantalla de restart
-		if ( guanyador != NULL ) {
+		if (guanyador != NULL) {
 			ofPushStyle();
 				ofSetColor(guanyador->getColor());
 				stringstream id;
@@ -483,7 +488,7 @@ void ofApp::keyPressed(int key) {
 			BulletManager::getInstance()->setBulletSound(NULL);
 		}
 		else {
-			pium->loadSound("sounds/explosion.mp3", false);
+			pium->loadSound("sounds/lasergun.mp3", false);
 			BulletManager::getInstance()->setBulletSound(pium);
 		}
 		break;

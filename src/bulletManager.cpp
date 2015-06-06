@@ -57,10 +57,8 @@ void BulletManager::draw() {
 void BulletManager::update( float elapsed_time ){
 
 	for(unsigned int i = 0; i < _bullets->size(); i++) {
-		if ( _bullets->at(i)->viva() ) {//Update nomes les que el temps de vida sigui positiu
+		if ( _bullets->at(i)->viva() ) //Update nomes les que el temps de vida sigui positiu
 			_bullets->at(i)->update( elapsed_time );
-
-		}
 	}
 }
 
