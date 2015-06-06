@@ -71,12 +71,14 @@ void ofApp::setup() {
 		setupArduino();
 
 	acaba_partida = false;
+
+	guanyador = NULL;
+
 	// Load Asteroids from XML
 	AsteroidManager::getInstance()->loadAsteroids();
 
 	// Create Asteroids
 	AsteroidManager::getInstance()->generateAsteroids(7);
-
 
 	//Manera cutre d'afegir la forma (vertex) de les nostres naus (Tenen la mateixa forma, però seria fotudametn senzill
 	//Fer que en tinguessin de diferents.
@@ -86,20 +88,21 @@ void ofApp::setup() {
 	shape.push_back(ofPoint(-25,-25));
 	shape.push_back(ofPoint(-25, 25));
 
-	//Demanem al PlayerManager que ens creei un Players, amb la Spaceship que vulguem
+	//Demanem al PlayerManager que ens creei Players, amb la Spaceship que vulguem
 	///els tipus poden ser Player (teclat), PlayerArd(arduino), PlayerRat(ratoli) i playerNet(Xarxa).
-	//PlayerNet es especial ja que es controla a traves de missatges.
+	//Un controlador "normal" en una instancia (servidor o client) necessita del seu homonim "PlayerNet"
+	//a l'altra instancia per a que sigui representat.
 	//L'ultim boolea es per dir si s'ha d'informar de l'estat de spaceship o no.
 	SpaceShip* nau = new SpaceShip();
 
 	nau->setup(shape, 40, 500, 50,
 			ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
 
-	if (s_clientServidor == "client")
+	if (s_clientServidor == "client") //Creem el player real en una instancia
 		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(255,0,0), "Player", true);
-	else if (s_clientServidor == "servidor")
+	else if (s_clientServidor == "servidor") //I el replicat en l'altra
 		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(255,0,0), "PlayerNet", false);
-	else 
+	else //Si es local no fa falta enviar l'estat de la spaceship a ningú
 		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(255,0,0), "Player", false);
 
 	nau = new SpaceShip();
@@ -150,15 +153,18 @@ void ofApp::setup() {
 	else 
 		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,255,255), "Player", false);
 
-	//Posar mes ja es Vacilar massa no??
+	//Posar mes players ja es Vacilar massa no??
+	/*nau = new SpaceShip();
+
+		nau->setup(shape, 40, 500, 50,
+				ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
+
 	if (s_clientServidor == "client")
 		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(255,255,255), "Player", true);
 	else if (s_clientServidor == "servidor")
 		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(255,255,255), "PlayerNet", false);
 	else
-		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(255,255,255), "Player", false);
-
-
+		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(255,255,255), "Player", false);*/
 
 	//Carreguem els sons d'explosions d'asteroides i de dispars
 	//Comença SILENCIAT pel be de tota la humanitat!!
@@ -175,8 +181,6 @@ void ofApp::setup() {
 
 	// Debug
 	debug = false;
-
-	guanyador = NULL;
 }
 
 ofApp::~ofApp(){

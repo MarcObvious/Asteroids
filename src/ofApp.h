@@ -82,6 +82,5 @@ private:
 
 	bool debug;
 	Controlador* guanyador;
-	
 
 };
