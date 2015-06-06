@@ -75,7 +75,7 @@ void ofApp::setup() {
 	AsteroidManager::getInstance()->loadAsteroids();
 
 	// Create Asteroids
-	AsteroidManager::getInstance()->generateAsteroids(6);
+	AsteroidManager::getInstance()->generateAsteroids(7);
 
 
 	//Manera cutre d'afegir la forma (vertex) de les nostres naus (Tenen la mateixa forma, però seria fotudametn senzill

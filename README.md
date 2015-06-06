@@ -3,7 +3,10 @@ Marc Mateu Sagues        Nia: 146756
 Ignasi Larroca Barcelo   Nia: 158633
 git@github.com:MarcObvious/Asteroids.git
 
-Projecte d'un joc interactiu d'Asteroids amb Arduino UNO per a la classe Sistemes interactius. UPF-2015
+------------------------------------------------------------------------------------------------------------
+Projecte d'un joc interactiu d'Asteroids amb Arduino UNO per a la classe Sistemes interactius. UPF-2015.
+
+EL JOC ES CAOTIC. Molts Asteroides i moltes Naus. Ho sabem, i ens agrada.
 
 Tot el codi es nostre o està acrediat, els patrons i manera de gestionar events ens els hem 
 inventat o tret l'assignatura de Jocs Electronics.
@@ -11,9 +14,10 @@ inventat o tret l'assignatura de Jocs Electronics.
 Està programant, compilant i provant en un Linux de 64 bits.
 També està testejat amb VisualStudio 2012 64 bits 
 
+------------------------------------------------------------------------------------------------------------
 Les comunicacions amb Arduino no funcionen gaire bé en Linux. En Windows tot perfecte.
-Les comunicacions per la xarxa funcionen perfecte.En condicions normals el servidor envia 
-uns 35 KiB/s i el client uns 24 KiB/s
+Les comunicacions per la xarxa funcionen perfecte. En condicions normals el servidor envia 
+uns 35 KiB/s i el client uns 24 KiB/s (Molt optimitzable. We know). 
 Els addons OpenFrameworks son el de Xml i el de OSC.
 
 La lògica amb Arduino es simple, Un joystic per controlar un player, un button o touchButton per
@@ -22,6 +26,7 @@ ens reservem dir quan i que fan ;).
 Es pregunta al usuari si vol jugar sense-Arduino(0), Arduino-Linux(1), Arduino-Windows(2), 
 Arduino-Mac(3).
 
+------------------------------------------------------------------------------------------------------------
 Hi han diversos modes de joc, en solitar(3), fent de client(1) o fent de servidor(0).
 Es pregunta a l'usuari a l'inici sobre com es vol jugar. Si s'escull (0) o (1) es demanarà
 tambè la IP de l'altre ordinador.
