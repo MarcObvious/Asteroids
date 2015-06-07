@@ -35,8 +35,8 @@ Arduino-Mac(3).
 Hi han diversos modes de joc, en solitari(3), fent de client(1) o fent de servidor(0).
 Es pregunta a l'usuari a l'inici sobre com es vol jugar. Si s'escull (0) o (1) es demanarà
 també la IP de l'altre ordinador.
-(0) Controlarà Player 1, Player 3.
-(1) Controlarà Player 0, Player 2. 
+(0) Controlarà Player 1 (teclat), Player 3 (Arduino).
+(1) Controlarà Player 0 (teclat), Player 2 (Ratolí), Player 4 (Arduino). 
 (3) Els controla tots.
 (veure controls a doc/Controls)
 
@@ -68,7 +68,7 @@ implementar "rivals" controlats per IA (classe enemic, no acabada).
 
 Amb Arduino es possible que s'hagi de canviar el PORT a ofApp manualment.
 
-Nomes es selecciona Arduino a la instancia on estigui connectat.
+Nomes es selecciona Arduino a la instancia on estigui connectat. (O en les 2 alhora)
 
 Els controls son els mateixos independentment si estas en client o servidor
 

@@ -129,6 +129,8 @@ void ofApp::setup() {
 	else 
 		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,255,0), "PlayerRat",false);
 
+
+    //Ens assegurem que tant el client com el servidor puguin controlar sempre un player amb arduino!!! (alhora)
 	nau = new SpaceShip();
 
 	nau->setup(shape, 40, 500, 50,
@@ -147,7 +149,7 @@ void ofApp::setup() {
 			ofPoint(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight())));
 
 	if (s_clientServidor == "client")
-		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,255,255), "Player", true);
+		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,255,255), "PlayerArd", true);
 	else if (s_clientServidor == "servidor")
 		PlayerManager::getInstance()->createPlayer(nau, INITIAL_SCORE, MAX_LIVES, ofColor(0,255,255), "PlayerNet", false);
 	else 
