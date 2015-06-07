@@ -108,4 +108,8 @@ Arduino/
 arduino_stars/arduino_stars.io -> Lògica que carreguem a la placa Arduino UNO
 SerialLCD.rar -> Llibreries per utilitzar SerialLCD
 
+------------------------------------------------------------------------------------------------------------
+![ScreenShot](https://github.com/MarcObvious/Asteroids/blob/master/screenshots/screenshot1.png)
+
+
 
